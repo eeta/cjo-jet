@@ -23,4 +23,7 @@ public interface KnowhowBoardSQLMapper {
 		
 		// 글 수정
 		public void update(KnowhowBoardVo vo);
+		
+		// 글 조회수 증가
+		public void increaseReadCount(int no);
 }

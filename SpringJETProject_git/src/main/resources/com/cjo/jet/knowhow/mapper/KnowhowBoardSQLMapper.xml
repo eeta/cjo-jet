@@ -62,4 +62,13 @@
 		]]>
 	</update>
 	
+	<!-- 글 조회수 증가 -->
+	<update id="increaseReadCount">
+		<![CDATA[
+			UPDATE jet_board_knowhow
+			SET jet_board_knowhow_readcount = jet_board_knowhow_readcount + 1
+			WHERE jet_board_knowhow_no = #{no}
+		]]>
+	</update>
+	
 </mapper>

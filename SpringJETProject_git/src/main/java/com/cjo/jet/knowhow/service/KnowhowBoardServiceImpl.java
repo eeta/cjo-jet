@@ -62,9 +62,12 @@ public class KnowhowBoardServiceImpl {
 
 	// 글 읽기
 	// 하나의 Vo 만 뽑아내므로 ArrayList 로 안 엮는다
-	public HashMap<String, Object> getKnowhowBoard(int no) {
+	public HashMap<String, Object> getKnowhowBoard(int contentNo) {
 		
-		KnowhowBoardVo knowhowBoardVo = knowhowBoardSQLMapper.selectByNo(no);
+		// 조회수 증가
+		knowhowBoardSQLMapper.increaseReadCount(contentNo);
+		
+		KnowhowBoardVo knowhowBoardVo = knowhowBoardSQLMapper.selectByNo(contentNo);
 				
 		int jet_member_no = knowhowBoardVo.getJet_member_no();
 		MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);

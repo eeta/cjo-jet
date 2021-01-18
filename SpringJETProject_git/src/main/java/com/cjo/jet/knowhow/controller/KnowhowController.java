@@ -55,4 +55,15 @@ public class KnowhowController {
 		
 		return "redirect:./knowhowboard_page.do";
 	}
+	
+	// 글 읽기 페이지로
+	@RequestMapping("read_knowhowboard_page.do")
+	public String readKnowhowBoardPage(Model model, int jet_board_knowhow_no) {
+		
+		HashMap<String, Object> map = knowhowBoardService.getKnowhowBoard(jet_board_knowhow_no);
+		
+		model.addAttribute("result", map);
+		
+		return "knowhowboard/read_knowhowboard_page";
+	}
 }

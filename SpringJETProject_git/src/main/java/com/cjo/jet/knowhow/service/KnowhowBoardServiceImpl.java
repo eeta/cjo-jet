@@ -58,4 +58,22 @@ public class KnowhowBoardServiceImpl {
 		}
 		return resultList;
 	}
+	
+
+	// 글 읽기
+	// 하나의 Vo 만 뽑아내므로 ArrayList 로 안 엮는다
+	public HashMap<String, Object> getKnowhowBoard(int no) {
+		
+		KnowhowBoardVo knowhowBoardVo = knowhowBoardSQLMapper.selectByNo(no);
+				
+		int jet_member_no = knowhowBoardVo.getJet_member_no();
+		MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+		
+		// knowhowBoardVo + memberVo 뽑아오기. 이제 HashMap 으로 엮는다
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("knowhowBoardVo", knowhowBoardVo);
+		map.put("memberVo", memberVo);
+		
+		return map;
+	}
 }

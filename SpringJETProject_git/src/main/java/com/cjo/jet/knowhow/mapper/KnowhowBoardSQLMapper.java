@@ -14,4 +14,7 @@ public interface KnowhowBoardSQLMapper {
 		
 		// 글 목록 보기
 		public ArrayList<KnowhowBoardVo> selectAll();
+		
+		// 글 읽기
+		public KnowhowBoardVo selectByNo(int no);
 }

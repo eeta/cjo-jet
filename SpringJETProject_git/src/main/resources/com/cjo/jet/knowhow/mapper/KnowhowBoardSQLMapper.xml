@@ -34,4 +34,13 @@
 		]]>
 	</select>
 	
+	<!-- 글 읽기 -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.KnowhowBoardVo">
+		<![CDATA[
+			SELECT *
+			FROM jet_board_knowhow
+			WHERE jet_board_knowhow_no = #{no}
+		]]>
+	</select>
+	
 </mapper>

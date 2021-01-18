@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper">
+
+	<!-- 기본키 생성-->
+	<select id="createKey" resultType="int">
+		<![CDATA[
+			SELECT jet_board_knowhow_seq.nextval
+			FROM DUAL
+		]]>
+	</select>
+
+	<!-- 글 쓰기 -->
+	<insert id="insert">
+		<![CDATA[
+			INSERT INTO jet_board_knowhow VALUES(
+	 		    #{jet_board_knowhow_no},
+	 		    #{jet_member_no},
+	 		    #{jet_board_knowhow_title},
+	 		    #{jet_board_knowhow_content},
+	 		    0,
+	 		    SYSDATE
+	 		)
+		]]>
+	</insert>
+	
+	<!-- 글 목록 보기 -->
+	<select id="selectAll" resultType="com.cjo.jet.vo.KnowhowBoardVo">
+		<![CDATA[
+			SELECT * 
+ 			FROM jet_board_knowhow
+ 			ORDER BY jet_board_knowhow_no DESC
+		]]>
+	</select>
+	
+</mapper>

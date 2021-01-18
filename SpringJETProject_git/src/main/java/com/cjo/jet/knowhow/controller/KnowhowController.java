@@ -75,4 +75,24 @@ public class KnowhowController {
 		
 		return "redirect:./knowhowboard_page.do";
 	}
+	
+	// 글 수정 페이지로
+	@RequestMapping("update_knowhowboard_page.do")
+	public String updateKnowhowBoardPage(int jet_board_knowhow_no, Model model) {
+		
+		HashMap<String, Object> map = knowhowBoardService.getKnowhowBoard(jet_board_knowhow_no);
+		
+		model.addAttribute("result", map);
+		
+		return "knowhowboard/update_knowhowboard_page";
+	}
+	
+	// 글 수정 프로세스로
+	@RequestMapping("update_knowhowboard_process.do")
+	public String updateKnowhowBoardProcess(KnowhowBoardVo param) {
+		
+		knowhowBoardService.updateKnowhowBoard(param);
+		
+		return "redirect:./knowhowboard_page.do";
+	}
 }

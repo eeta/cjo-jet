@@ -83,4 +83,11 @@ public class KnowhowBoardServiceImpl {
 		knowhowBoardSQLMapper.deleteByNo(contentNo);
 		
 	}
+	
+	// 글 수정하기
+	public void updateKnowhowBoard(KnowhowBoardVo vo) {
+		
+		knowhowBoardSQLMapper.update(vo);
+		
+	}
 }

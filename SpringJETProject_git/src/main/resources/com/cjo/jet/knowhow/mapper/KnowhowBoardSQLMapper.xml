@@ -52,4 +52,14 @@
 		]]>
 	</delete>
 	
+	<!-- 글 수정 -->
+	<update id="update">
+		<![CDATA[
+			UPDATE jet_board_knowhow
+			SET jet_board_knowhow_title = #{jet_board_knowhow_title},
+			jet_board_knowhow_content = #{jet_board_knowhow_content}
+			WHERE jet_board_knowhow_no = #{jet_board_knowhow_no}
+		]]>
+	</update>
+	
 </mapper>

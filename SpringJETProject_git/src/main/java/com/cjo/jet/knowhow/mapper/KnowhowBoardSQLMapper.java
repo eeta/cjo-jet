@@ -19,5 +19,8 @@ public interface KnowhowBoardSQLMapper {
 		public KnowhowBoardVo selectByNo(int no);
 		
 		// 글 삭제
-		public void deleteByNo(int no);		
+		public void deleteByNo(int no);
+		
+		// 글 수정
+		public void update(KnowhowBoardVo vo);
 }

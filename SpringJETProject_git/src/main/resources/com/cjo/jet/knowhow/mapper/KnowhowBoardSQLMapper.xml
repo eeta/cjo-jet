@@ -43,4 +43,13 @@
 		]]>
 	</select>
 	
+	<!-- 글 삭제 -->
+	<delete id="deleteByNo">
+		<![CDATA[
+			DELETE
+			FROM jet_board_knowhow
+			WHERE jet_board_knowhow_no = #{no}
+		]]>
+	</delete>
+	
 </mapper>

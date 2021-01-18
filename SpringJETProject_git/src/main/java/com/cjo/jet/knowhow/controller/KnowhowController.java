@@ -66,4 +66,13 @@ public class KnowhowController {
 		
 		return "knowhowboard/read_knowhowboard_page";
 	}
+	
+	// 글 삭제 프로세스로
+	@RequestMapping("delete_knowhowboard_process.do")
+	public String deleteKnowhowBoardProcess(int jet_board_knowhow_no) {
+		
+		knowhowBoardService.deleteKnowhowBoard(jet_board_knowhow_no);
+		
+		return "redirect:./knowhowboard_page.do";
+	}
 }

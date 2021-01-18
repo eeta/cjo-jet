@@ -76,4 +76,11 @@ public class KnowhowBoardServiceImpl {
 		
 		return map;
 	}
+	
+	// 글 삭제하기
+	public void deleteKnowhowBoard(int contentNo) {
+		
+		knowhowBoardSQLMapper.deleteByNo(contentNo);
+		
+	}
 }

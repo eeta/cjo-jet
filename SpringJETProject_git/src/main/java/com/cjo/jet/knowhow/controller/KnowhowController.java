@@ -23,10 +23,10 @@ public class KnowhowController {
 	
 	// 팁과 노하우 게시판으로
 	@RequestMapping("knowhowboard_page.do")
-	public String knowhowBoardList(Model model) {
+	public String knowhowBoardList(Model model, String search_word, String search_type) {
 		
 		// 글 목록 출력
-		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList();
+		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList(search_word, search_type);
 		
 		model.addAttribute("resultList", resultList);
 		

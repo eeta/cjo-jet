@@ -35,12 +35,27 @@ public class KnowhowBoardServiceImpl {
 	}
 	
 	// 글 목록 출력
-	public ArrayList<HashMap<String, Object>> getKnowhowBoardList() {
+	public ArrayList<HashMap<String, Object>> getKnowhowBoardList(String search_word, String search_type) {
 		
 		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
 		
-		ArrayList<KnowhowBoardVo> knowhowBoardList = knowhowBoardSQLMapper.selectAll();
+		// 글 검색 조건문 위해서 초기화
+		ArrayList<KnowhowBoardVo> knowhowBoardList = null;
 		
+		// 글 검색
+		if (search_word == null || search_type == null) {
+			knowhowBoardList = knowhowBoardSQLMapper.selectAll();
+		} else {
+			if (search_type.equals("title")) {
+				knowhowBoardList = knowhowBoardSQLMapper.selectByTitle(search_word);
+			} else if (search_type.equals("content")) {
+				knowhowBoardList = knowhowBoardSQLMapper.selectByContent(search_word);
+			} else if (search_type.equals("writer")) {
+				knowhowBoardList = knowhowBoardSQLMapper.selectByWriter(search_word);
+			}
+		}
+		
+		// 글 목록 출력
 		for (KnowhowBoardVo knowhowBoardVo : knowhowBoardList) {
 			int jet_member_no = knowhowBoardVo.getJet_member_no();
 			

@@ -28,6 +28,20 @@
 	
 	<br>
 	<br>
+	
+	<!-- 검색 -->
+	<form action="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do" method="get">
+		<select name="search_type">
+			<option value="title">제목</option>
+			<option value="content">내용</option>
+			<option value="writer">작성자</option>
+		</select>
+		<input type="text" name="search_word">
+		<input type="submit" value="검색">
+	</form>
+	
+	<br>
+	<br>
 	게시글 목록 출력<br>
 	<br>
 	

@@ -71,4 +71,34 @@
 		]]>
 	</update>
 	
+	<!-- 글 검색 -->
+	<!-- 제목으로 검색 -->
+	<select id="selectByTitle" resultType="com.cjo.jet.vo.KnowhowBoardVo">
+		<![CDATA[
+			SELECT * FROM jet_board_knowhow
+			WHERE jet_board_knowhow_title LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_board_knowhow_no DESC
+		]]>
+	</select>
+	
+	<!-- 내용으로 검색 -->
+	<select id="selectByContent" resultType="com.cjo.jet.vo.KnowhowBoardVo">
+		<![CDATA[
+			SELECT * FROM jet_board_knowhow
+			WHERE jet_board_knowhow_content LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_board_knowhow_no DESC
+		]]>
+	</select>
+	
+	<!-- 작성자로 검색 -->
+	<select id="selectByWriter" resultType="com.cjo.jet.vo.KnowhowBoardVo">
+		<![CDATA[
+			SELECT k.*
+			FROM jet_board_knowhow k, jet_member m
+			WHERE m.jet_member_no = k.jet_member_no
+			AND m.jet_member_nick LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_board_knowhow_no DESC
+		]]>
+	</select>
+	
 </mapper>

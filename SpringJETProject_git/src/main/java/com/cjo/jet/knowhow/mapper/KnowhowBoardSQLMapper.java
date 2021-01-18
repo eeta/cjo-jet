@@ -26,4 +26,13 @@ public interface KnowhowBoardSQLMapper {
 		
 		// 글 조회수 증가
 		public void increaseReadCount(int no);
+		
+		// 글 제목 검색
+		public ArrayList<KnowhowBoardVo> selectByTitle(String search_word);
+		
+		// 글 내용 검색
+		public ArrayList<KnowhowBoardVo> selectByContent(String search_word);
+		
+		// 글 작성자 검색
+		public ArrayList<KnowhowBoardVo> selectByWriter(String search_word);
 }

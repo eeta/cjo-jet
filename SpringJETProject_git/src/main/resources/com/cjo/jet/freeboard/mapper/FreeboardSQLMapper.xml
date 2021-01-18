@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cjo.jet.freeboard.mapper.FreeboardSQLMapper">
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO jet_board_free 
+		VALUES(
+		    jet_board_free_seq.nextval,
+		    #{jet_member_no},
+		    #{jet_board_free_title},
+		    #{jet_board_free_content},
+		    0,
+		    SYSDATE
+		)				
+	]]>
+	</insert>
+	
+	<select id="selectAll" resultType="com.cjo.jet.vo.FreeboardVo">
+	<![CDATA[
+		SELECT * FROM jet_board_free ORDER BY jet_board_free_no DESC
+	]]>
+	</select>
+	
+	<!-- 글 보기..쿼리.. -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.FreeboardVo">
+	<![CDATA[
+		SELECT * FROM jet_board_free WHERE jet_board_free_no = #{no}
+	]]>
+	</select>	
+	
+	<delete id="deleteByNo">
+	<![CDATA[
+		DELETE FROM jet_board_free WHERE jet_board_free_no = #{no}
+	]]>
+	</delete>
+	
+	<update id="update">
+	<![CDATA[
+		UPDATE jet_board_free
+		SET jet_board_free_title=#{jet_board_free_title},
+			jet_board_free_content=#{jet_board_free_content}
+		WHERE jet_board_free_no = #{jet_board_free_no}		
+	]]>
+	</update>
+	
+	<update id="increaseReadCount">
+	 <![CDATA[		
+	 	UPDATE jet_board_free
+	 	SET jet_board_free_readcount = jet_board_free_readcount + 1
+	 	WHERE jet_board_free_no = #{no}
+	 ]]>	
+	</update>
+	
+	<insert id="insertReple">
+	 <![CDATA[	
+		INSERT INTO jet_board_free_reple
+		VALUES(
+		    jet_board_free_reple_seq.nextval,
+		    #{jet_board_free_no},
+		    #{jet_member_no},
+		    #{jet_board_free_reple_content},
+		    SYSDATE
+		)	
+	 ]]>	
+	</insert>
+</mapper>

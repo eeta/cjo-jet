@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper의 xml파일 이름은 인터페이스 이름과 동일하게 작성 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjo.jet.member.mapper.MemberSQLMapper">
+	<select id="createKey" resultType="int">
+		<![CDATA[
+			SELECT jet_member_seq.nextval FROM DUAL
+		]]>
+	</select>
+	<insert id="insertMember">
+		<![CDATA[
+			INSERT INTO jet_member VALUES(
+				#{jet_member_no}, 
+				#{jet_member_id},
+				#{jet_member_pw},
+				#{jet_member_name},
+				#{jet_member_nick},
+				#{jet_member_sex},
+				#{jet_member_phone},
+				#{jet_member_kakao},
+				#{jet_member_grade},
+				#{jet_member_credit},
+				SYSDATE,
+				SYSDATE
+			)
+		]]>
+	</insert>
+	<insert id="insertInterest">
+		<![CDATA[
+			INSERT INTO jet_interest VALUES(
+				jet_INTEREST_SEQ.nextval,
+				#{jet_member_no},
+				#{jet_interest_name}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectByIdAndPW" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM jet_member WHERE 
+			jet_member_id = #{jet_member_id} AND 
+			jet_member_pw = #{jet_member_pw}
+		]]>
+	</select>
+		<!-- 멤버No 뽑아오기  -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM jet_Member 
+			WHERE jet_member_no = #{no}
+		]]>
+	</select>
+	<!-- ID중복 확인 쿼리 -->
+	<select id="selectById" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM jet_member 
+			WHERE jet_member_id = #{id}
+		]]>
+	</select>
+</mapper>

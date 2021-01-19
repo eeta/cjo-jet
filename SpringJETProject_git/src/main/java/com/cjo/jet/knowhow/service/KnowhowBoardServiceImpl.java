@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cjo.jet.knowhow.mapper.KnowhowBoardImageSQLMapper;
+import com.cjo.jet.knowhow.mapper.KnowhowBoardRepleSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
+import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
 
@@ -20,6 +22,9 @@ public class KnowhowBoardServiceImpl {
 	
 	@Autowired
 	private MemberSQLMapper memberSQLMapper;
+	
+	@Autowired
+	private KnowhowBoardRepleSQLMapper knowhowBoardRepleSQLMapper;
 	
 	// 글 쓰기
 	public void writeKnowhowBoard(KnowhowBoardVo vo) {	
@@ -107,5 +112,33 @@ public class KnowhowBoardServiceImpl {
 		
 		knowhowBoardSQLMapper.update(vo);
 		
+	}
+	
+	// 댓글 쓰기
+	public void writeRepleKnowhowBoard(KnowhowBoardRepleVo vo)  {
+		
+		knowhowBoardRepleSQLMapper.insertReple(vo);
+		
+	}
+	
+	// 댓글 보기 (글 목록 출력과 유사)
+	public ArrayList<HashMap<String, Object>> getRepleByNo(int no) {
+		
+		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+		
+		ArrayList<KnowhowBoardRepleVo> repleList = knowhowBoardRepleSQLMapper.selectRepleByNo(no);
+		
+		for (KnowhowBoardRepleVo repleVo : repleList) {
+			int jet_member_no = repleVo.getJet_member_no();
+			
+			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("memberVo", memberVo);
+			map.put("repleVo", repleVo);
+			
+			result.add(map);		
+		}
+		return result;
 	}
 }

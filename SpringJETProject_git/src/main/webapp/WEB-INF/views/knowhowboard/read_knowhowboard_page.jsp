@@ -28,6 +28,27 @@
 		<a href="${pageContext.request.contextPath}/knowhowboard/update_knowhowboard_page.do?jet_board_knowhow_no=${result.knowhowBoardVo.jet_board_knowhow_no}">수정</a>
 	</c:if>
 	<br>
+	
+	<!-- 댓글 보기 -->
+	<!-- 댓글은 ArrayList. 출력을 위해 반복문 사용 -->
+	<c:forEach items="${reple}" var="reple">
+		작성자: ${reple.memberVo.jet_member_nick} <br>
+		작성일: ${reple.repleVo.jet_board_knowhow_reple_date} <br>
+		내용: ${reple.repleVo.jet_board_knowhow_reple_cont} <br>
+	</c:forEach>
+	
+	<br>
+	
+	<!-- 댓글 쓰기 -->
+	<form action="${pageContext.request.contextPath}/knowhowboard/write_reple_knowhowboard_process.do" method="get">
+		<c:if test="${!empty sessionUser}">
+				작성자: ${sessionUser.jet_member_nick}<br>
+				내용: <textarea name="jet_board_knowhow_reple_cont" rows="10" cols="60"></textarea>
+				<input type="hidden" name="jet_board_knowhow_no" value="${result.knowhowBoardVo.jet_board_knowhow_no}">
+				<br>
+				<input type="submit" value="댓글 작성">
+		</c:if>
+	</form>
 
 
 <jsp:include page="../commons/global_footer.jsp"/>

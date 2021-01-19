@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cjo.jet.knowhow.service.KnowhowBoardServiceImpl;
+import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
 
@@ -64,6 +65,10 @@ public class KnowhowController {
 		
 		model.addAttribute("result", map);
 		
+		// 댓글 보기
+		ArrayList<HashMap<String, Object>> repleVoList = knowhowBoardService.getRepleByNo(jet_board_knowhow_no);
+		model.addAttribute("reple", repleVoList);
+		
 		return "knowhowboard/read_knowhowboard_page";
 	}
 	
@@ -94,5 +99,18 @@ public class KnowhowController {
 		knowhowBoardService.updateKnowhowBoard(param);
 		
 		return "redirect:./knowhowboard_page.do";
+	}
+
+	// 댓글 작성 프로세스로
+	@RequestMapping("write_reple_knowhowboard_process.do")
+	public String writeRepleKnowhowBoardProcess(HttpSession session, KnowhowBoardRepleVo param, int jet_board_knowhow_no) {
+				
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser"); 
+		int jet_member_no = sessionUser.getJet_member_no();
+		param.setJet_member_no(jet_member_no);
+		
+		knowhowBoardService.writeRepleKnowhowBoard(param);
+			
+		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
 	}
 }

@@ -28,8 +28,13 @@
 		<a href="${pageContext.request.contextPath}/knowhowboard/update_knowhowboard_page.do?jet_board_knowhow_no=${result.knowhowBoardVo.jet_board_knowhow_no}">수정</a>
 	</c:if>
 	<br>
+	<br>
 	
 	<!-- 댓글 보기 -->
+	<!-- 댓글 개수 출력 -->
+	댓글 ${repleCount} 개 달림<br>    <%-- AJAX 처리가 아니므로 새로고침해야 바뀜 --%>
+	<br>
+	
 	<!-- 댓글은 ArrayList. 출력을 위해 반복문 사용 -->
 	<c:forEach items="${reple}" var="reple">
 		작성자: ${reple.memberVo.jet_member_nick} <br>

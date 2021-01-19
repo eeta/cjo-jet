@@ -25,4 +25,13 @@
 		]]>
 	</select>
 	
+	<!-- 댓글 개수 출력 -->
+	<select id="countReple" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM jet_board_knowhow_reple
+			WHERE jet_board_knowhow_no = #{no}
+		]]>
+	</select>
+	
 </mapper>

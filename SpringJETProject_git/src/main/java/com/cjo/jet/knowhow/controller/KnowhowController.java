@@ -63,11 +63,15 @@ public class KnowhowController {
 		
 		HashMap<String, Object> map = knowhowBoardService.getKnowhowBoard(jet_board_knowhow_no);
 		
-		model.addAttribute("result", map);
-		
 		// 댓글 보기
 		ArrayList<HashMap<String, Object>> repleVoList = knowhowBoardService.getRepleByNo(jet_board_knowhow_no);
+		
+		// 댓글 개수 출력
+		int repleCount = knowhowBoardService.countRepleKnowhowBoard(jet_board_knowhow_no);
+		
+		model.addAttribute("result", map);
 		model.addAttribute("reple", repleVoList);
+		model.addAttribute("repleCount", repleCount);
 		
 		return "knowhowboard/read_knowhowboard_page";
 	}

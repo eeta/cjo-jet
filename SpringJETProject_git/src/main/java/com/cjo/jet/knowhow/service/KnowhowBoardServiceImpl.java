@@ -63,8 +63,10 @@ public class KnowhowBoardServiceImpl {
 		// 글 목록 출력
 		for (KnowhowBoardVo knowhowBoardVo : knowhowBoardList) {
 			int jet_member_no = knowhowBoardVo.getJet_member_no();
-			
 			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+			
+			// 댓글 개수 출력
+			int countReple = knowhowBoardRepleSQLMapper.countReple(knowhowBoardVo.getJet_board_knowhow_no());
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
@@ -73,6 +75,7 @@ public class KnowhowBoardServiceImpl {
 			// 키는 get할 때 쓰인다. 내가 짓고 싶은 이름으로 짓자.
 			map.put("memberVo", memberVo);
 			map.put("knowhowBoardVo", knowhowBoardVo);
+			map.put("countReple", countReple);
 			
 			resultList.add(map);
 		}
@@ -140,5 +143,12 @@ public class KnowhowBoardServiceImpl {
 			result.add(map);		
 		}
 		return result;
+	}
+	
+	// 댓글 개수 출력
+	public int countRepleKnowhowBoard(int no) {
+		
+		return knowhowBoardRepleSQLMapper.countReple(no);
+		
 	}
 }

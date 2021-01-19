@@ -11,4 +11,7 @@ public interface KnowhowBoardRepleSQLMapper {
 	
 	// 댓글 보기
 	public ArrayList<KnowhowBoardRepleVo> selectRepleByNo(int knowhowBoard_no);
+	
+	// 댓글 개수 출력
+	public int countReple(int knowhowBoard_no);
 }

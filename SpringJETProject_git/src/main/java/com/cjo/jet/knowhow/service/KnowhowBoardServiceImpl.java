@@ -10,6 +10,7 @@ import com.cjo.jet.knowhow.mapper.KnowhowBoardImageSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardRepleSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
+import com.cjo.jet.vo.KnowhowBoardImageVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
@@ -26,8 +27,12 @@ public class KnowhowBoardServiceImpl {
 	@Autowired
 	private KnowhowBoardRepleSQLMapper knowhowBoardRepleSQLMapper;
 	
+	@Autowired
+	private KnowhowBoardImageSQLMapper knowhowBoardImageSQLMapper;
+	
 	// 글 쓰기
-	public void writeKnowhowBoard(KnowhowBoardVo vo) {	
+	public void writeKnowhowBoard(KnowhowBoardVo vo, ArrayList<KnowhowBoardImageVo> imageVoList) {    // 이미지 업로드 1. imageVoList
+		
 		
 		// 기본키 생성
 		int knowhowBoardPK = knowhowBoardSQLMapper.createKey();
@@ -37,6 +42,11 @@ public class KnowhowBoardServiceImpl {
 		// 글 쓰기
 		knowhowBoardSQLMapper.insert(vo);
 		
+		// 이미지 업로드 1. 반복문 돌려서 이미지 리스트 가져오기
+		for (KnowhowBoardImageVo imageVo : imageVoList) {
+			imageVo.setJet_board_knowhow_no(knowhowBoardPK);    // 기본키 세팅
+			knowhowBoardImageSQLMapper.insert(imageVo);
+		}
 	}
 	
 	// 글 목록 출력
@@ -97,8 +107,13 @@ public class KnowhowBoardServiceImpl {
 		
 		// knowhowBoardVo + memberVo 뽑아오기. 이제 HashMap 으로 엮는다
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("knowhowBoardVo", knowhowBoardVo);
-		map.put("memberVo", memberVo);
+		
+		// 이미지 11. 이미지 리스트 받기
+		ArrayList<KnowhowBoardImageVo> imageVoList = knowhowBoardImageSQLMapper.selectByContentNo(contentNo);
+		
+		map.put("knowhowBoardVo", knowhowBoardVo);    // 단위 객체
+		map.put("memberVo", memberVo);    // 단위 객체
+		map.put("imageVoList", imageVoList);  // 이미지 11. 배열 객체
 		
 		return map;
 	}

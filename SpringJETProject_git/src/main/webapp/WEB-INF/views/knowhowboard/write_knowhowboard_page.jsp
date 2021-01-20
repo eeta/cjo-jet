@@ -14,11 +14,12 @@
 	
 	<h1>팁과 노하우 게시판 글쓰기</h1>
 
-	<form action="${pageContext.request.contextPath}/knowhowboard/write_knowhowboard_process.do" method="post">
+	<form action="${pageContext.request.contextPath}/knowhowboard/write_knowhowboard_process.do" method="post" enctype="multipart/form-data">
 		작성자: ${sessionUser.jet_member_nick}<br>
 		제목: <input type="text" name="jet_board_knowhow_title"><br>
 		내용: <textarea name="jet_board_knowhow_content" rows="10" cols="60"></textarea>
 		<br>		
+		이미지: <input type="file" name="files" accept="image/*" multiple>
 		<input type="submit" value="글쓰기">
 	</form>
 

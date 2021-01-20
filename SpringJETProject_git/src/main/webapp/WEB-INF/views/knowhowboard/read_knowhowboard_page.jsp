@@ -21,6 +21,11 @@
 	내용: ${result.knowhowBoardVo.jet_board_knowhow_content }<br>
 	<br>
 	
+	<!-- 이미지는 ArrayList기 때문에 출력을 위해 반복문 사용 -->
+	<c:forEach items="${result.imageVoList}" var="imageVo">
+		<img src="${imageVo.jet_board_knowhow_image_link}"><br>
+	</c:forEach>
+	
 	<a href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do">목록으로</a>	
 	
 	<c:if test="${!empty sessionUser && sessionUser.jet_member_no == result.knowhowBoardVo.jet_member_no}">

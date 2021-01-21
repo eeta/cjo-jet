@@ -28,10 +28,17 @@
 	<!-- 글 목록 보기 -->
 	<select id="selectAll" resultType="com.cjo.jet.vo.KnowhowBoardVo">
 		<![CDATA[
-			SELECT * 
- 			FROM jet_board_knowhow
- 			ORDER BY jet_board_knowhow_no DESC
-		]]>
+	 		SELECT * 
+	 		FROM (
+	 		    SELECT c1.*,ROWNUM as rnum 
+	 		    FROM (
+	 		        SELECT * 
+	 		        FROM jet_board_knowhow 
+	 		        ORDER BY jet_board_knowhow_no DESC) c1
+	 		    ) c2
+	 		WHERE c2.rnum >= (#{page_num}-1)*10+1 
+	 		AND c2.rnum <= #{page_num}*10
+	 	]]>
 	</select>
 	
 	<!-- 글 읽기 -->
@@ -99,6 +106,14 @@
 			AND m.jet_member_nick LIKE '%' || #{search_word} || '%'
 			ORDER BY jet_board_knowhow_no DESC
 		]]>
+	</select>
+	
+	<!--페이지 수 -->
+	<select id="countPage" resultType="int">
+		<![CDATA[
+	 		SELECT CEIL(COUNT(*)/10)
+	 		FROM jet_board_knowhow
+	 	]]>
 	</select>
 	
 </mapper>

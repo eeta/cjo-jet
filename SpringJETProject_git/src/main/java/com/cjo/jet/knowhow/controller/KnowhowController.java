@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cjo.jet.knowhow.service.KnowhowBoardServiceImpl;
@@ -30,12 +31,32 @@ public class KnowhowController {
 	
 	// 팁과 노하우 게시판으로
 	@RequestMapping("knowhowboard_page.do")
-	public String knowhowBoardList(Model model, String search_word, String search_type) {
+	public String knowhowBoardList(Model model, String search_word, String search_type, @RequestParam(value="page_num",defaultValue = "1") int page_num) {
 		
 		// 글 목록 출력
-		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList(search_word, search_type);
+		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList(search_word, search_type, page_num);
 		
+		// 페이지 출력
+		int pageCount = knowhowBoardService.countPageKnowhowBoard();
+	 	
+		// 페이지 수 받기
+	 	int currentPage = page_num;
+	 	int beginPage = ((currentPage-1)/5) * 5 + 1;
+	 	int endPage = ((currentPage-1)/5 + 1) * (5);
+	 	// 페이지 계산: int. 정수 나누기 정수. 나머지 버리니까 1/5 = 0 이 된다.
+	 	
+	 	if(endPage > pageCount) {
+	 		endPage = pageCount;
+	 	}
+		
+		// 글 목록
 		model.addAttribute("resultList", resultList);
+		
+		// 페이지
+		model.addAttribute("currentPage", currentPage);
+	 	model.addAttribute("beginPage", beginPage);
+	 	model.addAttribute("endPage", endPage);
+	 	model.addAttribute("pageCount", pageCount);
 		
 		return "knowhowboard/knowhowboard_page";
 	}

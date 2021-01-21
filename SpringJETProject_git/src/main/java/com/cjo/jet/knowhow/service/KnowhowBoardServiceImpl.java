@@ -50,7 +50,7 @@ public class KnowhowBoardServiceImpl {
 	}
 	
 	// 글 목록 출력
-	public ArrayList<HashMap<String, Object>> getKnowhowBoardList(String search_word, String search_type) {
+	public ArrayList<HashMap<String, Object>> getKnowhowBoardList(String search_word, String search_type, int page_num) {
 		
 		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
 		
@@ -59,7 +59,7 @@ public class KnowhowBoardServiceImpl {
 		
 		// 글 검색
 		if (search_word == null || search_type == null) {
-			knowhowBoardList = knowhowBoardSQLMapper.selectAll();
+			knowhowBoardList = knowhowBoardSQLMapper.selectAll(page_num);
 		} else {
 			if (search_type.equals("title")) {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByTitle(search_word);
@@ -67,6 +67,8 @@ public class KnowhowBoardServiceImpl {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByContent(search_word);
 			} else if (search_type.equals("writer")) {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByWriter(search_word);
+			} else {
+				knowhowBoardList = knowhowBoardSQLMapper.selectAll(page_num);
 			}
 		}
 		
@@ -165,5 +167,10 @@ public class KnowhowBoardServiceImpl {
 		
 		return knowhowBoardRepleSQLMapper.countReple(no);
 		
+	}
+	
+	// 페이지 수
+	public int countPageKnowhowBoard() {
+		return knowhowBoardSQLMapper.countPage();
 	}
 }

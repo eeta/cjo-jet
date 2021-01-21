@@ -13,7 +13,7 @@ public interface KnowhowBoardSQLMapper {
 		public void insert(KnowhowBoardVo vo);
 		
 		// 글 목록 보기
-		public ArrayList<KnowhowBoardVo> selectAll();
+		public ArrayList<KnowhowBoardVo> selectAll(int page_num);
 		
 		// 글 읽기
 		public KnowhowBoardVo selectByNo(int no);
@@ -35,4 +35,7 @@ public interface KnowhowBoardSQLMapper {
 		
 		// 글 작성자 검색
 		public ArrayList<KnowhowBoardVo> selectByWriter(String search_word);
+		
+		// 페이지 수
+		public int countPage();
 }

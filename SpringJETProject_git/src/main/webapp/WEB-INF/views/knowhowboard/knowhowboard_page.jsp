@@ -123,6 +123,30 @@
 	    </c:when>
 		</c:choose>
 	    
+	    <!-- 페이지 -->
+	    <div class="row">
+	    	<div class="col">
+	    		<!-- <nav aria-label="Page navigation"> -->
+				  <ul class="pagination justify-content-center">
+				    
+				    <li class="page-item<c:if test="${currentPage == 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=1">&lt;&lt</a></li>
+					<li class="page-item<c:if test="${beginPage <= 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=${beginPage-1}">&lt;</a></li>
+					
+						<c:forEach begin="${beginPage }" end="${endPage }" var="index">
+						
+							<li class="page-item<c:if test="${index == currentPage }"> active</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=${index }">${index}</a></li>
+						
+						</c:forEach>				      
+					
+					<li class="page-item<c:if test="${endPage >= pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=${endPage+1 }">&gt;</a></li>
+					<li class="page-item<c:if test="${currentPage == pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=${pageCount}">&gt;&gt</a></li>
+				  
+				  </ul>
+	    		<!--  </nav> -->
+	    	</div>
+	    </div>
+	    
+	    
 	    
 	    <div class="col-1"></div>
 	</div>

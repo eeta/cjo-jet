@@ -98,7 +98,7 @@
 	                     <c:forEach items="${resultList}" var="data"> 
 	                       <tr>
 	                           <td>${data.knowhowBoardVo.jet_board_knowhow_no}</td>
-	                           <td><a href="${pageContext.request.contextPath}/knowhowboard/read_knowhowboard_page.do?jet_board_knowhow_no=${data.knowhowBoardVo.jet_board_knowhow_no}">${data.knowhowBoardVo.jet_board_knowhow_title}</a> ${data.countReple}</td>
+	                           <td><a href="${pageContext.request.contextPath}/knowhowboard/read_knowhowboard_page.do?jet_board_knowhow_no=${data.knowhowBoardVo.jet_board_knowhow_no}">${data.knowhowBoardVo.jet_board_knowhow_title}</a> <span class="text-danger">[${data.countReple}]</span></td>
 	                           <td>${data.memberVo.jet_member_nick}</td>
 	                           <td>${data.knowhowBoardVo.jet_board_knowhow_writedate}</td>
 	                           <td>${data.knowhowBoardVo.jet_board_knowhow_readcount}</td>

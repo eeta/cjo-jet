@@ -43,7 +43,7 @@
 			<c:forEach items="${result.imageVoList}" var="imageVo">
 			<div class="row">
 				<div class="col">
-					<img src="${imageVo.jet_board_knowhow_image_link}">
+					<img class="img-fluid" src="${imageVo.jet_board_knowhow_image_link}">
 				</div>
 			</div>
 			</c:forEach>

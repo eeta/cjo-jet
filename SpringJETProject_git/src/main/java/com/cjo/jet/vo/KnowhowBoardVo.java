@@ -9,13 +9,15 @@ public class KnowhowBoardVo {
 	private String jet_board_knowhow_content;
 	private int jet_board_knowhow_readcount;
 	private Date jet_board_knowhow_writedate;
+	private int jet_board_knowhow_category_no;
 	
 	public KnowhowBoardVo() {
 		super();
 	}
 	
 	public KnowhowBoardVo(int jet_board_knowhow_no, int jet_member_no, String jet_board_knowhow_title,
-			String jet_board_knowhow_content, int jet_board_knowhow_readcount, Date jet_board_knowhow_writedate) {
+			String jet_board_knowhow_content, int jet_board_knowhow_readcount, Date jet_board_knowhow_writedate,
+			int jet_board_knowhow_category_no) {
 		super();
 		this.jet_board_knowhow_no = jet_board_knowhow_no;
 		this.jet_member_no = jet_member_no;
@@ -23,6 +25,7 @@ public class KnowhowBoardVo {
 		this.jet_board_knowhow_content = jet_board_knowhow_content;
 		this.jet_board_knowhow_readcount = jet_board_knowhow_readcount;
 		this.jet_board_knowhow_writedate = jet_board_knowhow_writedate;
+		this.jet_board_knowhow_category_no = jet_board_knowhow_category_no;
 	}
 	
 	public int getJet_board_knowhow_no() {
@@ -61,4 +64,10 @@ public class KnowhowBoardVo {
 	public void setJet_board_knowhow_writedate(Date jet_board_knowhow_writedate) {
 		this.jet_board_knowhow_writedate = jet_board_knowhow_writedate;
 	}
+	public int getJet_board_knowhow_category_no() {
+		return jet_board_knowhow_category_no;
+	}
+	public void setJet_board_knowhow_category_no(int jet_board_knowhow_category_no) {
+		this.jet_board_knowhow_category_no = jet_board_knowhow_category_no;
+	}	
 }

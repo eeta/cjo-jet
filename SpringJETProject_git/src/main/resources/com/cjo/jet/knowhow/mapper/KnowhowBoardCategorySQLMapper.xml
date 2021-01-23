@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjo.jet.knowhow.mapper.KnowhowBoardCategorySQLMapper">
+
+	<!-- 글 카테고리 보기 -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.KnowhowBoardCategoryVo">
+		<![CDATA[
+			SELECT * FROM jet_board_knowhow_category
+			WHERE jet_board_knowhow_category_no = #{jet_board_knowhow_category_no}
+		]]>
+	</select>
+	
+	<!-- 글 카테고리 수정 -->
+	<update id="update">
+		<![CDATA[
+			UPDATE jet_board_knowhow
+			SET jet_board_knowhow_category_no = #{jet_board_knowhow_category_no}
+			WHERE jet_board_knowhow_no = #{jet_board_knowhow_no}
+		]]>
+	</update>
+
+</mapper>

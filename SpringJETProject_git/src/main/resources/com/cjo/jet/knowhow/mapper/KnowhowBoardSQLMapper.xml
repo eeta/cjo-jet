@@ -20,7 +20,8 @@
 	 		    #{jet_board_knowhow_title},
 	 		    #{jet_board_knowhow_content},
 	 		    0,
-	 		    SYSDATE
+	 		    SYSDATE,
+	 		    #{jet_board_knowhow_category_no}
 	 		)
 		]]>
 	</insert>

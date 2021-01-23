@@ -25,6 +25,7 @@
 	    <div class="col-10">    <!-- 중앙 -->
 	        <div class="row">
 	            <div class="col-1">${result.memberVo.jet_member_nick}</div>
+	            <div class="col-1">${result.categoryVo.jet_board_knowhow_category_nam}</div>
 	            <div class="col-5">${result.knowhowBoardVo.jet_board_knowhow_title}</div>
 	            <div class="col">${result.knowhowBoardVo.jet_board_knowhow_writedate}</div>
 	            <div class="col-1">${result.knowhowBoardVo.jet_board_knowhow_readcount}</div>

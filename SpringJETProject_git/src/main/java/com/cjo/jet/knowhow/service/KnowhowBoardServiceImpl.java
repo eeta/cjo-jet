@@ -6,10 +6,12 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cjo.jet.knowhow.mapper.KnowhowBoardCategorySQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardImageSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardRepleSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
+import com.cjo.jet.vo.KnowhowBoardCategoryVo;
 import com.cjo.jet.vo.KnowhowBoardImageVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
@@ -29,6 +31,9 @@ public class KnowhowBoardServiceImpl {
 	
 	@Autowired
 	private KnowhowBoardImageSQLMapper knowhowBoardImageSQLMapper;
+	
+	@Autowired
+	private KnowhowBoardCategorySQLMapper knowhowBoardCategorySQLMapper;
 	
 	// 글 쓰기
 	public void writeKnowhowBoard(KnowhowBoardVo vo, ArrayList<KnowhowBoardImageVo> imageVoList) {    // 이미지 업로드 1. imageVoList
@@ -80,6 +85,9 @@ public class KnowhowBoardServiceImpl {
 			// 댓글 개수 출력
 			int countReple = knowhowBoardRepleSQLMapper.countReple(knowhowBoardVo.getJet_board_knowhow_no());
 			
+			// 카테고리
+			KnowhowBoardCategoryVo categoryVo = knowhowBoardCategorySQLMapper.selectByNo(knowhowBoardVo.getJet_board_knowhow_category_no());
+
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			// put(String key, Object value)
@@ -88,6 +96,7 @@ public class KnowhowBoardServiceImpl {
 			map.put("memberVo", memberVo);
 			map.put("knowhowBoardVo", knowhowBoardVo);
 			map.put("countReple", countReple);
+			map.put("categoryVo", categoryVo);
 			
 			resultList.add(map);
 		}
@@ -113,10 +122,14 @@ public class KnowhowBoardServiceImpl {
 		// 이미지 11. 이미지 리스트 받기
 		ArrayList<KnowhowBoardImageVo> imageVoList = knowhowBoardImageSQLMapper.selectByContentNo(contentNo);
 		
+		// 카테고리
+		KnowhowBoardCategoryVo categoryVo = knowhowBoardCategorySQLMapper.selectByNo(knowhowBoardVo.getJet_board_knowhow_category_no());
+		
 		map.put("knowhowBoardVo", knowhowBoardVo);    // 단위 객체
 		map.put("memberVo", memberVo);    // 단위 객체
 		map.put("imageVoList", imageVoList);  // 이미지 11. 배열 객체
-		
+		map.put("categoryVo", categoryVo);
+				
 		return map;
 	}
 	
@@ -131,6 +144,9 @@ public class KnowhowBoardServiceImpl {
 	public void updateKnowhowBoard(KnowhowBoardVo vo) {
 		
 		knowhowBoardSQLMapper.update(vo);
+		
+		// 카테고리
+		knowhowBoardCategorySQLMapper.update(vo);
 		
 	}
 	
@@ -151,7 +167,7 @@ public class KnowhowBoardServiceImpl {
 		for (KnowhowBoardRepleVo repleVo : repleList) {
 			int jet_member_no = repleVo.getJet_member_no();
 			
-			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no); 
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("memberVo", memberVo);

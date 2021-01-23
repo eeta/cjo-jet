@@ -35,6 +35,14 @@
             <!-- 글 수정 폼 -->
             <form action="${pageContext.request.contextPath}/knowhowboard/update_knowhowboard_process.do" method="post">
                 <div class="row mt-3">
+                	<div class="col-2">
+                		<select class="form-select" name="jet_board_knowhow_category_no" aria-label="Default select example">
+						<option selected>${result.categoryVo.jet_board_knowhow_category_nam}</option>
+						<option value="1">잡담</option>
+						<option value="2">노하우</option>
+						<option value="3">꿀팁</option>
+					</select>
+                	</div>
                     <div class="col"><input type="text" name="jet_board_knowhow_title" value="${result.knowhowBoardVo.jet_board_knowhow_title}" class="form-control" placeholder="제목"></div>
                     <div class="col-2">${sessionUser.jet_member_nick}</div>
                     <div class="col-2">작성일</div>

@@ -85,6 +85,7 @@
 	                   <thead class="text-center">
 	                     <tr>
 	                       <th scope="col">번호</th>
+	                       <th scope="col">카테고리 번호</th>
 	                       <th scope="col">제목</th>
 	                       <th scope="col">작성자</th>
 	                       <th scope="col">등록일</th>
@@ -98,6 +99,7 @@
 	                     <c:forEach items="${resultList}" var="data"> 
 	                       <tr>
 	                           <td>${data.knowhowBoardVo.jet_board_knowhow_no}</td>
+	                           <td>${data.categoryVo.jet_board_knowhow_category_nam}</td>
 	                           <td><a href="${pageContext.request.contextPath}/knowhowboard/read_knowhowboard_page.do?jet_board_knowhow_no=${data.knowhowBoardVo.jet_board_knowhow_no}">${data.knowhowBoardVo.jet_board_knowhow_title}</a> <span class="text-danger">[${data.countReple}]</span></td>
 	                           <td>${data.memberVo.jet_member_nick}</td>
 	                           <td>${data.knowhowBoardVo.jet_board_knowhow_writedate}</td>

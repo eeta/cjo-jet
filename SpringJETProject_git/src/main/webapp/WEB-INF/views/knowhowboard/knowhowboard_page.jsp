@@ -112,7 +112,7 @@
 												value="${data.knowhowBoardVo.jet_board_knowhow_writedate}"
 												pattern="yyyy-MM-dd HH:ss" /></td>
 										<td>${data.knowhowBoardVo.jet_board_knowhow_readcount}</td>
-										<td>0</td>
+										<td>${data.countLike}</td>
 									</tr>
 								</c:forEach>
 							</tbody>

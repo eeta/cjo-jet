@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.cjo.jet.knowhow.mapper.KnowhowBoardCategorySQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardImageSQLMapper;
+import com.cjo.jet.knowhow.mapper.KnowhowBoardLikeSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardRepleSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
 import com.cjo.jet.vo.KnowhowBoardCategoryVo;
 import com.cjo.jet.vo.KnowhowBoardImageVo;
+import com.cjo.jet.vo.KnowhowBoardLikeVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
@@ -34,6 +36,9 @@ public class KnowhowBoardServiceImpl {
 	
 	@Autowired
 	private KnowhowBoardCategorySQLMapper knowhowBoardCategorySQLMapper;
+	
+	@Autowired
+	private KnowhowBoardLikeSQLMapper knowhowBoardLikeSQLMapper;
 	
 	// 글 쓰기
 	public void writeKnowhowBoard(KnowhowBoardVo vo, ArrayList<KnowhowBoardImageVo> imageVoList) {    // 이미지 업로드 1. imageVoList
@@ -87,7 +92,10 @@ public class KnowhowBoardServiceImpl {
 			
 			// 카테고리
 			KnowhowBoardCategoryVo categoryVo = knowhowBoardCategorySQLMapper.selectByNo(knowhowBoardVo.getJet_board_knowhow_category_no());
-
+			
+			// 좋아요 개수
+		 	int countLike = knowhowBoardLikeSQLMapper.countLike(knowhowBoardVo.getJet_board_knowhow_no());
+		 	
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			// put(String key, Object value)
@@ -97,6 +105,7 @@ public class KnowhowBoardServiceImpl {
 			map.put("knowhowBoardVo", knowhowBoardVo);
 			map.put("countReple", countReple);
 			map.put("categoryVo", categoryVo);
+			map.put("countLike", countLike);
 			
 			resultList.add(map);
 		}
@@ -188,5 +197,29 @@ public class KnowhowBoardServiceImpl {
 	// 페이지 수
 	public int countPageKnowhowBoard() {
 		return knowhowBoardSQLMapper.countPage();
+	}
+	
+	// 좋아요 삽입
+	public void insertLikeKnowhowBoard(KnowhowBoardLikeVo vo) {
+		
+		knowhowBoardLikeSQLMapper.insertLike(vo);
+	}
+	
+	// 좋아요 삭제
+	public void deleteLikeKnowhowBoard(KnowhowBoardLikeVo vo) {
+		
+		knowhowBoardLikeSQLMapper.deleteLike(vo);
+	}
+	
+	// 게시글 당 좋아요 개수
+	public int countLikeKnowhowBoard(int contentNo) {
+		
+		return knowhowBoardLikeSQLMapper.countLike(contentNo);
+	}
+	
+	// 좋아요 클릭 여부 확인
+	public int isLikedKnowhowBoard(KnowhowBoardLikeVo likeVo) {
+		
+		return knowhowBoardLikeSQLMapper.isLikedByUser(likeVo);
 	}
 }

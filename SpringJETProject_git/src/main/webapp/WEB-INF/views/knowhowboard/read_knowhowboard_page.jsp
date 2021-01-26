@@ -26,6 +26,11 @@
 			border-radius: 5px;
 			resize: none !important;
 		}
+		
+		.heart {
+			width: 60px;
+			height: 60px;
+		}
 	</style>
 
 </head>
@@ -55,16 +60,43 @@
 							pattern="yyyy-MM-dd HH:ss" />
 					</div>
 					<div class="col-1">${result.knowhowBoardVo.jet_board_knowhow_readcount}</div>
-					<div class="col-1">추천</div>
+					<div class="col-1">추천: ${countLike}</div>
 				</div>
 				<div class="row mt-3">
 					<div class="col">${result.knowhowBoardVo.jet_board_knowhow_content}</div>
 				</div>
+				
 				<div class="row mt-3">
 					<div class="col">
-						<p class="text-center">가운데. 좋아요 버튼</p>
+					
+	          			<c:choose>
+	          			
+		          			<c:when test="${!empty sessionUser && isLiked == 0}">    <!-- 로그인을 하고 좋아요를 안 누른 경우 -->
+								<form action="${pageContext.request.contextPath}/knowhowboard/insert_like_knowhowboard_process.do">
+									<input class="heart mx-auto d-block" type="image" src="${pageContext.request.contextPath}/resources/image/heart_blank.png" alt="likeHeart">
+									<input type="hidden" name="jet_board_knowhow_no" value="${result.knowhowBoardVo.jet_board_knowhow_no}">
+								</form>
+							</c:when>
+							
+							<c:when test="${!empty sessionUser && isLiked != 0}">    <!-- 로그인을 하고 좋아요를 누른 경우 -->
+								<form action="${pageContext.request.contextPath}/knowhowboard/delete_like_knowhowboard_process.do">
+									<input class="heart mx-auto d-block" type="image" src="${pageContext.request.contextPath}/resources/image/heart_full.png" alt="likeHeart">
+									<input type="hidden" name="jet_board_knowhow_no" value="${result.knowhowBoardVo.jet_board_knowhow_no}">
+								</form>
+							</c:when>
+							
+							<c:otherwise>    <!-- 로그인 안 한 경우: 로그인이 필요하다 -->
+							</c:otherwise>
+							
+						</c:choose>
 					</div>
-				</div>
+	        	</div>
+	        	
+	        	<div class="row">
+	        		<div class="col">
+						<p class="text-center">추천 ${countLike}</p>
+					</div>
+	        	</div>
 
 				<!-- 이미지 출력. 이미지는 ArrayList기 때문에 출력을 위해 반복문 사용 -->
 				<c:forEach items="${result.imageVoList}" var="imageVo">

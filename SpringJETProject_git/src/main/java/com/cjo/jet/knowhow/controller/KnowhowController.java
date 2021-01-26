@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cjo.jet.knowhow.service.KnowhowBoardServiceImpl;
 import com.cjo.jet.vo.KnowhowBoardImageVo;
+import com.cjo.jet.vo.KnowhowBoardLikeVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
@@ -158,7 +159,7 @@ public class KnowhowController {
 	
 	// 글 읽기 페이지로
 	@RequestMapping("read_knowhowboard_page.do")
-	public String readKnowhowBoardPage(Model model, int jet_board_knowhow_no) {
+	public String readKnowhowBoardPage(Model model, int jet_board_knowhow_no, KnowhowBoardLikeVo likeVo, HttpSession session) {
 		
 		HashMap<String, Object> map = knowhowBoardService.getKnowhowBoard(jet_board_knowhow_no);
 		
@@ -168,9 +169,25 @@ public class KnowhowController {
 		// 댓글 개수 출력
 		int repleCount = knowhowBoardService.countRepleKnowhowBoard(jet_board_knowhow_no);
 		
+		// 좋아요 개수
+		int countLike = knowhowBoardService.countLikeKnowhowBoard(jet_board_knowhow_no);
+		
+		// 로그인 시 좋아요 클릭 여부 확인		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+	
+		if (sessionUser != null) {
+			int jet_member_no = sessionUser.getJet_member_no();
+			likeVo.setJet_member_no(jet_member_no);
+		}
+		
+		int isLiked = knowhowBoardService.isLikedKnowhowBoard(likeVo);
+		
 		model.addAttribute("result", map);
 		model.addAttribute("reple", repleVoList);
 		model.addAttribute("repleCount", repleCount);
+		
+		model.addAttribute("countLike", countLike);
+		model.addAttribute("isLiked", isLiked);
 		
 		return "knowhowboard/read_knowhowboard_page";
 	}
@@ -214,6 +231,31 @@ public class KnowhowController {
 		
 		knowhowBoardService.writeRepleKnowhowBoard(param);
 			
+		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
+	}
+	
+	// 좋아요 삽입 프로세스로
+	@RequestMapping("insert_like_knowhowboard_process.do")
+	public String insertLikeKnowhowBoardProcess(HttpSession session, KnowhowBoardLikeVo likeVo, int jet_board_knowhow_no) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		likeVo.setJet_member_no(jet_member_no);
+		
+		knowhowBoardService.insertLikeKnowhowBoard(likeVo);
+		
+		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
+	}
+	
+	// 좋아요 삭제 프로세스로
+	@RequestMapping("delete_like_knowhowboard_process.do")
+	public String deleteLikeKnowhowBoardProcess(HttpSession session, KnowhowBoardLikeVo likeVo, int jet_board_knowhow_no) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		likeVo.setJet_member_no(jet_member_no);
+		
+		knowhowBoardService.deleteLikeKnowhowBoard(likeVo);
 		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
 	}
 }

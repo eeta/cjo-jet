@@ -37,9 +37,8 @@
 					method="post" enctype="multipart/form-data">
 					<div class="row mt-3">
 						<div class="col-2">
-							<select class="form-select" name="jet_board_knowhow_category_no"
-								aria-label="Default select example">
-								<option selected>카테고리 선택</option>
+							<select class="form-select" name="jet_board_knowhow_category_no">
+								<option selected disabled>말머리 선택</option>
 								<option value="1">잡담</option>
 								<option value="2">노하우</option>
 								<option value="3">꿀팁</option>
@@ -55,8 +54,6 @@
 					<div class="row mt-3">
 						<!-- 이미지 -->
 						<div class="col">
-							<!-- <label for="formFile" class="form-label"></label> 
-						<input class="form-control" type="file" id="formFile">-->
 							<input type="file" name="files" accept="image/*" multiple
 								class="form-control">
 						</div>

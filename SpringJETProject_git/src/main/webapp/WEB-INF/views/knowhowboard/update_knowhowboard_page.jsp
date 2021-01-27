@@ -39,12 +39,10 @@
 					method="post">
 					<div class="row mt-3">
 						<div class="col">
-							<select class="form-select" name="jet_board_knowhow_category_no"
-								aria-label="Default select example">
-								<option selected>${result.categoryVo.jet_board_knowhow_category_nam}</option>
-								<option value="1">잡담</option>
-								<option value="2">노하우</option>
-								<option value="3">꿀팁</option>
+							<select class="form-select" name="jet_board_knowhow_category_no">
+								<option value="1" <c:if test="${result.categoryVo.jet_board_knowhow_category_no == 1}">selected</c:if>>잡담</option>
+								<option value="2" <c:if test="${result.categoryVo.jet_board_knowhow_category_no == 2}">selected</c:if>>노하우</option>
+								<option value="3" <c:if test="${result.categoryVo.jet_board_knowhow_category_no == 3}">selected</c:if>>꿀팁</option>
 							</select>
 						</div>
 						<div class="col">
@@ -58,7 +56,6 @@
 					<div class="row mt-3">
 						<!-- 이미지 -->
 						<div class="col">
-							<!-- <label for="formFile" class="form-label"></label> -->
 							<input class="form-control" type="file" id="formFile">
 						</div>
 					</div>

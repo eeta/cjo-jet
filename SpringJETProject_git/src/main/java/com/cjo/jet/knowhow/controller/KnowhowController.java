@@ -32,10 +32,10 @@ public class KnowhowController {
 	
 	// 팁과 노하우 게시판으로
 	@RequestMapping("knowhowboard_page.do")
-	public String knowhowBoardList(Model model, String search_word, String search_type, @RequestParam(value="page_num",defaultValue = "1") int page_num) {
+	public String knowhowBoardList(Model model, String search_word, String search_type, @RequestParam(value="page_num",defaultValue = "1") int page_num, Integer category_no) {
 		
 		// 글 목록 출력
-		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList(search_word, search_type, page_num);
+		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowBoardList(search_word, search_type, page_num, category_no);
 		
 		// 페이지 출력
 		int pageCount = knowhowBoardService.countPageKnowhowBoard();

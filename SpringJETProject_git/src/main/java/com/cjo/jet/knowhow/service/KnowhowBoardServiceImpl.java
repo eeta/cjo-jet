@@ -60,7 +60,7 @@ public class KnowhowBoardServiceImpl {
 	}
 	
 	// 글 목록 출력
-	public ArrayList<HashMap<String, Object>> getKnowhowBoardList(String search_word, String search_type, int page_num) {
+	public ArrayList<HashMap<String, Object>> getKnowhowBoardList(String search_word, String search_type, int page_num, Integer category_no) {
 		
 		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
 		
@@ -68,18 +68,43 @@ public class KnowhowBoardServiceImpl {
 		ArrayList<KnowhowBoardVo> knowhowBoardList = null;
 		
 		// 글 검색
-		if (search_word == null || search_type == null) {
-			knowhowBoardList = knowhowBoardSQLMapper.selectAll(page_num);
-		} else {
+		// 카테고리 + search_type 으로 검색
+		if (category_no != null && !(search_word == null || search_type == null)) {
+			
+			if (search_type.equals("title")) {
+				knowhowBoardList = knowhowBoardCategorySQLMapper.selectByCategoryTitle(category_no, search_word);
+			} else if (search_type.equals("content")) {
+				knowhowBoardList = knowhowBoardCategorySQLMapper.selectByCategoryContent(category_no, search_word);
+			} else if (search_type.equals("writer")) {
+				knowhowBoardList = knowhowBoardCategorySQLMapper.selectByCategoryWriter(category_no, search_word);
+			} 
+		
+		// 카테고리로만 검색
+		} else if (category_no != null) {
+			
+			switch (Integer.valueOf(category_no)) {
+			case 1:
+			case 2:
+			case 3:
+				knowhowBoardList = knowhowBoardCategorySQLMapper.selectByCategory(category_no);
+				break;
+			}
+		
+		// search_type 으로만 검색
+		} else if (search_word != null && search_type != null) {
+			
 			if (search_type.equals("title")) {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByTitle(search_word);
 			} else if (search_type.equals("content")) {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByContent(search_word);
 			} else if (search_type.equals("writer")) {
 				knowhowBoardList = knowhowBoardSQLMapper.selectByWriter(search_word);
-			} else {
-				knowhowBoardList = knowhowBoardSQLMapper.selectAll(page_num);
 			}
+		
+		// 조건이 아무것도 없을 때 전체 출력
+		} else {
+			
+			knowhowBoardList = knowhowBoardSQLMapper.selectAll(page_num);
 		}
 		
 		// 글 목록 출력

@@ -58,16 +58,23 @@
 					</div>
 				</div>
 
-
-				<!-- 검색 폼 -->
 				<form
 					action="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do"
 					method="get">
 					<div class="row mt-3">
+						<!-- 카테고리로 검색 -->
 						<div class="col-2">
-							<select class="form-select" name="search_type"
-								aria-label="Default select example">
-								<option selected>검색</option>
+							<select class="form-select" name="category_no">
+								<option selected disabled>말머리</option>
+								<option value="1">잡담</option>
+								<option value="2">노하우</option>
+								<option value="3">꿀팁</option>
+							</select>
+						</div>
+						<!-- search_type 으로 검색 -->
+						<div class="col-2">
+							<select class="form-select" name="search_type">
+								<option selected disabled>검색</option>
 								<option value="title">제목</option>
 								<option value="content">내용</option>
 								<option value="writer">작성자</option>
@@ -78,14 +85,14 @@
 							<input class="form-control" type="text" name="search_word">
 						</div>
 						<!-- 검색 버튼 -->
-						<div class="col-2">
-							<button type="submit" class="btn btn-primary btn-block">검색</button>
+						<div class="col-2 d-grid gap-2">
+							<button type="submit" class="btn btn-primary">검색</button>
 						</div>
 					</div>
 				</form>
-
+				
 				<div class="row">
-					<div class="col mt-2">
+					<div class="col mt-3">
 						<table class="table">
 							<thead class="text-center">
 								<tr>
@@ -119,8 +126,7 @@
 						</table>
 					</div>
 				</div>
-
-
+				
 				<!-- 글쓰기 버튼 -->
 				<c:choose>
 					<c:when test="${!empty sessionUser}">
@@ -137,7 +143,7 @@
 				<!-- 페이지 -->
 				<div class="row">
 					<div class="col">
-						<!-- <nav aria-label="Page navigation"> -->
+					
 						<ul class="pagination justify-content-center">
 
 							<li
@@ -166,7 +172,7 @@
 								href="${pageContext.request.contextPath }/knowhowboard/knowhowboard_page.do?page_num=${pageCount}">&gt;&gt</a></li>
 
 						</ul>
-						<!--  </nav> -->
+						
 					</div>
 				</div>
 

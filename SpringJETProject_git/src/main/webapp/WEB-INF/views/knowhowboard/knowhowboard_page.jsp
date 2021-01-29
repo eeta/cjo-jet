@@ -57,7 +57,8 @@
 						<h1 class="text-center">팁과 노하우 게시판</h1>
 					</div>
 				</div>
-
+				
+				<%-- 
 				<form
 					action="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do"
 					method="get">
@@ -90,9 +91,22 @@
 						</div>
 					</div>
 				</form>
+				--%>
 				
-				<div class="row">
-					<div class="col mt-3">
+				<!-- 카테고리별로 정렬 -->
+				<div class="row mt-3 justify-content-end">
+					<div class="col-2">
+						<select class="form-select" name="category_no" onchange="if(this.value) location.href=(this.value);">
+							<option selected disabled>말머리 전체</option>
+							<option value="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do?category_no=1">잡담</option>
+							<option value="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do?category_no=2">노하우</option>
+							<option value="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do?category_no=3">꿀팁</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col">
 						<table class="table">
 							<thead class="text-center">
 								<tr>
@@ -130,18 +144,42 @@
 				<!-- 글쓰기 버튼 -->
 				<c:choose>
 					<c:when test="${!empty sessionUser}">
-						<div class="row mt-3">
-							<div class="col">
+						<div class="row mt-1 justify-content-end">
+							<div class="col-1">
 								<a
 									href="${pageContext.request.contextPath}/knowhowboard/write_knowhowboard_page.do"
-									button type="button" class="btn btn-primary btn-block">글쓰기</a>
+									type="button" class="btn btn-primary">글쓰기</a>
 							</div>
 						</div>
 					</c:when>
 				</c:choose>
-
+				
+				<!-- search_type 으로 검색 -->
+				<form
+ 					action="${pageContext.request.contextPath}/knowhowboard/knowhowboard_page.do"
+ 					method="get">
+				<div class="row mt-3">
+					<div class="col-2">
+						<select class="form-select" name="search_type">
+							<option selected disabled>검색</option>
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+							<option value="writer">작성자</option>
+						</select>
+					</div>
+					<!-- 검색어 입력 칸 -->
+					<div class="col">
+						<input class="form-control" type="text" name="search_word">
+					</div>
+					<!-- 검색 버튼 -->
+					<div class="col-2 d-grid gap-2">
+						<button type="submit" class="btn btn-primary">검색</button>
+					</div>
+				</div>
+				</form>
+				
 				<!-- 페이지 -->
-				<div class="row">
+				<div class="row mt-5">
 					<div class="col">
 					
 						<ul class="pagination justify-content-center">

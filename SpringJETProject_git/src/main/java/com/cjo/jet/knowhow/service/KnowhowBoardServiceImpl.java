@@ -3,6 +3,8 @@ package com.cjo.jet.knowhow.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -246,5 +248,11 @@ public class KnowhowBoardServiceImpl {
 	public int isLikedKnowhowBoard(KnowhowBoardLikeVo likeVo) {
 		
 		return knowhowBoardLikeSQLMapper.isLikedByUser(likeVo);
+	}
+	
+	// 댓글 삭제
+	public void deleteRepleKnowhowBoard(int knowhowRepleNo) {
+		
+		knowhowBoardRepleSQLMapper.deleteReple(knowhowRepleNo);
 	}
 }

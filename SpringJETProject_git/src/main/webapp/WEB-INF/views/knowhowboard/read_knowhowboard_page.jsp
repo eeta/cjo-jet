@@ -48,25 +48,50 @@
 	<div class="container">
 		<div class="row">
 			<div class="col"></div>
-			<div class="col-10">
-				<!-- 중앙 -->
+			<div class="col-10">    <!-- 중앙 -->
 				<div class="row">
-					<div class="col-1">${result.memberVo.jet_member_nick}</div>
-					<div class="col-1">${result.categoryVo.jet_board_knowhow_category_nam}</div>
-					<div class="col-5">${result.knowhowBoardVo.jet_board_knowhow_title}</div>
 					<div class="col">
+						${result.categoryVo.jet_board_knowhow_category_nam} >
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col">
+						<h2>${result.knowhowBoardVo.jet_board_knowhow_title}</h2>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col">
+						${result.memberVo.jet_member_nick}
+					</div>
+				</div>
+					
+				<div class="row mt-2">
+					<div class="col-3">
 						<fmt:formatDate
 							value="${result.knowhowBoardVo.jet_board_knowhow_writedate}"
 							pattern="yyyy-MM-dd HH:ss" />
 					</div>
-					<div class="col-1">${result.knowhowBoardVo.jet_board_knowhow_readcount}</div>
-					<div class="col-1">추천: ${countLike}</div>
+					<div class="col-7">
+						조회 ${result.knowhowBoardVo.jet_board_knowhow_readcount}
+					</div>
+					<div class="col-1">
+						추천 ${countLike}
+					</div>
+					<div class="col-1">
+						댓글 ${repleCount}
+					</div>		
 				</div>
-				<div class="row mt-3">
-					<div class="col">${result.knowhowBoardVo.jet_board_knowhow_content}</div>
+	
+				
+				
+				<div class="row mt-5">
+					<div class="col">
+						${result.knowhowBoardVo.jet_board_knowhow_content}
+					</div>
 				</div>
 				
-				<div class="row mt-3">
+				<div class="row mt-5">
 					<div class="col">
 					
 	          			<c:choose>
@@ -137,6 +162,7 @@
 				<!-- 댓글은 ArrayList. 출력을 위해 반복문 사용 -->
 				<c:forEach items="${reple}" var="reple">
 
+				
 					<div class="row mt-3">
 						<div class="col-1">사진</div>
 						<div class="col">
@@ -152,7 +178,24 @@
 										value="${result.knowhowBoardVo.jet_board_knowhow_writedate}"
 										pattern="yyyy-MM-dd HH:ss" />
 								</div>
-								<div class="col">답글</div>
+								<div class="col">답글쓰기</div>
+								
+								<c:if test="${!empty sessionUser && sessionUser.jet_member_no == reple.memberVo.jet_member_no}">
+									<div class="col-2">
+										수정
+									</div>
+									<div class="col-2">
+									<%--
+										<form action="${pageContext.request.contextPath}/knowhowboard/delete_reple_knowhowboard_process.do" method="post">
+											<input type="submit" class="btn btn-outline-warning" value="삭제">
+											<input type="hidden" name="jet_board_knowhow_no" value="${result.knowhowBoardVo.jet_board_knowhow_no}">
+											<input type="hidden" name="jet_board_knowhow_reple_no" value="${reple.repleVo.jet_board_knowhow_reple_no}">
+										</form>
+									--%>
+										<a href="${pageContext.request.contextPath}/knowhowboard/delete_reple_knowhowboard_process.do?jet_board_knowhow_no=${result.knowhowBoardVo.jet_board_knowhow_no}&jet_board_knowhow_reple_no=${reple.repleVo.jet_board_knowhow_reple_no}"  class="btn btn-outline-warning">삭제</a>
+									</div>
+								</c:if>
+								
 							</div>
 						</div>
 						<div class="col-1">
@@ -163,6 +206,7 @@
 							</div>
 						</div>
 					</div>
+				
 
 				</c:forEach>
 

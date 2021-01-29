@@ -14,4 +14,7 @@ public interface KnowhowBoardRepleSQLMapper {
 	
 	// 댓글 개수 출력
 	public int countReple(int knowhowBoard_no);
+	
+	// 댓글 삭제
+	public void deleteReple(int knowhowRepleNo);
 }

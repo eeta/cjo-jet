@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cjo.jet.knowhow.mapper.KnowhowBoardRepleSQLMapper;
 import com.cjo.jet.knowhow.service.KnowhowBoardServiceImpl;
 import com.cjo.jet.vo.KnowhowBoardImageVo;
 import com.cjo.jet.vo.KnowhowBoardLikeVo;
@@ -256,6 +257,15 @@ public class KnowhowController {
 		likeVo.setJet_member_no(jet_member_no);
 		
 		knowhowBoardService.deleteLikeKnowhowBoard(likeVo);
+		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
+	}
+	
+	// 댓글 삭제 프로세스로
+	@RequestMapping("delete_reple_knowhowboard_process.do")
+	public String deleteRepleknowhowBoardProcess(int jet_board_knowhow_reple_no, int jet_board_knowhow_no) {
+
+		knowhowBoardService.deleteRepleKnowhowBoard(jet_board_knowhow_reple_no);		
+	
 		return "redirect:./read_knowhowboard_page.do?jet_board_knowhow_no="+jet_board_knowhow_no+"";
 	}
 }

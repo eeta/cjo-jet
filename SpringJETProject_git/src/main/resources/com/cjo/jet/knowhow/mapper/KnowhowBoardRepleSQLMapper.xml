@@ -22,6 +22,7 @@
 			SELECT *
 			FROM jet_board_knowhow_reple
 			WHERE jet_board_knowhow_no = #{no}
+			ORDER BY jet_board_knowhow_reple_no
 		]]>
 	</select>
 	
@@ -33,5 +34,13 @@
 			WHERE jet_board_knowhow_no = #{no}
 		]]>
 	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReple">
+		<![CDATA[
+			DELETE FROM jet_board_knowhow_reple
+			WHERE jet_board_knowhow_reple_no = #{jet_board_knowhow_reple_no}
+		]]>
+	</delete>
 	
 </mapper>

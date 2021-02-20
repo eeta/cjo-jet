@@ -39,5 +39,15 @@
 			WHERE jet_class_no = #{jet_class_no}
 		]]>		
 	</select>
+	
+	<!-- 상세 페이지 읽기 -->
+	<select id="selectClassJoinDetail" resultType="com.cjo.jet.vo.ClassboardVo">
+		<![CDATA[
+			SELECT *
+			FROM jet_class c, jet_class_detail d
+			WHERE c.jet_class_no = d.jet_class_no
+			AND d.jet_class_detail_no = #{jet_class_detail_no}
+		]]>
+	</select>
 
 </mapper>

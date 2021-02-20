@@ -15,4 +15,12 @@
 		]]>
 	</insert>
 	
+	<!-- 이미지 보기 -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.ClassImageVo">
+		<![CDATA[
+			SELECT * FROM jet_class_image
+			WHERE jet_class_no = #{jet_class_no}
+		]]>
+	</select>
+	
 </mapper>

@@ -14,5 +14,8 @@ public interface ClassDetailSQLMapper {
 	
 	// 원데이클래스 세부정보 목록 보기
 	public ArrayList<ClassDetailVo> selectAll();
-
+	
+	// detail no로 detailVo 뽑아오기
+	public ClassDetailVo selectByNo(int jet_class_detail_no);
+	
 }

@@ -59,7 +59,7 @@
 						<tbody>
 							<c:forEach items="${resultList}" var="data">
 							<tr>
-								<th scope="row" class=" text-center"></th>
+								<th scope="row" class=" text-center">${data.classCategoryVo.jet_class_category_name}</th>
 								<td class="text-center">${data.classDetailVo.jet_class_detail_no}</td>
 								<td><a href="${pageContext.request.contextPath}/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}">${data.classboardVo.jet_class_name}</a>
 								</td>

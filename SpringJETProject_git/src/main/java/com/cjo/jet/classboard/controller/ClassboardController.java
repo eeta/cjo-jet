@@ -146,4 +146,16 @@ public class ClassboardController {
 		
 		return "redirect:./main_classboard_page.do";
 	}
+	
+	// 상세 페이지로
+	@RequestMapping("detail_class_page.do")
+	public String detailClassPage(Model model, int jet_class_detail_no) {
+		
+		HashMap<String, Object> map = classboardService.getClassDetail(jet_class_detail_no);
+			
+		model.addAttribute("result", map);
+		System.out.println("컨트롤러 모델." + model);
+		
+		return "classboard/detail_class_page";
+	}
 }

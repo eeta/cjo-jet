@@ -32,5 +32,13 @@
 			ORDER BY jet_class_detail_date ASC
 		]]>		
 	</select>
+	
+	<!-- detail no로 detailVo 뽑아오기 -->
+	<select id="selectByNo" resultType="com.cjo.jet.vo.ClassDetailVo">
+		<![CDATA[
+			SELECT * FROM jet_class_detail
+			WHERE jet_class_detail_no = #{jet_class_detail_no}
+		]]>
+	</select>
 
 </mapper>

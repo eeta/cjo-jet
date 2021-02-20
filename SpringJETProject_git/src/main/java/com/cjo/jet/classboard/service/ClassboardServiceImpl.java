@@ -140,4 +140,46 @@ public class ClassboardServiceImpl {
 	public int isReservedByUser(ClassReservationVo vo) {
 		return classReserveSQLMapper.isReservedByUser(vo);
 	}
+	
+	// 나의 예약 리스트
+	public ArrayList<HashMap<String, Object>> getMyReservation(int jet_member_no) {
+
+		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String, Object>>();
+
+		ArrayList<ClassReservationVo> reserveVoList = classReserveSQLMapper.selectMyReservations(jet_member_no);
+		
+		for (ClassReservationVo reserveVo : reserveVoList) {
+
+			// reserveVo 에서 class_detail_no 가져오기
+			int jet_class_detail_no = reserveVo.getJet_class_detail_no();
+			
+			// class_detail_no -> detailVo 에 넣고 jet_class_no 가져오기 
+			ClassDetailVo detailVo = classDetailSQLMapper.selectByNo(jet_class_detail_no);
+
+			int jet_class_no = detailVo.getJet_class_no();
+
+			// jet_class_no -> classVo 에 넣고 category_no 가져오기
+			ClassboardVo classVo = classboardSQLMapper.selectByNo(jet_class_no);
+			int category_no = classVo.getJet_class_category_no();
+			
+			// category_no -> categoryVo 에 넣고 cagory_name 가져오기
+			ClassCategoryVo categoryVo = classCategorySQLMapper.selectByNo(category_no);
+			// String category_name = categoryVo.getJet_class_category_name();
+			
+			// 이미지
+			ArrayList<ClassImageVo> imageVo = classimageSQLMapper.selectByNo(jet_class_no);
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+
+			map.put("reserveVo", reserveVo);
+			map.put("detailVo", detailVo);
+			map.put("classVo", classVo);
+			map.put("categoryVo", categoryVo);
+			map.put("imageVo", imageVo);
+			
+			resultList.add(map);
+			
+		}
+		return resultList;
+	}
 }

@@ -201,4 +201,20 @@ public class ClassboardController {
 		
 		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
+	
+	// 메인 내 나의 예약 페이지로
+	@RequestMapping("my_reservation_page.do")
+	public String myReservation(ClassReservationVo reserveVo, HttpSession session, Model model) {
+		
+		// 로그인 시 나의 예약 페이지 볼 수 있음 (회원정보를 주소에 붙이는 건 좋지 않음)
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		
+		ArrayList<HashMap<String, Object>> resultList = classboardService.getMyReservation(jet_member_no);
+
+		model.addAttribute("resultList", resultList);
+		
+		return "classboard/my_reservation_page";
+	}
 }

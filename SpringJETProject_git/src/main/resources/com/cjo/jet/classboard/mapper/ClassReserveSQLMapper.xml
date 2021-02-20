@@ -43,4 +43,13 @@
 		]]>
 	</select>
 	
+	<!-- 나의 예약 리스트 보기 -->
+	<select id="selectMyReservations" resultType="com.cjo.jet.vo.ClassReservationVo">
+		<![CDATA[
+			SELECT *
+			FROM jet_class_reservation
+			WHERE jet_member_no = #{jet_member_no}
+		]]>
+	</select>
+	
 </mapper>

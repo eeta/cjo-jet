@@ -63,7 +63,7 @@
 								<td class="text-center">${data.classDetailVo.jet_class_detail_no}</td>
 								<td><a href="${pageContext.request.contextPath}/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}">${data.classboardVo.jet_class_name}</a>
 								</td>
-								<td class="text-center">0 / ${data.classboardVo.jet_class_max_headcount}</td>
+								<td class="text-center">${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</td>
 								<td class="text-center">${data.memberVo.jet_member_nick}</td>
 								<td class="text-center"><fmt:formatDate pattern="MM-dd" value="${data.classDetailVo.jet_class_detail_date }"/></td>
 								<td class="text-center"><fmt:formatDate pattern="MM-dd" value="${data.classboardVo.jet_class_writedate}"/></td>

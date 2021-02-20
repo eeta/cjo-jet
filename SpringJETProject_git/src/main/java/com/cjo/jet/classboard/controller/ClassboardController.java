@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cjo.jet.classboard.service.ClassboardServiceImpl;
 import com.cjo.jet.vo.ClassDetailVo;
 import com.cjo.jet.vo.ClassImageVo;
+import com.cjo.jet.vo.ClassReservationVo;
 import com.cjo.jet.vo.ClassboardVo;
 import com.cjo.jet.vo.MemberVo;
 
@@ -149,13 +150,55 @@ public class ClassboardController {
 	
 	// 상세 페이지로
 	@RequestMapping("detail_class_page.do")
-	public String detailClassPage(Model model, int jet_class_detail_no) {
+	public String detailClassPage(Model model, int jet_class_detail_no, ClassReservationVo reserveVo, HttpSession session) {
 		
 		HashMap<String, Object> map = classboardService.getClassDetail(jet_class_detail_no);
-			
+		
+		// 예약 개수
+		int countReserve = classboardService.countReserve(jet_class_detail_no);
+		
+		// 로그인 시 예약 여부 확인
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		
+		if (sessionUser != null) {
+			int jet_member_no = sessionUser.getJet_member_no();
+			reserveVo.setJet_member_no(jet_member_no);
+		}
+		
+		int isReserved = classboardService.isReservedByUser(reserveVo);
+		
 		model.addAttribute("result", map);
-		System.out.println("컨트롤러 모델." + model);
+		model.addAttribute("countReserve", countReserve);
+		model.addAttribute("isReserved", isReserved);
+		
+		System.out.println("[ 컨트롤러 ] model " + model);
 		
 		return "classboard/detail_class_page";
+	}
+	
+	// 클래스 예약하기
+	@RequestMapping("reserve_class_process.do")
+	public String reserveClassProcess(HttpSession session, ClassReservationVo reserveVo, int jet_class_detail_no) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		reserveVo.setJet_member_no(jet_member_no);
+		
+		classboardService.insertReserve(reserveVo);
+	
+		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
+	}
+	
+	// 클래스 예약 취소하기
+	@RequestMapping("delete_class_process.do")
+	public String deleteReserveClassProcess(HttpSession session, ClassReservationVo reserveVo, int jet_class_detail_no) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		reserveVo.setJet_member_no(jet_member_no);
+
+		classboardService.deleteReserve(reserveVo);
+		
+		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
 }

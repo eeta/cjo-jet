@@ -72,11 +72,27 @@
 
 				<div class="row mt-4">
 					<button type="button" class="btn btn-secondary btn-lg" disabled>예약
-						가능 인원 /
+						가능 인원 ${countReserve} /
 						${result.classboardVo.jet_class_max_headcount}</button>
 				</div>
 
-				
+				<div class="row mt-3">
+					<c:if
+						test="${!empty sessionUser && countReserve < result.classboardVo.jet_class_max_headcount && isReserved == 0}">
+						<div class="col d-grid gap-2">
+							<a
+								href="${pageContext.request.contextPath}/classboard/reserve_class_process.do?jet_class_detail_no=${result.detailVo.jet_class_detail_no}"
+								class="btn btn-primary btn-lg">예약</a>
+						</div>
+					</c:if>
+					<c:if test="${!empty sessionUser && isReserved != 0}">
+						<div class="col d-grid gap-2">
+							<a
+								href="${pageContext.request.contextPath}/classboard/delete_class_process.do?jet_class_detail_no=${result.detailVo.jet_class_detail_no}"
+								class="btn btn-primary">예약 취소</a>
+						</div>
+					</c:if>
+				</div>
 
 				<div class="row mt-5">
 					<div class="col">내용: ${result.classboardVo.jet_class_content}

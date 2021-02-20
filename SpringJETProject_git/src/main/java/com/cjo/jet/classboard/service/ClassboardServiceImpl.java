@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cjo.jet.classboard.mapper.ClassCategorySQLMapper;
 import com.cjo.jet.classboard.mapper.ClassDetailSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassImageSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassReserveSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassboardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
 import com.cjo.jet.vo.*;
@@ -30,6 +31,9 @@ public class ClassboardServiceImpl {
 	
 	@Autowired
 	private ClassCategorySQLMapper classCategorySQLMapper;
+	
+	@Autowired
+	private ClassReserveSQLMapper classReserveSQLMapper;
 
 	// 원데이클래스 개설
 	public void openClass(ClassboardVo vo, ArrayList<ClassImageVo> classImageVo) {
@@ -71,11 +75,15 @@ public class ClassboardServiceImpl {
 			int jet_class_category_no = classboardVo.getJet_class_category_no();
 			ClassCategoryVo classCategoryVo = classCategorySQLMapper.selectByNo(jet_class_category_no);
 			
+			// 예약 현황
+			int countReserve = classReserveSQLMapper.countReserve(classDetailVo.getJet_class_detail_no());
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("classboardVo", classboardVo);
 			map.put("classDetailVo", classDetailVo);
 			map.put("memberVo", memberVo);
 			map.put("classCategoryVo", classCategoryVo);
+			map.put("countReserve", countReserve);
 			
 			System.out.println("map" + map);
 			resultList.add(map);			
@@ -111,5 +119,25 @@ public class ClassboardServiceImpl {
 		map.put("detailVo", detailVo);
 
 		return map;
+	}
+	
+	// 예약
+	public void insertReserve(ClassReservationVo vo) {
+		classReserveSQLMapper.insertReserve(vo);
+	}
+	
+	// 예약 취소
+	public void deleteReserve(ClassReservationVo vo) {
+		classReserveSQLMapper.deleteReserve(vo);
+	}
+	
+	// 클래스 당 예약 개수
+	public int countReserve(int classDetailNo) {
+		return classReserveSQLMapper.countReserve(classDetailNo);
+	}
+	
+	// 예약 여부 확인
+	public int isReservedByUser(ClassReservationVo vo) {
+		return classReserveSQLMapper.isReservedByUser(vo);
 	}
 }

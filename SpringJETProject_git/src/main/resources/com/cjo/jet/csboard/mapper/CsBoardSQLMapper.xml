@@ -20,7 +20,8 @@
 		    #{jet_board_m_cs_content},
 		    0,
 		    #{jet_board_m_cs_customeremail},
-		    SYSDATE
+		    SYSDATE,
+		    #{jet_board_m_cs_category_no}
 			)
 		]]>
 	</insert>
@@ -37,6 +38,16 @@
 			AND c2.rnum <= #{page_num}*10
 		]]>
 	</select>
+	
+	<!-- 게시판 출력... no 페이징 .. -->
+	<select id="selectAllNoPage" resultType="com.cjo.jet.vo.CsBoardVo">
+		<![CDATA[
+			SELECT * FROM JET_board_m_cs 
+			ORDER BY jet_board_m_cs_no DESC
+		]]>
+	</select>
+
+	
 
 	<!-- 글 제목 검색 -->
 	<select id="selectByTitle" resultType="com.cjo.jet.vo.CsBoardVo">
@@ -108,6 +119,7 @@
 	 	]]>
 	 </select>
 
+	 
 
 
 </mapper>

@@ -9,11 +9,13 @@ public class BoardReviewVo {
 	private String jet_board_review_content;
 	private int jet_board_review_readcount;
 	private Date jet_board_review_writedate;
+	private int jet_board_review_category_no;
 	public BoardReviewVo() {
 		super();
 	}
 	public BoardReviewVo(int jet_board_review_no, int jet_member_no, String jet_board_review_title,
-			String jet_board_review_content, int jet_board_review_readcount, Date jet_board_review_writedate) {
+			String jet_board_review_content, int jet_board_review_readcount, Date jet_board_review_writedate,
+			int jet_board_review_category_no) {
 		super();
 		this.jet_board_review_no = jet_board_review_no;
 		this.jet_member_no = jet_member_no;
@@ -21,6 +23,7 @@ public class BoardReviewVo {
 		this.jet_board_review_content = jet_board_review_content;
 		this.jet_board_review_readcount = jet_board_review_readcount;
 		this.jet_board_review_writedate = jet_board_review_writedate;
+		this.jet_board_review_category_no = jet_board_review_category_no;
 	}
 	public int getJet_board_review_no() {
 		return jet_board_review_no;
@@ -57,6 +60,12 @@ public class BoardReviewVo {
 	}
 	public void setJet_board_review_writedate(Date jet_board_review_writedate) {
 		this.jet_board_review_writedate = jet_board_review_writedate;
+	}
+	public int getJet_board_review_category_no() {
+		return jet_board_review_category_no;
+	}
+	public void setJet_board_review_category_no(int jet_board_review_category_no) {
+		this.jet_board_review_category_no = jet_board_review_category_no;
 	}
 	
 	

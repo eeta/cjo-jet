@@ -6,27 +6,164 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의글 읽기</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"></head>
-
-<style>
-     .topImage{
-         width: 100%;
-         height: 240px;
-         margin-top: 6vh;
-         background-image: url('${pageContext.request.contextPath }/resources/image/sky.jpg');
-     }
-    #image_size_auto{
-		max-width: 100%;
-		height: auto;
-  		display: block;
-	}
-</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<jsp:include page="../font/NanumGothicCoding.jsp"/>
+<jsp:include page="../csboard/style/read_csboard_page_style.jsp"/>
+<jsp:include page="../commons/style/global_nav_style.jsp"/>
+<jsp:include page="../commons/script/global_nav_script.jsp"/>
 </head>
 <body>
-	<jsp:include page="../commons/global_nav.jsp"/>
-	      <div class="topImage"></div>
+<jsp:include page="../commons/top_image.jsp"/>
 
+<div class="container-fluid">
+	<main>
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="col">
+				
+				<div class="row mt-5">
+					<div class="col text-center">
+						<h1>문의글 읽기</h1>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col">
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						제목
+					</div>
+					<div class="col">
+						${result.csBoardVo.jet_board_m_cs_title }
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						카테고리
+					</div>
+					<div class="col">
+						<c:choose>
+							<c:when test="${result.csBoardVo.jet_board_m_cs_category_no ==1}"><td>[가입]</td></c:when>
+							<c:when test="${result.csBoardVo.jet_board_m_cs_category_no ==2}"><td>[여행친구]</td></c:when>
+							<c:when test="${result.csBoardVo.jet_board_m_cs_category_no ==3}"><td>[회원등급]</td></c:when>
+							<c:when test="${result.csBoardVo.jet_board_m_cs_category_no ==4}"><td>[포인트]</td></c:when>
+							<c:when test="${result.csBoardVo.jet_board_m_cs_category_no ==5}"><td>[기타]</td></c:when>
+						</c:choose>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						작성자
+					</div>
+					<div class="col">
+						${result.memberVo.jet_member_nick}
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						조회수
+					</div>
+					<div class="col">
+						${result.csBoardVo.jet_board_m_cs_readcount }
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						작성일
+					</div>
+					<div class="col">
+						${result.csBoardVo.jet_board_m_cs_writedate }
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						내용
+					</div>
+					<div class="col border border-1 overflow-auto" style="height: 200px;">
+						${result.csBoardVo.jet_board_m_cs_content }
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col-2">
+						이메일
+					</div>
+					<div class="col">
+						${result.csBoardVo.jet_board_m_cs_customeremail }
+					</div>
+				</div>
+				
+				<div class="row mt-3">	<!-- 이미지박스 -->
+					<div class="col-2">
+						이미지
+					</div>
+					<div class="col border border-1" >
+						<c:forEach items="${result.imageVoList }" var="imageVo">
+							<img id="image_size_auto" src="${imageVo.jet_board_cs_image_link }"><br>
+						</c:forEach>
+					</div>
+				</div>
+				
+				<div class="row mt-3">
+					<div class="col">
+						<hr>
+					</div>
+				</div>
+				
+				<div class="row mt-3 mb-3">
+					<!-- 관리자 전용 답글 버튼 -->
+					<c:if test="${sessionUser.jet_member_grade ==9 }">
+						<div class="col-1 d-grid gap-2 d">
+							<form action="${pageContext.request.contextPath }/csboard/answer_write_csboard_page.do" method="post">
+								<input class="btn btn-outline-dark" type="submit" value="답글"> 
+								<input type="hidden" name="jet_board_m_cs_no" value="${result.csBoardVo.jet_board_m_cs_no }">		
+							</form>
+						</div>
+					</c:if>
+					
+					<div class="col"></div>
+					
+					<c:if test="${!empty sessionUser && sessionUser.jet_member_no ==result.csBoardVo.jet_member_no }">
+						<div class="col-1 d-grid gap-2 d">
+							<a class="btn btn-outline-danger" href="${pageContext.request.contextPath }/csboard/delete_csboard_process.do?jet_board_m_cs_no=${result.csBoardVo.jet_board_m_cs_no}">
+							삭제</a>
+						</div>
+						<div class="col-1 d-grid gap-2 d">
+							<a class="btn btn-outline-success" href="${pageContext.request.contextPath }/csboard/update_csboard_page.do?jet_board_m_cs_no=${result.csBoardVo.jet_board_m_cs_no}">
+							수정</a>
+						</div>
+					</c:if>
+					
+					<div class="col-1 d-grid gap-2 d">
+						<a class="btn btn-primary" href="${pageContext.request.contextPath }/csboard/csboard_page.do">목록</a>
+					</div>
+				</div>		
+				
+				<div class="row mt-3">
+					<div class="col">
+						<hr>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-2"></div>
+		</div>
+	</main>
+</div>
+
+
+<%--
 <h1>read_content_page</h1>
 
 	제목 : ${result.csBoardVo.jet_board_m_cs_title } <br>
@@ -47,7 +184,12 @@
 	
 	<!-- 관리자 전용 답글 버튼 -->
 	<c:if test="${sessionUser.jet_member_grade ==9 }">
-		<a href="${pageContext.request.contextPath }/csboard/answer_write_csboard_page.do">답글</a>
+		
+		<form action="${pageContext.request.contextPath }/csboard/answer_write_csboard_page.do" method="post">
+			<input type="submit" value="답글"> 
+			<input type="hidden" name="jet_board_m_cs_no" value="${result.csBoardVo.jet_board_m_cs_no }">		
+		</form>
+	
 	</c:if>
 	
 	<c:if test="${!empty sessionUser && sessionUser.jet_member_no ==result.csBoardVo.jet_member_no }">
@@ -57,9 +199,10 @@
 		수정</a>
 	</c:if>
 	<br>
+ --%>	
 	
-	
-	  <jsp:include page="../commons/global_footer.jsp"/>
+<jsp:include page="../commons/global_nav.jsp"/>
+<jsp:include page="../commons/global_footer.jsp"/>
 	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 	

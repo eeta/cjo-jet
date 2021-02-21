@@ -9,13 +9,15 @@ public class FreeboardVo {
 	private String jet_board_free_content;
 	private int jet_board_free_readcount;
 	private Date jet_board_free_writedate;
+	private int jet_board_free_category_no;
 	
 	public FreeboardVo() {
 		super();
 	}
 
 	public FreeboardVo(int jet_board_free_no, int jet_member_no, String jet_board_free_title,
-			String jet_board_free_content, int jet_board_free_readcount, Date jet_board_free_writedate) {
+			String jet_board_free_content, int jet_board_free_readcount, Date jet_board_free_writedate,
+			int jet_board_free_category_no) {
 		super();
 		this.jet_board_free_no = jet_board_free_no;
 		this.jet_member_no = jet_member_no;
@@ -23,6 +25,7 @@ public class FreeboardVo {
 		this.jet_board_free_content = jet_board_free_content;
 		this.jet_board_free_readcount = jet_board_free_readcount;
 		this.jet_board_free_writedate = jet_board_free_writedate;
+		this.jet_board_free_category_no = jet_board_free_category_no;
 	}
 
 	public int getJet_board_free_no() {
@@ -72,6 +75,15 @@ public class FreeboardVo {
 	public void setJet_board_free_writedate(Date jet_board_free_writedate) {
 		this.jet_board_free_writedate = jet_board_free_writedate;
 	}
+
+	public int getJet_board_free_category_no() {
+		return jet_board_free_category_no;
+	}
+
+	public void setJet_board_free_category_no(int jet_board_free_category_no) {
+		this.jet_board_free_category_no = jet_board_free_category_no;
+	}
+	
 	
 	
 }

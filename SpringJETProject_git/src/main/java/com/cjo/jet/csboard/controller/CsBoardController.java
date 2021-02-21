@@ -15,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.CDATASection;
 
 import com.cjo.jet.csboard.service.CsBoardServiceImpl;
+import com.cjo.jet.vo.AdminAssignVo;
+import com.cjo.jet.vo.CsBoardAnswerVo;
 import com.cjo.jet.vo.CsBoardImageVo;
 import com.cjo.jet.vo.CsBoardVo;
 import com.cjo.jet.vo.MemberVo;
@@ -26,11 +29,9 @@ import com.cjo.jet.vo.MemberVo;
 @RequestMapping("/csboard/*")
 public class CsBoardController {
 	
-	//map.xml -> mapper -> service -> controller
-
 	@Autowired
 	private CsBoardServiceImpl csBoardService;
-
+	
 	@RequestMapping("csboard_page.do")
 	public String csBoardPage(Model model,String search_word,String search_type,@RequestParam(value="page_num",defaultValue = "1") int page_num) {
 		
@@ -69,7 +70,7 @@ public class CsBoardController {
 	
 	@RequestMapping("write_csboard_process.do")
 	public String writeCsBoardProcess(CsBoardVo param, HttpSession session,MultipartFile [] files) {
-		
+	
 		//변수 생성 해야함.. 이미지때문에
 		ArrayList<CsBoardImageVo> imageVoList = new ArrayList<CsBoardImageVo>();
 		
@@ -83,7 +84,7 @@ public class CsBoardController {
 			
 			//날짜 별 폴더 만들기 (자동으로)
 			//.../년도/월/일/랜덤네임_시간.확장자명..
-			String uploadRootFolderName = "c:/upload_files/";
+			String uploadRootFolderName = "/upload_files/";
 			//역슬래시 두개도 가능 ..우리는 슬레시 하나로
 			
 			Date today = new Date();
@@ -144,9 +145,9 @@ public class CsBoardController {
 		//데이터 처리
 		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
 	
-		int JET_member_no = sessionUser.getJet_member_no();
+		int jet_member_no = sessionUser.getJet_member_no();
 		
-		param.setJet_member_no(JET_member_no);
+		param.setJet_member_no(jet_member_no);
 		
 		csBoardService.writeCsBoard(param,imageVoList);
 		
@@ -190,13 +191,60 @@ public class CsBoardController {
 	}
 	
 	
-	//----------------------------------------------------------------------------------------------
+	//-----------------------------관리자-----------------------------------------------------------------
 	
 	@RequestMapping("answer_write_csboard_page.do")
-	public String answerCsBoardWritePage() {
+	public String answerCsBoardWritePage(int jet_board_m_cs_no,Model model) {
+		System.out.println("jet_board_m_cs_no : " +jet_board_m_cs_no);
+		
+		//업데이트 코드 그대로
+		HashMap<String, Object> map = csBoardService.getCsBoard(jet_board_m_cs_no);
+		//겟보드 그대로 출력 함 수정 전임으로..
+		model.addAttribute("result", map);
+		
 		
 		return "csboard/answer_write_csboard_page";
 	}
+	
+	@RequestMapping("answer_write_csboard_process.do")
+	public String answerCsBoardWriteProcess(int jet_board_m_cs_no,CsBoardAnswerVo param,HttpSession session) {
+		
+		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+		int member_no = sessionUser.getJet_member_no();
+		
+		int originalNo = jet_board_m_cs_no;
+		System.out.println("originalNo :" +originalNo);
+		
+		param.setJet_board_m_cs_no(originalNo);
+	
+		param.setJet_member_no(member_no);
+		
+		csBoardService.writeAnswerCsBoard(param);
+		
+		return "redirect:./csboard_page.do";
+
+	}
+
+	@RequestMapping("answer_read_csboard_page.do")
+	public String answerCsBoardReadPage(int jet_board_a_cs_no, Model model) {
+		
+		HashMap<String, Object> map = csBoardService.getAnswerCsBoard(jet_board_a_cs_no);
+		
+		model.addAttribute("result", map);
+		
+		return"csboard/answer_read_csboard_page";
+	}
+	
+	@RequestMapping("answer_csboard_delete_process.do")
+	public String deleteCsBoardAnswerProcess(int jet_board_a_cs_no) {
+		csBoardService.deleteCsBoardAnswer(jet_board_a_cs_no);
+		return "redirect:./csboard_page.do";
+	}
+
+	
+	
+	
+	
 	
 	
 }

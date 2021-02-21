@@ -26,6 +26,19 @@
 			)
 		]]>
 	</insert>
+	<insert id="insertMemberStatus">
+		<![CDATA[
+			INSERT INTO jet_member_status VALUES(
+				JET_MEMBER_STATUS_SEQ.nextval,
+				#{jet_member_no},
+				'Y',
+				#{jet_stopstate_period_no},
+				#{jet_stopstate_reason_no},
+				SYSDATE
+			)
+		]]>
+	</insert>
+	
 	<insert id="insertInterest">
 		<![CDATA[
 			INSERT INTO jet_interest VALUES(
@@ -35,11 +48,16 @@
 			)
 		]]>
 	</insert>
-	
 	<select id="selectByIdAndPW" resultType="com.cjo.jet.vo.MemberVo">
 		<![CDATA[
 			SELECT * FROM jet_member WHERE 
 			jet_member_id = #{jet_member_id} AND 
+			jet_member_pw = #{jet_member_pw}
+		]]>
+	</select>
+	<select id="selectByPw" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM jet_member WHERE 
 			jet_member_pw = #{jet_member_pw}
 		]]>
 	</select>
@@ -57,4 +75,199 @@
 			WHERE jet_member_id = #{id}
 		]]>
 	</select>
+	<!--  -->
+	<select id="selectNoByNick" resultType="int">
+		<![CDATA[
+			SELECT jet_member_no FROM jet_member 
+			WHERE jet_member_nick = #{nick}
+		]]>
+	</select>
+	<select id="selectNickByNo" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT jet_member_nick FROM jet_member WHERE jet_member_no =#{no}
+		]]>
+	</select>
+	<select id="checkByNick" resultType="java.lang.String">
+		<![CDATA[
+			SELECT jet_member_nick FROM jet_member WHERE jet_member_nick = #{nick}
+		]]>
+	</select>
+	<!--  -->
+	<select id="selectMemberNotMe" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM(
+			    SELECT jm1.*, ROWNUM as rnum FROM(
+			        SELECT * FROM jet_member 
+			            where jet_member_grade < 9 
+			            and jet_member_no not like 1 ORDER BY jet_member_no DESC
+			        ) jm1
+			    )jm2
+			WHERE jm2.rnum >= (1-1)*4+1
+			AND jm2.rnum <= 1*4
+		]]>
+	</select>
+	<select id="selectByMemberNick" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT jet_member_no,jet_member_nick,jet_member_kakao,jet_member_grade FROM jet_member 
+			WHERE jet_member_nick 
+			LIKE '%'|| #{search_word} ||'%'
+			ORDER BY jet_member_no DESC
+		]]>
+	</select>
+	<select id="getFindFriendCount" resultType="int">
+		<![CDATA[
+			SELECT CEIL(COUNT(*)/4) FROM jet_member WHERE jet_member_grade < 9
+		]]>
+	</select>
+	<select id="selectByKakao" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT jet_member_no,jet_member_nick,jet_member_kakao,jet_member_grade FROM jet_member 
+			WHERE jet_member_kakao 
+			LIKE '%'|| #{search_word} ||'%' 
+			ORDER BY jet_member_no DESC
+		]]>
+	</select>
+	
+	<insert id="insertFriends">
+		<![CDATA[
+			INSERT INTO jet_friends VALUES(
+				JET_FRIENDS_SEQ.nextval,
+				#{jet_member_no},
+				#{jet_friends_member_no},
+				SYSDATE
+			)
+		]]>
+	</insert>
+	<select id="selectFriends" resultType="com.cjo.jet.vo.FriendsVo">
+		<![CDATA[
+			SELECT * FROM(
+				SELECT jf1.*,ROWNUM as fnum FROM (
+					SELECT * FROM jet_friends ORDER BY jet_friends_no DESC
+				) jf1
+			)jf2 
+			WHERE jf2.fnum >= (1-1)*10+1 AND jf2.fnum <= 1*10
+		]]>
+	</select>
+	<delete id="deleteByNo">
+		<![CDATA[
+			DELETE FROM jet_friends WHERE jet_friends_no = #{no}
+		]]>
+	</delete>
+	<select id="getPageCount" resultType="int">
+		<![CDATA[
+			SELECT CEIL(COUNT(*)/4) FROM jet_friends
+		]]>
+	</select>
+	<update id="updateMemberInfo">
+		<![CDATA[
+			UPDATE jet_member SET 
+			jet_member_pw = #{jet_member_pw},
+			jet_member_nick = #{jet_member_nick},
+			jet_member_phone= #{jet_member_phone} 
+			WHERE jet_member_no = #{jet_member_no}
+		]]>
+	</update>
+	<update id="updateMemberInterest">
+		<![CDATA[
+			UPDATE jet_interest SET 
+			jet_interest_name = #{jet_interest_name} 
+			WHERE jet_member_no = #{jet_member_no}
+		]]>
+	</update>
+	 <select id="selectInterestByNo" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM jet_interest WHERE jet_member_no = #{no}
+		]]>
+	</select>
+	<!-- 관리자 뽑아오기 -->
+	<select id="selectGradeByNo" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			select jet_member_grade from jet_member where jet_member_no = #{no}
+		]]>
+	</select>
+	<!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+	<!-- 회원 관리 all 리스트-->
+	<select id="selectAll" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM JET_member ORDER BY jet_member_no ASC
+		]]>
+	</select>
+	
+	<!-- 회원 아이디 검색 -->
+	<select id="selectByMemberId" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM JET_member 
+			WHERE jet_member_id LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_member_no DESC
+		]]>
+	</select>
+	
+	<!-- 회원 이름 검색 -->
+	<select id="selectByName" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM JET_member 
+			WHERE jet_member_name LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_member_no DESC
+		]]>
+	</select>
+
+	<!-- 회원 닉네임 검색 -->
+	<select id="selectByNick" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT * FROM JET_member 
+			WHERE jet_member_nick LIKE '%' || #{search_word} || '%'
+			ORDER BY jet_member_no DESC
+		]]>
+	</select>
+	<select id="selectStatByNo" resultType="com.cjo.jet.vo.MemberStatusVo">
+		<![CDATA[
+			SELECT * FROM jet_member_status 
+			WHERE jet_member_no = #{no}
+		]]>
+	</select>
+	<select id="selectActiveStatByNo" resultType="java.lang.String">
+		<![CDATA[
+			SELECT jet_member_status_active FROM jet_member_status 
+			WHERE jet_member_no = #{no}
+		]]>
+	</select>
+	<!-- 대시보드 통계 -->
+	
+	<update id="updateMemberStatusToN">
+		<![CDATA[
+			UPDATE jet_member_status SET 
+				jet_member_status_active = 'N',
+				jet_stopstate_period_no = #{jet_stopstate_period_no}, 
+				jet_stopstate_reason_no = #{jet_stopstate_reason_no},
+				jet_member_status_updateday = SYSDATE
+				WHERE jet_member_no = #{jet_member_no}
+				
+		]]>
+	</update>
+	<update id="updateMemberStatusToY">
+<!-- 			<if test="SYSDATE gt jet_member_status_updateday + jet_stopstate_period_no"> -->
+				UPDATE jet_member_status SET 
+					jet_member_status_active = 'Y',
+					jet_stopstate_period_no = 0, 
+					jet_stopstate_reason_no = 0,
+					jet_member_status_updateday = SYSDATE
+					WHERE jet_member_no = #{jet_member_no}
+<!-- 			</if> -->
+	</update>
+	
+	<select id="selectStopState" resultType="com.cjo.jet.vo.MemberStatusVo">
+		<![CDATA[
+			SELECT * FROM jet_member_status WHERE SYSDATE < jet_member_status_updateday + jet_stopstate_period_no
+		]]>
+	</select>
+	
+	<!-- 마이페이지 추가 0213 문제시 오별 -->
+	<!-- 닉네임만...업데이트 -->
+	<update id="updateOnlyNick">
+		<![CDATA[
+			UPDATE jet_member SET 
+			jet_member_nick = #{jet_member_nick}
+			WHERE jet_member_no = #{jet_member_no}
+		]]>
+	</update>
 </mapper>

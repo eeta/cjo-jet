@@ -4,10 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>JET Login fail</title>
+<title>JET check password fail</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<jsp:include page="../font/NanumGothicCoding.jsp"/>
 </head>
 <body>
 
@@ -18,15 +16,15 @@
 			<div class="col-8">
 				<div class="row mt-5"></div>
 				<div class="row mt-5"></div>
-				<div class="row mt-5"></div>
 				<div class="row text-center mt-5">
-					<div class="col"><h3>이메일/비밀번호를 확인해주세요.</h3></div>
+					<div class="col"><h3>비밀번호를 확인해주세요.</h3></div>
 				</div>
 				<div class="row text-center mt-5">
 					<div class="col g-gird gap-2 text-center">
-						<a class="btn btn-success" href="${pageContext.request.contextPath }/member/login_page.do">로그인 페이지로</a>
+						<a class="btn btn-success" href="${pageContext.request.contextPath }/member/check_pw_page.do">뒤로 가기</a>
 					</div>
 				</div>
+				<div class="row mt-2"></div>
 				<div class="row mt-5"></div>
 				<div class="row mt-5"></div>
 			</div>

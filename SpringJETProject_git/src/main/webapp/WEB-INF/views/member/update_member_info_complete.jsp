@@ -20,14 +20,14 @@
 			<div class="col-6 text-center">
 				<div class="row mt-5"></div>
 				<div class="row mt-5">
-					<div class="col ps-0"><h3>회원가입이 완료 되었습니다.</h3></div>
+					<div class="col ps-0"><h3>회원 정보 수정이 완료되었습니다.</h3></div>
 				</div>
 				<div class="row mt-1">
-					<div class="col"><!-- 메일 인증 추가했을 때 관련 문장 추가할 곳 --></div>
+					<div class="col"></div>
 				</div>
 				<div class="row mt-5">
 					<div class="col g-gird gap-2 me-4">
-						<a class="btn btn-success" href="${pageContext.request.contextPath }/member/login_page.do">로그인 페이지로</a>
+						<a class="btn btn-success" href="${pageContext.request.contextPath }/content/main_page.do">메인 페이지로</a>
 					</div>
 				</div>
 				<div class="row"></div>

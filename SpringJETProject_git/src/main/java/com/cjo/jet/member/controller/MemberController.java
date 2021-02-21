@@ -1,19 +1,28 @@
 package com.cjo.jet.member.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cjo.jet.member.service.MemberServiceImpl;
+import com.cjo.jet.vo.FriendsVo;
+import com.cjo.jet.vo.MemberStatusVo;
 import com.cjo.jet.vo.MemberVo;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
 @RequestMapping("/member/*")
-public class MemberController {
+public class MemberController{
 	
 	@Autowired
 	private MemberServiceImpl memberService;
@@ -37,19 +46,9 @@ public class MemberController {
 		return "member/join_member_complete";
 	}
 	
-	@RequestMapping("login_process.do")
-	public String loginProcess(MemberVo param, HttpSession session) {
-		
-		MemberVo sessionUser = memberService.login(param);
-		System.out.println("[test]" + sessionUser);
-		
-		if(sessionUser != null) {
-			session.setAttribute("sessionUser", sessionUser);
-			
-			return "redirect:../content/main_page.do";
-		}else {
-			return "member/login_fail";
-		}
+	@RequestMapping("test_page.do")
+	public String testPage() {
+		return "member/test_page";
 	}
 	@RequestMapping("logout_process.do")
 	public String logoutProcess(HttpSession session, HttpServletRequest request) {
@@ -58,23 +57,142 @@ public class MemberController {
 		
 		String referer = request.getHeader("Referer");
 		if(referer != null && !referer.equals("")) {
-			return "redirect:"+referer;
+			if(referer.contains("admin")) {
+				return "redirect:../content/main_page.do";
+			}else {
+				return "redirect:"+referer;
+			}
+			
 		}else {
 			return "redirect:/";
 		}
 		
 	}
-	//ajax 아이디 중복확인
-	@ResponseBody//<- ajax로 부터 호출되는 요청의 응답을 데이터만 보낼 때 이 어노테이션을 사용 - 포워딩 하지 않는 방식
-	@RequestMapping("exist_id.do")
-	public String existId(String id) {
-		System.out.println("[ajax server test]" + id);//테스트 코드
-		boolean existId = memberService.existId(id);
+	
+	
+//-----------------------------------------------------------------------------------------------------------------------------//
+	@RequestMapping("add_friends_process.do")
+	public String addFriendsProcess(HttpSession session, int jet_friends_member_no) throws Exception{
+		MemberVo memberVo = (MemberVo)session.getAttribute("sessionUser");
+		int member_no = memberVo.getJet_member_no();
 		
-		if(existId == true) {//ajax로 부터 호출되는 명령의 응답은 순수하게 데이터만 리턴되어야 함.
-			return "true"; //나중에 null도 추가해서 테스트해 볼 것
+		memberService.insertFriends(member_no,jet_friends_member_no);
+		
+		return "redirect:./my_friendList_page.do";
+	}
+	
+	@RequestMapping("find_friends_page.do")
+	public String findFriendsPage(HttpSession session, Model model,String search_word, String search_type 
+			,@RequestParam(value = "page_num", defaultValue = "1") int page_num) {
+			
+			MemberVo vo = (MemberVo)session.getAttribute("sessionUser");
+			int jet_member_no = vo.getJet_member_no();//친구찾기 페이지에서 로그아웃하면 NPE발생
+			System.out.println("[test member no]"+jet_member_no);
+			ArrayList<MemberVo> memberList = memberService.getMemberList(jet_member_no, search_word, search_type,page_num);
+			
+			int listCount = memberService.getFindFriendPageCount();
+			int currentPage = page_num;
+			int beginPage = ((currentPage-1)/5)*5 +1;
+			int endPage = ((currentPage-1)/5 +1)*(5);
+			
+			if(endPage > listCount) {
+				endPage = listCount;
+			}
+			
+			model.addAttribute("memberList", memberList);
+			model.addAttribute("listCount",listCount);
+			model.addAttribute("currentPage",currentPage);
+			model.addAttribute("beginPage",beginPage);
+			model.addAttribute("endPage",endPage);
+			
+			return "/member/find_friends_page";
+	}
+	
+	@RequestMapping("my_friendList_page.do")
+	public String myFriendListPage(Model model, 
+			@RequestParam(value = "page_num", defaultValue = "1") int page_num) throws Exception{
+		
+		ArrayList<HashMap<String, Object>> resultList = memberService.getFriendList(page_num);
+		System.out.println("[test friend list]" + resultList.size());
+		
+		int pageCount = memberService.getPageCount();
+		int currentPage = page_num;
+		int beginPage = ((currentPage-1)/5)*5 + 1;
+		int endPage = ((currentPage-1)/5 + 1)*(5);
+		
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		
+		model.addAttribute("resultList", resultList);
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("beginPage", beginPage);
+		model.addAttribute("endPage", endPage);
+	
+		
+		return "member/my_friendList_page";
+	}
+	@RequestMapping("delete_friend_process.do")
+	public String DeleteFriendProcess(int jet_friends_no) {
+		
+		memberService.deleteFriend(jet_friends_no);
+		
+		return "redirect:./my_friendList_page.do";
+	}
+	@RequestMapping("page_for_nullpointerexception.do")
+	public String pageForNullPointerException() {
+		
+		return "member/page_for_nullpointerexception";
+	}
+	
+	@RequestMapping("update_member_info_page.do")
+	public String updateMemberInfoPage(Model model, HttpSession session) {
+		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		
+		HashMap<String, Object> resultMap = memberService.getMemberInfo(jet_member_no);
+		
+		model.addAttribute("result", resultMap);
+		
+		return "member/update_member_info_page";
+	}
+	
+	@RequestMapping("update_member_info_process.do")
+	public String updateMemberInfoProcess(MemberVo param, String [] jet_interest_name, HttpSession session) {
+		
+		MemberVo vo = (MemberVo)session.getAttribute("sessionUser");
+		System.out.println("[test interest name]"+jet_interest_name);
+		
+		int jet_member_no = vo.getJet_member_no();
+		param.setJet_member_no(jet_member_no);
+		
+		memberService.updateMember(param, jet_interest_name);
+		
+		return "member/update_member_info_complete";
+	}
+	
+	@RequestMapping("check_pw_page.do")
+	public String checkPwPage() {
+		
+		return "member/check_pw_page";
+	}
+	
+	@RequestMapping("check_pw_fail_page.do")
+	public String checkPwFailPage() {
+		return "member/check_pw_fail_page";
+	}
+	@RequestMapping("check_pw_process.do")
+	public String checkPwProcess(MemberVo param) {
+		
+		MemberVo check = memberService.checkPw(param);
+		
+		
+		if(check != null) {
+			return "redirect: ../mypage/security_mypage.do";
 		}else {
-			return "false";
+			return "redirect:./check_pw_fail_page.do";
 		}
 	}
+	
 }

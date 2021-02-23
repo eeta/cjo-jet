@@ -117,4 +117,53 @@
 	 	]]>
 	</select>
 	
+	
+	
+	
+	
+	
+	<!-- 신고 -->
+	 <insert id="insertSingo">
+		<![CDATA[
+			INSERT INTO jet_board_knowhow_singo VALUES(
+		    JET_board_knowhow_singo_seq.nextval,
+		    #{jet_board_knowhow_no},
+		    #{jet_member_no},
+		    #{jet_board_knowhow_singo_reason},
+		    SYSDATE
+			)
+		]]>
+	</insert>
+	
+	<!-- 신고 여부 확인. 개수 -->
+	<select id="isSingoByUser" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM jet_board_knowhow_singo 
+			WHERE jet_board_knowhow_no = #{jet_board_knowhow_no}
+			AND jet_member_no = #{jet_member_no}
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	 <!-- 신고자인지 체크 1출만 출력 -->
+	 	<select id="selectSingoByNo" resultType="com.cjo.jet.vo.KnowhowSingoVo">
+		<![CDATA[
+			 SELECT * FROM jet_board_knowhow_singo 
+			 WHERE jet_board_knowhow_no = #{jet_board_knowhow_no}
+			 AND jet_member_no = #{jet_member_no}
+		]]>
+	</select>
+		
+	<!-- 신고 리스트 출력... no 페이징 .. -->
+	<select id="selectAllSingoNoPage" resultType="com.cjo.jet.vo.KnowhowSingoVo">
+		<![CDATA[
+			SELECT * FROM jet_board_knowhow_singo 
+			ORDER BY jet_board_knowhow_singo_date DESC
+		]]>
+	</select>
+	
 </mapper>

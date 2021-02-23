@@ -2,7 +2,11 @@ package com.cjo.jet.knowhow.mapper;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.cjo.jet.vo.KnowhowBoardLikeVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
+import com.cjo.jet.vo.KnowhowSingoVo;
 
 public interface KnowhowBoardSQLMapper {
 	
@@ -38,4 +42,25 @@ public interface KnowhowBoardSQLMapper {
 		
 		// 페이지 수
 		public int countPage();
+		
+		
+		
+		//신고
+		public void insertSingo(KnowhowSingoVo vo);
+		
+		// 게시글 당 신고 클릭 여부 확인
+		public int isSingoByUser(KnowhowSingoVo vo);
+		
+		
+		
+		
+		
+		//신고는 한사람당 한명만 하게 체크 
+		public KnowhowSingoVo selectSingoByNo(@Param("jet_board_knowhow_no") int jet_board_knowhow_no, @Param("jet_member_no") int jet_member_no);
+		
+		
+		
+		//노티스글에 모든 신고 출력 
+		public ArrayList<KnowhowSingoVo> selectAllSingoNoPage();
+		
 }

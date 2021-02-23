@@ -90,7 +90,7 @@ public class KnowhowController {
 
 			// 이미지 7. 날짜별 폴더를 만들기 (자동으로)
  			// /년도/월/일/랜덤_시간.확장자명
-			String uploadRootFolderName = "/Users/hwlim/jet_upload_files/";   
+			String uploadRootFolderName = "/upload_files/";/*/Users/hwlim*/   
 			// String uploadRootFolderName = "C:/upload_files/";//"\\"고전적으로는 역슬래시 2개, windows는 "/"도 가능
 
  			Date today = new Date();
@@ -126,7 +126,7 @@ public class KnowhowController {
 			
 			try {
 				// 이미지 1. destination 경로 설정. 이것만 하면 모든 파일이 aaa.jpg로 덮어씌워지면서 저장됨
-				// file.transferTo(new File("/Users/hwlim/jet_upload_files/" + originalFileName)); 
+				// file.transferTo(new File("/Users/hwlim/upload_files/" + originalFileName)); 
 				
 				// 이미지 6. 내 서버에 저장 하겠다. //c:upload_files/2020/12/23 "/" randomname.jpg
 				file.transferTo(new File(uploadFolderName + "/" + randomName)); 

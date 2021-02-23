@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
-
-import org.apache.taglibs.standard.extra.spath.Step;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +27,7 @@ import com.cjo.jet.vo.MemberVo;
 import com.cjo.jet.vo.MessageVo;
 import com.cjo.jet.vo.NoticeBoardVo;
 import com.cjo.jet.vo.NoticeImageVo;
+import com.cjo.jet.vo.PartySingoVo;
 import com.sun.org.apache.regexp.internal.recompile;
 
 @Controller
@@ -48,10 +47,8 @@ public class AdminController {
 	
 	@Autowired
 	private KnowhowBoardServiceImpl knowhowBoardService;
-	
 	@Autowired
 	private ClassboardServiceImpl classBoardService;
-	
 	@Autowired
 	private MemberServiceImpl memberService;
 	
@@ -59,8 +56,14 @@ public class AdminController {
 	private MessageServiceImpl messageService;
 	
 	@RequestMapping("admin_main_page.do")
-	public String adminMainPage() {
+	public String adminMainPage(Model model) {
+		ArrayList<HashMap<String, Object>> resultList = partyBoardService.getPartySingoList();
+		ArrayList<Object> newSingo = partyBoardService.newPartySingoList();
+		
 		System.out.println("[adminMainPage] 실행됨");
+		model.addAttribute("resultList",resultList);
+		model.addAttribute("newSingo",newSingo);
+		
 		return "admin/admin_main_page";
 	}
 	
@@ -387,6 +390,15 @@ public class AdminController {
 		
 		return "admin/admin_declaration_party_list_page";
 	}
+	@RequestMapping("admin_declaration_knowhow_list_page.do")
+	public String adminDeclarationKnowhowListPage(Model model) {
+		
+		ArrayList<HashMap<String, Object>> resultList = knowhowBoardService.getKnowhowSingoList();
+		
+		model.addAttribute("resultList",resultList);
+		
+		return "admin/admin_declaration_knowhow_list_page";
+	}
 	
 //--------------회원관리------------------------------------------------------------------------	
 	@RequestMapping("admin_member_management_page.do")
@@ -398,6 +410,14 @@ public class AdminController {
 		model.addAttribute("resultMemberList", map);
 		
 		return "admin/admin_member_management_page";
+	}
+	@RequestMapping("admin_member_stopedmember_page.do")
+	public String adminStopedMemberPage(Model model) {
+		
+		ArrayList<HashMap<String, Object>> map = memberService.getStopedMemberList();
+		model.addAttribute("resultMemberList", map);
+		
+		return "admin/admin_member_stopedmember_page";
 	}
 	//회원의 상세한 정보
 	@RequestMapping("admin_member_detailstate_page.do")
@@ -414,13 +434,6 @@ public class AdminController {
 	public String adminUpdateMemberstatProcess() {
 		
 		return "redirect:./admin_member_detailstate_page.do";
-	}
-	
-	@RequestMapping("admin_member_rejectedmember_page.do")
-	public String adminRejectedMemberPage() {
-		
-		
-		return "admin/admin_member_rejectedmember_page.do";
 	}
 	
 //-------test----------------------------------------------
@@ -503,5 +516,12 @@ public class AdminController {
 		
 		return "admin/admin_dashboard_page";
 	}
-	
+	//등업
+	@RequestMapping("admin_member_upgrade_page.do")
+	public String adminMemberUpgradePage(Model model,String search_word,String search_type) {
+		ArrayList<HashMap<String, Object>> map =  memberService.getMemberUpgrade(search_word, search_type);
+		
+		model.addAttribute("resultMemberList", map);
+		return "admin/admin_member_upgrade_page";
+	}
 }

@@ -3,8 +3,6 @@ package com.cjo.jet.knowhow.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +18,7 @@ import com.cjo.jet.vo.KnowhowBoardLikeVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberVo;
+import com.cjo.jet.vo.KnowhowSingoVo;
 
 @Service
 public class KnowhowBoardServiceImpl {
@@ -255,4 +254,55 @@ public class KnowhowBoardServiceImpl {
 		
 		knowhowBoardRepleSQLMapper.deleteReple(knowhowRepleNo);
 	}
+	
+	
+	
+	
+	//신고 인서트
+		public void singoInsert(KnowhowSingoVo vo) {
+			knowhowBoardSQLMapper.insertSingo(vo);
+		}
+		
+	// 신고자 체크
+	public int isSingoKnowhowBoard(KnowhowSingoVo vo) {
+		
+		return knowhowBoardSQLMapper.isSingoByUser(vo);
+	}
+		
+		
+		
+	//신고자 체크
+	public KnowhowSingoVo checksingo(int knowhow_no, MemberVo singoMemberVo)  {
+		
+		KnowhowSingoVo knowhowSingoVo = knowhowBoardSQLMapper.selectSingoByNo(knowhow_no, singoMemberVo.getJet_member_no());
+		
+		return knowhowSingoVo;
+	}
+	
+	// 팁과 노하우 게시판 글의 모든 신고 출력 [관리자 페이지에서]
+		public ArrayList<HashMap<String, Object>> getKnowhowSingoList() {
+			
+			ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+			
+			ArrayList<KnowhowSingoVo> knowhowSingoList = knowhowBoardSQLMapper.selectAllSingoNoPage();
+			
+			for(KnowhowSingoVo knowhowSingoVo : knowhowSingoList) {
+				int singoMember_no = knowhowSingoVo.getJet_member_no();
+				MemberVo singoMemberVo = memberSQLMapper.selectByNo(singoMember_no);
+				
+				int knowhow_no = knowhowSingoVo.getJet_board_knowhow_no();
+				KnowhowBoardVo knowhowBoardVo= knowhowBoardSQLMapper.selectByNo(knowhow_no);
+				
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				
+				map.put("knowhowSingoVo", knowhowSingoVo);
+				map.put("singoMemberVo", singoMemberVo);
+				map.put("knowhowBoardVo", knowhowBoardVo);
+				
+				
+				result.add(map);
+			}
+			
+			return result;
+		}
 }

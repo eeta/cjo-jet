@@ -20,7 +20,18 @@
 	<jsp:include page="../commons/style/global_nav_style.jsp"/>
 <jsp:include page="../commons/script/global_nav_script.jsp"/>
 <style>
-textarea {
+
+#content-box {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	border: none;
+	background-color: #FFFFFF;
+	resize: none !important;
+	overflow:visible;
+}
+
+#input-reple {
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;
@@ -210,7 +221,8 @@ textarea {
 
 				<div class="row mt-5">
 					<div class="col">
-						${result.knowhowBoardVo.jet_board_knowhow_content}</div>
+						<textarea disabled rows="15" id="content-box">${result.knowhowBoardVo.jet_board_knowhow_content}</textarea> 
+					</div>
 				</div>
 
 				
@@ -427,9 +439,7 @@ textarea {
 								<div class="row mt-2">
 									<!-- 내용 칸 -->
 									<div class="col">
-										<textarea name="jet_board_knowhow_reple_cont" rows="3"
-											cols="100" placeholder=" 댓글을 남겨보세요" id="input-reple">
-									</textarea>
+										<textarea name="jet_board_knowhow_reple_cont" rows="3" cols="100" placeholder=" 댓글을 남겨보세요" id="input-reple"></textarea>
 									</div>
 									<!-- 댓글 작성 버튼 -->
 									<div class="col-1">

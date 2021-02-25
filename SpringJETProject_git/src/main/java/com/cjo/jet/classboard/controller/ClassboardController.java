@@ -202,7 +202,7 @@ public class ClassboardController {
 		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
 	
-	// 메인 내 나의 예약 페이지로
+	// 세로 네비 바 -> 나의 예약 페이지로
 	@RequestMapping("my_reservation_page.do")
 	public String myReservation(ClassReservationVo reserveVo, HttpSession session, Model model) {
 		
@@ -216,5 +216,42 @@ public class ClassboardController {
 		model.addAttribute("resultList", resultList);
 		
 		return "classboard/my_reservation_page";
+	}
+	
+	// 세로 네비 바 -> 나의 클래스 페이지로
+	@RequestMapping("my_class_page.do")
+	public String myClassPage(Model model, HttpSession session) {
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		
+		ArrayList<HashMap<String, Object>> myresultList = classboardService.getMyClassList(jet_member_no);
+		
+		model.addAttribute("myresultList", myresultList);
+		
+		return "classboard/my_class_page";
+	}
+	
+	// 나의 클래스 페이지 -> 날짜별 클래스 페이지로
+	@RequestMapping("my_class_dates_page.do")
+	public String myClassDatesPage(Model model, int jet_class_no) {
+		
+		ArrayList<HashMap<String, Object>> myresultDates = classboardService.getMyClassDatesList(jet_class_no);
+		
+		model.addAttribute("myresultDates", myresultDates);
+		
+		return "classboard/my_class_dates_page";
+	}
+	
+	// 날짜별 클래스 페이지 -> 상세정보 페이지로
+	@RequestMapping("my_class_dates_detail_page.do")
+	public String myClassDatesDetailPage(Model model, int jet_class_detail_no) {
+		
+		HashMap<String, Object> map = classboardService.getMyClassDetailPage(jet_class_detail_no);
+		ArrayList<HashMap<String, Object>> map2 = classboardService.getReserveList(jet_class_detail_no);
+		
+		model.addAttribute("data", map);
+		model.addAttribute("reserve", map2);
+		
+		return "classboard/my_class_dates_detail_page";
 	}
 }

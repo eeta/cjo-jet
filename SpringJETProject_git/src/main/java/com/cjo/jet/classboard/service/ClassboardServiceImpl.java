@@ -3,12 +3,14 @@ package com.cjo.jet.classboard.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cjo.jet.classboard.mapper.ClassCategorySQLMapper;
 import com.cjo.jet.classboard.mapper.ClassDetailSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassImageSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassMySQLMapper;
 import com.cjo.jet.classboard.mapper.ClassReserveSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassboardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
@@ -34,6 +36,9 @@ public class ClassboardServiceImpl {
 	
 	@Autowired
 	private ClassReserveSQLMapper classReserveSQLMapper;
+	
+	@Autowired
+	private ClassMySQLMapper classMySQLMapper;
 
 	// 원데이클래스 개설
 	public void openClass(ClassboardVo vo, ArrayList<ClassImageVo> classImageVo) {
@@ -181,5 +186,107 @@ public class ClassboardServiceImpl {
 			
 		}
 		return resultList;
+	}
+	
+	// MyClassPage 리스트
+	public ArrayList<HashMap<String, Object>> getMyClassList(int jet_member_no) {
+
+		ArrayList<HashMap<String, Object>> myresultList = new ArrayList<HashMap<String, Object>>();
+
+		ArrayList<ClassboardVo> classboardList = classMySQLMapper.selectMyClass(jet_member_no);
+
+		for (ClassboardVo classboardVo : classboardList) {
+
+			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+
+			int category_no = classboardVo.getJet_class_category_no();
+			ClassCategoryVo classCategoryVo = classCategorySQLMapper.selectByNo(category_no);
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("memberVo", memberVo);
+			map.put("classCategoryVo", classCategoryVo);
+			map.put("classboardVo", classboardVo);
+
+			myresultList.add(map);
+		}
+
+		return myresultList;
+	}
+
+	// 마이 클래스 날짜별 리스트
+	public ArrayList<HashMap<String, Object>> getMyClassDatesList(int jet_class_no) {
+
+		ArrayList<HashMap<String, Object>> myresultDates = new ArrayList<HashMap<String, Object>>();
+		ArrayList<ClassDetailVo> detailList = classMySQLMapper.selectByNo(jet_class_no);
+
+		for (ClassDetailVo classDetailVo : detailList) {
+			ClassboardVo classboardVo = classboardSQLMapper.selectByNo(jet_class_no);
+
+			int category_no = classboardVo.getJet_class_category_no();
+			ClassCategoryVo classCategoryVo = classCategorySQLMapper.selectByNo(category_no);
+
+			int detail_no = classDetailVo.getJet_class_detail_no();
+			int reserveCount = classReserveSQLMapper.countReserve(detail_no);
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("classDetailVo", classDetailVo);
+			map.put("classboardVo", classboardVo);
+			map.put("classCategoryVo", classCategoryVo);
+			map.put("reserveCount", reserveCount);
+
+			myresultDates.add(map);
+		}
+
+		return myresultDates;
+	}
+
+	// 상세정보
+	public HashMap<String, Object> getMyClassDetailPage(int jet_class_detail_no) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+
+		ClassDetailVo classDetailVo = classMySQLMapper.selectByDNo(jet_class_detail_no);
+
+		int class_no = classDetailVo.getJet_class_no();
+		ClassboardVo classboardVo = classboardSQLMapper.selectByNo(class_no);
+
+		int category_no = classboardVo.getJet_class_category_no();
+		ClassCategoryVo classCategoryVo = classCategorySQLMapper.selectByNo(category_no);
+		
+		String str = classboardVo.getJet_class_content();
+		str = StringEscapeUtils.escapeHtml4(str);
+		str = str.replaceAll("\n", "<br>");   
+		classboardVo.setJet_class_content(str);
+
+		ArrayList<ClassImageVo> imageVo = classimageSQLMapper.selectByNo(class_no);
+		int reserveCount = classReserveSQLMapper.countReserve(jet_class_detail_no);
+
+		result.put("classDetailVo", classDetailVo);
+		result.put("classboardVo", classboardVo);
+		result.put("reserveCount", reserveCount);
+		result.put("classCategoryVo", classCategoryVo);
+		result.put("imageVo", imageVo);
+
+		return result;
+	}
+	
+	// 예약 리스트 ?
+	public ArrayList<HashMap<String, Object>> getReserveList(int jet_class_detail_no) {
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		ArrayList<ClassReservationVo> reservationVo = classMySQLMapper.selectRByNo(jet_class_detail_no);
+
+		for (ClassReservationVo vo : reservationVo) {
+
+			int member_no = vo.getJet_member_no();
+			MemberVo memberVo = memberSQLMapper.selectByNo(member_no);
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("memberVo", memberVo);
+			map.put("reservationVo", vo);
+
+			list.add(map);
+		}
+
+		return list;
+
 	}
 }

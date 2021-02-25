@@ -14,17 +14,23 @@
    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
    crossorigin="anonymous">
 
-<title>Insert title here</title>
+<title>원데이 클래스</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<jsp:include page="../font/NanumGothicCoding.jsp"/>
+<jsp:include page="../commons/style/classboard_vertical_nav_style.jsp"/>
+<jsp:include page="../classboard/style/main_classboard_style.jsp"/>
+<jsp:include page="../commons/style/global_nav_style.jsp"/>
+<jsp:include page="../commons/script/global_nav_script.jsp"/>
 
 </head>
 
 <body>
-
+<jsp:include page="../commons/top_image.jsp"/>
 <jsp:include page="../commons/classboard_vertical_nav.jsp"/>
 
    <div class="container">
 	   <div class="row">
-		   <div class="col-1">여백</div>
+		   <div class="col-1"></div>
 		   <div class="col">
 
 				<div class="row mt-2">
@@ -83,10 +89,10 @@
 				</div>
 			
 			</div>
-			<div class="col-1">여백</div>
+			<div class="col-1"></div>
 		</div>
 	</div>
-
+<jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>
 </body>

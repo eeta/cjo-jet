@@ -26,6 +26,7 @@
 			    #{jet_class_price},
 			    #{jet_class_totaltime},
 			    #{jet_class_max_headcount},
+			    #{jet_class_address},
 			    SYSDATE
 			    )
 		]]>		

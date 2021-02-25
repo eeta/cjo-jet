@@ -8,6 +8,14 @@
 
 <title>Insert title here</title>
 
+<jsp:include page="../classboard/script/open_class_page_script.jsp"/>  
+<jsp:include page="../classboard/style/open_class_page_style.jsp"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<jsp:include page="../commons/style/classboard_vertical_nav_style.jsp"/>
+<jsp:include page="../font/NanumGothicCoding.jsp"/>
+<jsp:include page="../commons/style/global_nav_style.jsp"/>
+<jsp:include page="../commons/script/global_nav_script.jsp"/>
+
 
 <script>
    function frmSubmit(){
@@ -40,8 +48,7 @@
 
 </head>
 <body>
-<jsp:include page="../commons/global_nav.jsp"/>
-<div class="topImage"></div>
+<jsp:include page="../commons/top_image.jsp"/>
 
    <div class="container">
       <main>
@@ -133,7 +140,13 @@
                            <div class="col">
                               <input class="btn btn-warning" type="submit" value="개설" onclick="frmSubmit()">      
                            </div>
-                        </div>                           
+                        </div>  
+                        
+                         <div class="row mt-2 text-end">
+                           <div class="col">
+                              <input type="hidden" id="address" name="jet_class_address">      
+                           </div>
+                        </div>                          
                         
                      </div>
                   </div>
@@ -143,6 +156,8 @@
          </div>
       </main>
    </div>
-
+<jsp:include page="../party_board/popup_chat.jsp"/>
+<jsp:include page="../commons/global_nav.jsp"/>
+<jsp:include page="../commons/global_footer.jsp"/>
 </body>
 </html>

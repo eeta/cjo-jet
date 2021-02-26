@@ -201,5 +201,95 @@
    	
    	
    	
+   	
+   	
+   	
+   	
+    
+ // 신고 인서트
+ function singoSubmitBtn() {
+ 	
+ 	var detailNo = ${result.detailVo.jet_class_detail_no};
+ 	var singoReason = document.getElementById("jet_board_class_singo_reason").value;
+ 	
+ 	if(singoReason == "" || singoReason.trim() == ""){
+ 		//alert("신고사유를 입력해주세요.");
+ 		//return;
+ 			
+ 		var confirmAlertBox = document.getElementById("confirm-singo-alert-box");
+ 		var alertBox = document.createElement("div");
+ 		alertBox.setAttribute("class","text-end");
+  		alertBox.setAttribute("style","color : red;");
+  		alertBox.innerText = "신고사유를 입력해주세요!";
+  		confirmAlertBox.append(alertBox);
+  		
+  		jet_board_class_singo_reason.focus();
+  		
+  		setTimeout(function(){
+  			confirmAlertBox.innerHTML = "";
+  		},1500);
+  		return;
+ 	}
+ 	
+ 	var xmlhttp = new XMLHttpRequest();
+ 	
+ 		xmlhttp.onreadystatechange = function(){
+ 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+
+ 				$(".modal").modal('hide');
+ 				
+ 				refreshSingo();
+ 					
+ 			}	
+ 		};
+ 		xmlhttp.open("post","${pageContext.request.contextPath}/classboard/singo_class_process.do");
+ 		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+ 		xmlhttp.send("jet_board_class_detail_no=" + detailNo + "&jet_board_class_singo_reason=" + singoReason);
+ 		
+ 		//document.getElementById("jet_board_knowhow_singo_reason").value = "";
+ }
+
+
+ // 신고 예외....
+ function refreshSingo() {
+ 	
+ 	//var board_no = ${result.classboardVo.jet_class_no};
+ 	var detailNo = ${result.detailVo.jet_class_detail_no};
+ 		
+ 	var xmlhttp = new XMLHttpRequest();
+ 	
+ 		xmlhttp.onreadystatechange = function() {
+ 			
+ 		
+ 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+ 			
+ 				var obj = JSON.parse(xmlhttp.responseText);
+ 				//responseText 못 받고 있음...
+ 				if (obj.countSingo > 0) {
+ 					//바로 클릭한 직후...obj가 0이다.
+ 					
+ 					var singoBox = document.getElementById("singoBox");
+ 					singoBox.innerHTML = "";
+ 					
+ 											
+ 					// 글씨
+ 					var reportState = document.createElement("div");
+ 					reportState.setAttribute("class", "text-end");
+ 					reportState.setAttribute("style", "color : red");
+ 					reportState.innerText = "신고 완료";
+ 					
+ 					singoBox.append(reportState);
+ 					
+ 				}			
+ 			}
+ 		}
+
+ 		// 셀렉트니까 get 방식
+ 		xmlhttp.open("get","${pageContext.request.contextPath}/classboard/check_singo_process.do?jet_board_class_detail_no=" + detailNo);
+ 		xmlhttp.send();
+ 			
+ }
+   
+   
 
 </script>

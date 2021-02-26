@@ -13,6 +13,7 @@ import com.cjo.jet.classboard.service.ClassboardServiceImpl;
 import com.cjo.jet.vo.ClassPickVo;
 import com.cjo.jet.vo.ClassReservationVo;
 import com.cjo.jet.vo.ClassReviewVo;
+import com.cjo.jet.vo.ClassSingoVo;
 import com.cjo.jet.vo.MemberVo;
 
 @Controller
@@ -150,6 +151,34 @@ public class RESTfulClassboardController {
 		map.put("reviewVo", reviewVo);
 		
 		//System.out.println("레스트풀 ~~ test : " + jet_class_detail_no);
+		return map;
+	}
+	
+	// 게시글 신고 프로세스 
+	@RequestMapping("singo_class_process.do")
+	public void singoInsertProcess (ClassSingoVo param, HttpSession session) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser"); 
+		int jet_member_no = sessionUser.getJet_member_no();
+		param.setJet_member_no(jet_member_no);
+		
+		classboardService.singoInsert(param);
+	}
+	
+	// 신고 여부 확인
+	@RequestMapping("check_singo_process.do")
+	public HashMap<String, Object> checkSingoProcess(ClassSingoVo vo, HttpSession session) {
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser"); 
+		int jet_member_no = sessionUser.getJet_member_no();
+		vo.setJet_member_no(jet_member_no);
+		
+		int countSingo = classboardService.isSingoClassBoard(vo);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("countSingo", countSingo);
+			
 		return map;
 	}
 }

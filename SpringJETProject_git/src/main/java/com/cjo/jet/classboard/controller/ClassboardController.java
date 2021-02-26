@@ -153,6 +153,7 @@ public class ClassboardController {
 	public String detailClassPage(Model model, int jet_class_detail_no, ClassReservationVo reserveVo, HttpSession session) {
 		
 		HashMap<String, Object> map = classboardService.getClassDetail(jet_class_detail_no);
+		ArrayList<HashMap<String, Object>> map2 = classboardService.getReviewDetail(jet_class_detail_no);
 		
 		// 예약 개수
 		int countReserve = classboardService.countReserve(jet_class_detail_no);
@@ -160,16 +161,19 @@ public class ClassboardController {
 		// 로그인 시 예약 여부 확인
 		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
 		
+		/*
 		if (sessionUser != null) {
 			int jet_member_no = sessionUser.getJet_member_no();
 			reserveVo.setJet_member_no(jet_member_no);
 		}
 		
 		int isReserved = classboardService.isReservedByUser(reserveVo);
+		*/
 		
 		model.addAttribute("result", map);
+		model.addAttribute("reviewVo",map2);
 		model.addAttribute("countReserve", countReserve);
-		model.addAttribute("isReserved", isReserved);
+		// model.addAttribute("isReserved", isReserved);
 		
 		System.out.println("[ 컨트롤러 ] model " + model);
 		

@@ -333,4 +333,75 @@ public class ClassboardServiceImpl {
 		ClassPickVo classPickVo = classDetailSQLMapper.checkPick(jet_class_detail_no, session.getJet_member_no());
 		return classPickVo;
 	}
+	
+	//
+	public ArrayList<HashMap<String, Object>> getReviewDetail(int jet_class_detail_no){
+		
+		ArrayList<HashMap<String, Object>> map2 = new ArrayList<HashMap<String,Object>>();
+		//클래스 리뷰
+		ArrayList<ClassReviewVo> classReviewVo = classReviewSQLMapper.selectReviews(jet_class_detail_no);
+		
+		for(ClassReviewVo reviewVo : classReviewVo) {
+			
+			int member_no = reviewVo.getJet_member_no();
+			MemberVo memberVo = memberSQLMapper.selectByNo(member_no);
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("memberVo", memberVo);
+			map.put("reviewVo", reviewVo);
+
+			map2.add(map);
+		}
+		
+		return map2;
+		
+	}
+	
+	//신고 인서트
+	public void singoInsert(ClassSingoVo vo) {
+		classDetailSQLMapper.insertSingo(vo);
+	}
+		
+	// 신고자 체크
+	public int isSingoClassBoard(ClassSingoVo vo) {
+		
+		return classDetailSQLMapper.isSingoByUser(vo);
+	}
+
+
+	// 원데이클래스 게시판 글의 모든 신고 출력 [관리자 페이지에서]
+	public ArrayList<HashMap<String, Object>> getClassSingoList() {
+		
+		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+		
+		ArrayList<ClassSingoVo> classSingoList = classDetailSQLMapper.selectAllSingoNoPage();
+		
+		for(ClassSingoVo classSingoVo : classSingoList) {
+			int singoMember_no = classSingoVo.getJet_member_no();
+			MemberVo singoMemberVo = memberSQLMapper.selectByNo(singoMember_no);
+			
+			int class_detail_no = classSingoVo.getJet_board_class_detail_no();
+			ClassDetailVo classDetailVo = classDetailSQLMapper.selectByNo(class_detail_no);
+			
+			
+			// 원데이 클래스 제목 구하기: class_no -> classVo 에 넣기
+			int class_no = classDetailVo.getJet_class_no();
+			ClassboardVo classVo = classboardSQLMapper.selectByNo(class_no);
+			
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("classSingoVo", classSingoVo);
+			map.put("singoMemberVo", singoMemberVo);
+			map.put("classDetailVo", classDetailVo);
+			map.put("classVo", classVo);
+			System.out.println("classDetailVo + " + classDetailVo);
+			System.out.println("classVo + " + classVo);
+			
+			result.add(map);
+			
+		}
+		
+		return result;
+	}	
 }

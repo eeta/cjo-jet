@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cjo.jet.vo.ClassDetailVo;
 import com.cjo.jet.vo.ClassPickVo;
+import com.cjo.jet.vo.ClassSingoVo;
 
 public interface ClassDetailSQLMapper {
 	
@@ -28,4 +29,13 @@ public interface ClassDetailSQLMapper {
 	public void deletePick(@Param("jet_class_detail_no")int jet_class_detail_no, @Param("jet_member_no")int jet_member_no);
 
 	public ClassPickVo checkPick(@Param("jet_class_detail_no")int jet_class_detail_no, @Param("jet_member_no")int jet_member_no);
+	
+	//신고
+	public void insertSingo(ClassSingoVo vo);
+	
+	// 게시글 당 신고 클릭 여부 확인
+	public int isSingoByUser(ClassSingoVo vo);
+	
+	// 노티스 글에 모든 신고 출력 
+	public ArrayList<ClassSingoVo> selectAllSingoNoPage();
 }

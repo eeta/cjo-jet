@@ -12,6 +12,7 @@ import com.cjo.jet.classboard.mapper.ClassDetailSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassImageSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassMySQLMapper;
 import com.cjo.jet.classboard.mapper.ClassReserveSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassReviewSQLMapper;
 import com.cjo.jet.classboard.mapper.ClassboardSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
 import com.cjo.jet.vo.*;
@@ -39,6 +40,9 @@ public class ClassboardServiceImpl {
 	
 	@Autowired
 	private ClassMySQLMapper classMySQLMapper;
+	
+	@Autowired
+	private ClassReviewSQLMapper classReviewSQLMapper;
 
 	// 원데이클래스 개설
 	public void openClass(ClassboardVo vo, ArrayList<ClassImageVo> classImageVo) {
@@ -174,6 +178,9 @@ public class ClassboardServiceImpl {
 			// 이미지
 			ArrayList<ClassImageVo> imageVo = classimageSQLMapper.selectByNo(jet_class_no);
 			
+			// 리뷰 전체 리스트
+			ClassReviewVo reviewVo = classReviewSQLMapper.selectReviewsByMemberNo(jet_member_no, jet_class_detail_no);
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 
 			map.put("reserveVo", reserveVo);
@@ -181,11 +188,26 @@ public class ClassboardServiceImpl {
 			map.put("classVo", classVo);
 			map.put("categoryVo", categoryVo);
 			map.put("imageVo", imageVo);
+			map.put("reviewVo", reviewVo);
 			
 			resultList.add(map);
 			
 		}
 		return resultList;
+	}
+	
+	// 별점 및 후기 작성
+	public void writeClassReview(ClassReviewVo vo) {
+		classReviewSQLMapper.insertReview(vo);
+	}
+	
+	// 내가 작성한 특정 원데이클래스 리뷰 보기
+	public ClassReviewVo getReview(int jet_member_no, int jet_class_detail_no) {
+		//System.out.println("%서비스 getReview  jet_member_no =" + jet_member_no);
+		
+		ClassReviewVo reviewVo = classReviewSQLMapper.selectReviewsByMemberNo(jet_member_no, jet_class_detail_no);
+
+		return reviewVo;
 	}
 	
 	// MyClassPage 리스트

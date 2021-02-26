@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cjo.jet.classboard.service.ClassboardServiceImpl;
 import com.cjo.jet.vo.ClassPickVo;
 import com.cjo.jet.vo.ClassReservationVo;
+import com.cjo.jet.vo.ClassReviewVo;
 import com.cjo.jet.vo.MemberVo;
 
 @Controller
@@ -121,5 +122,34 @@ public class RESTfulClassboardController {
 		pickMap.put("pickCheck", pickCheck);
 		
 		return pickMap;
+	}
+	
+	// 원데이클래스 리뷰 작성 프로세스로
+	@RequestMapping("write_class_review_process.do")
+	public void writeClassReviewProcess(ClassReviewVo reviewVo, HttpSession session) {
+		
+		MemberVo memberVo = (MemberVo)session.getAttribute("sessionUser");
+		int member_no = memberVo.getJet_member_no();
+		reviewVo.setJet_member_no(member_no);
+		
+		classboardService.writeClassReview(reviewVo);
+		
+	}
+
+	// 원데이클래스 리뷰 리스트
+	@RequestMapping("get_class_review.do")
+	public HashMap<String, Object> getMyReview(HttpSession session, int jet_class_detail_no) {
+		//System.out.println("[getMyReview] 실행 / 에이작스 셀렉트 ");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		MemberVo sessionUser = (MemberVo) session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();
+		
+		ClassReviewVo reviewVo = classboardService.getReview(jet_member_no, jet_class_detail_no);
+
+		map.put("reviewVo", reviewVo);
+		
+		//System.out.println("레스트풀 ~~ test : " + jet_class_detail_no);
+		return map;
 	}
 }

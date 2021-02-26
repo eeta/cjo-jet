@@ -2,12 +2,15 @@ package com.cjo.jet.classboard.mapper;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cjo.jet.vo.ClassReservationVo;
 
 public interface ClassReserveSQLMapper {
 	
 	// 예약 여부 확인
 	public int isReservedByUser(ClassReservationVo vo);
+	public ClassReservationVo checkReservation(@Param("jet_class_detail_no")int jet_class_detail_no, @Param("jet_member_no") int jet_member_no);
 	
 	// 예약 (예약 삽입)
 	public void insertReserve(ClassReservationVo vo);

@@ -12,6 +12,15 @@
 			AND jet_class_detail_no = #{jet_class_detail_no}
 		]]>
 	</select>
+	
+	<!-- 지윤: 예약 여부 확인 -->
+	<select id="checkReservation" resultType="com.cjo.jet.vo.ClassReservationVo">
+		<![CDATA[
+			SELECT * FROM jet_class_reservation
+			WHERE jet_member_no = #{jet_member_no}
+			AND jet_class_detail_no = #{jet_class_detail_no}
+		]]>
+	</select>
 
 	<!-- 예약. 예약 삽입 -->
 	<insert id="insertReserve">

@@ -40,5 +40,36 @@
 			WHERE jet_class_detail_no = #{jet_class_detail_no}
 		]]>
 	</select>
+	
+	<!-- 찜하기 -->
+	<insert id="insertPick">
+		<![CDATA[	
+			INSERT INTO JET_class_pick 
+			VALUES (
+					JET_class_pick_seq.nextval,
+					#{jet_member_no},
+					#{jet_class_detail_no}
+			)
+		]]>
+	</insert>
+	
+	<!-- 찜 취소 -->
+	<delete id="deletePick">
+		<![CDATA[
+			DELETE 
+			FROM jet_class_pick
+			WHERE jet_class_detail_no = #{jet_class_detail_no}
+			AND jet_member_no = #{jet_member_no}
+		]]>
+	</delete>
+	
+	<select id="checkPick" resultType="com.cjo.jet.vo.ClassPickVo">
+		<![CDATA[
+			SELECT *
+			FROM jet_class_pick
+			WHERE jet_class_detail_no = #{jet_class_detail_no} 
+			AND jet_member_no = #{jet_member_no}
+		]]>
+	</select>
 
 </mapper>

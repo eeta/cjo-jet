@@ -289,4 +289,26 @@ public class ClassboardServiceImpl {
 		return list;
 
 	}
+	
+	
+	// 예약 여부 확인
+	public ClassReservationVo checkReservation(MemberVo session, int jet_class_detail_no) {
+		 ClassReservationVo classReservationVo = classReserveSQLMapper.checkReservation(jet_class_detail_no, session.getJet_member_no());
+		 return classReservationVo;
+	}
+	
+	// 찜
+	public void insertPick(ClassPickVo vo) {
+		classDetailSQLMapper.insertPick(vo);
+	}
+	
+	// 찜 취소
+	public void deletePick(int jet_class_detail_no, int jet_member_no) {
+		classDetailSQLMapper.deletePick(jet_class_detail_no, jet_member_no);
+	}
+	
+	public ClassPickVo checkPick(int jet_class_detail_no, MemberVo session) {
+		ClassPickVo classPickVo = classDetailSQLMapper.checkPick(jet_class_detail_no, session.getJet_member_no());
+		return classPickVo;
+	}
 }

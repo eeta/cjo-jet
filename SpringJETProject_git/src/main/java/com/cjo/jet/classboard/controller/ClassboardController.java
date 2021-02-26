@@ -176,6 +176,7 @@ public class ClassboardController {
 		return "classboard/detail_class_page";
 	}
 	
+	/*
 	// 클래스 예약하기
 	@RequestMapping("reserve_class_process.do")
 	public String reserveClassProcess(HttpSession session, ClassReservationVo reserveVo, int jet_class_detail_no) {
@@ -188,6 +189,7 @@ public class ClassboardController {
 	
 		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
+	*/
 	
 	// 클래스 예약 취소하기
 	@RequestMapping("delete_class_process.do")

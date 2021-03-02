@@ -21,6 +21,7 @@
 <jsp:include page="../classboard/style/main_classboard_style.jsp"/>
 <jsp:include page="../commons/style/global_nav_style.jsp"/>
 <jsp:include page="../commons/script/global_nav_script.jsp"/>
+<jsp:include page="../classboard/ad_class_board.jsp"/>
 
 </head>
 
@@ -28,71 +29,103 @@
 <jsp:include page="../commons/top_image.jsp"/>
 <jsp:include page="../commons/classboard_vertical_nav.jsp"/>
 
+
    <div class="container">
-	   <div class="row">
-		   <div class="col-1"></div>
-		   <div class="col">
-
-				<div class="row mt-2">
-					<div class="col-5"></div>
-					<div class="col-5"></div>
-					<div class="col-2 text-muted" style="text-align: right;">home > oneday class board</div>
-				</div>
-				<div class="row mt-4">
-					<div class="col text-center display-5">oneday class board</div>
-
-				</div>
-				<div class="row mt-4">
-					<hr>
-				</div>
-
-				<div class="row mt-2">		
-					<!-- 게시판 테이블 -->
-					<div class="col">    
-					<table class="table table-hover table-responsive">
-						<thead class="text-center">
-						
-						<tr>
-							<th scope="col" class="col-1">분류</th>
-							<th scope="col" class="col-1">번호</th>
-							<th scope="col">클래스</th>
-							<th scope="col" class="col-1">신청현황</th>
-							<th scope="col" class="col-2">작성자</th>
-							<th scope="col" class="col-1">수강날짜</th>
-							<th scope="col" class="col-1">등록일</th>
-						</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${resultList}" var="data">
-							<tr>
-								<th scope="row" class=" text-center">${data.classCategoryVo.jet_class_category_name}</th>
-								<td class="text-center">${data.classDetailVo.jet_class_detail_no}</td>
-								<td><a href="${pageContext.request.contextPath}/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}">${data.classboardVo.jet_class_name}</a>
-								</td>
-								<td class="text-center">${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</td>
-								<td class="text-center">${data.memberVo.jet_member_nick}</td>
-								<td class="text-center"><fmt:formatDate pattern="MM-dd" value="${data.classDetailVo.jet_class_detail_date }"/></td>
-								<td class="text-center"><fmt:formatDate pattern="MM-dd" value="${data.classboardVo.jet_class_writedate}"/></td>
-							</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-					</div>
-				</div>
-					
-				<div class="row">
-					<div class="col d-grid gap-2 d-md-flex justify-content-md-end">
-					<c:if test="${!empty sessionUser }">
-						<a class="btn btn-warning" href="${pageContext.request.contextPath}/classboard/open_class_page.do" role="button">원데이클래스 개설하기</a>
-					</c:if>
-					</div>
-				</div>
-			
+         <main>
+			<div class="row mt-2">
+			    <div class="col-5"></div>
+			    <div class="col-5"></div>
+			    <div class="col-2 text-muted" style="text-align: right;">home > oneDay class</div>
 			</div>
-			<div class="col-1"></div>
-		</div>
-	</div>
-<jsp:include page="../party_board/popup_chat.jsp"/>
+			<div class="row mt-4">
+			    <div class="col text-center display-5" style="font-family: daum">원데이 클래스</div>
+			</div>
+            <div class="row mt-2">
+               <div class="col d-grid gap-2 d-md-flex justify-content-md-end">
+                  <c:if test="${!empty sessionUser }">
+                     <a class="btn btn-warning" style="color: black; font-size: 15px; font-family: daum;" href="${pageContext.request.contextPath}/classboard/open_class_page.do" role="button">강의 개설하기</a>
+                  </c:if>
+               </div>
+            </div>			
+			<div class="row mt-3">
+			    <hr> <!-- 선 -->
+			</div>
+      
+            
+            <div class="row mt-2 ms-4" style="text-align: center;">
+               
+               	<!--
+                  <table class="table table-hover table-responsive">
+                    <thead class="text-center">
+                    
+                      <tr>
+                        <th scope="col" class="col-2">분류</th>
+                        <th scope="col" class="text-start">클래스</th>
+                        <th scope="col" class="col-1">신청현황</th>
+                        <th scope="col" class="col-2">작성자</th>
+                        <th scope="col" class="col-1">수강날짜</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                       
+                         <tr>
+                           <th scope="row" class=" text-center">${data.classCategoryVo.jet_class_category_name}</th>
+                           <td><a href="${pageContext.request.contextPath}/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}">${data.classboardVo.jet_class_name}</a></td>
+                           <td class="text-center">${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</td>
+                           <td class="text-center">${data.memberVo.jet_member_nick }</td>
+                           <td class="text-center"><fmt:formatDate pattern="MM-dd" value="${data.classDetailVo.jet_class_detail_date }"/></td>
+                         </tr>
+                       
+                    </tbody>
+                  </table>
+                -->  
+                
+           <!-- 게시판 테이블 -->     
+                <c:forEach items="${resultList }" var="data">
+	                <div class="col-4 mt-2 mb-4">  
+						<div style="text-align: center; box-shadow: 2px 2px 4px 0px #BDBDBD; width: 350px; border-radius:5px">                 
+							<c:choose>
+								<c:when test="${!empty data.imageVoList }">
+									<div><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img style=" width:350px; height:250px;text-align:center;" src="${data.imageVoList[0].jet_class_image_link }" alt="image"></a></div>
+								</c:when>
+								<c:otherwise>
+									<div ><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img style=" width:250px; height:250px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
+								</c:otherwise>
+							</c:choose>					
+							
+							<ul style="margin-left: -30px; margin-top: 10px">
+								<li class="text-truncate" style="list-style-type: none;max-width: 320px;"><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}" style="text-decoration:none; color:#000;">${data.classboardVo.jet_class_name }</a></li>
+								
+								<li style="list-style-type: none; margin-top: 10px;"><span class="badge bg-warning text-dark">작성자</span> <span style="font-size: 14px">${data.memberVo.jet_member_nick }</span></li>
+							</ul>
+							<div class="row" style="background-color:#FFFBEE; width:100%; margin-left:0px;border-top:1px solid #FFE08C">
+								<div class="col"><img src="${pageContext.request.contextPath }/resources/image/readCt.PNG" alt="read"></div>
+								<div class="col"><img src="${pageContext.request.contextPath }/resources/image/likeImg.PNG" alt="like"></div>
+								<div class="col"><img src="${pageContext.request.contextPath }/resources/image/repleCt.PNG" alt="reple"></div>
+							</div>
+							<div class="row" style="background-color:#FFFBEE; width:100%; margin-left:0px">
+								<div class="col" style="font-size:12px">신청현황</div>
+								<div class="col" style="font-size:12px">별점</div>
+								<div class="col" style="font-size:12px">수강날짜</div>
+							</div>
+							<div class="row" style="background-color:#FFFBEE; width:100%; margin-left:0px">
+								<div class="col" style="font-size:12px">${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</div>
+								<div class="col" style="font-size:12px">${data.starRating }</div>
+								<div class="col" style="font-size:12px"><fmt:formatDate pattern="MM-dd" value="${data.classDetailVo.jet_class_detail_date }"/></div>
+							</div>    
+						</div> 
+					</div>
+				</c:forEach>
+            </div>
+            <div class="row mt-2">
+            	 <hr> <!-- 선 -->
+        	</div>
+            
+    	</main>
+      
+	  </div>
+   </div>
+   <jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>
 </body>

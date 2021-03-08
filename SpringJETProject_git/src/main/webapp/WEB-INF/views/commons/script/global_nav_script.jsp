@@ -44,7 +44,7 @@
 		            $header = $('header');
 		    
 		    $firstMenu.mouseleave(function(){
-		        $header.stop().animate({height:'17.5vh'},500);
+		        $header.stop().animate({height:'18vh'},500);
 		    })
 		    .mouseenter(function(){
 		        $header.stop().animate({height:'47.5vh'},500);

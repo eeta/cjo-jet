@@ -58,13 +58,13 @@
 		<div class="col-2 text-end ps-0"style="padding-right: 2rem;margin-right: 3rem;">
 			<div class="row mt-5"></div>
 			<div class="row text-end">
-				<div class="col">
+				<div id="nav_nav" class="col">
 					<ul id="global_nav_ul" class="m-0">
 						<c:choose>
 							<c:when test="${!empty sessionUser }">
 								<li><a href="${pageContext.request.contextPath }/member/logout_process.do">로그아웃</a></li>
 								<li><a href="#">${sessionUser.jet_member_nick }</a></li>
-								<li><a href="${pageContext.request.contextPath }/mypage/mypage.do"">마이페이지</a></li>
+								<li><a href="${pageContext.request.contextPath }/mypage/mypage.do">마이페이지</a></li>
 							</c:when>
 							<c:otherwise>
 								<li><a href="${pageContext.request.contextPath }/member/join_member_page.do">회원가입</a></li>
@@ -74,6 +74,7 @@
 						</c:choose>
 					</ul>
 				</div>
+				
 			</div>
 		</div>
 		<%--------------------------------------------- 햄버거 및 사이드바 ----------------------------------------------%>
@@ -106,10 +107,8 @@
 	                	<c:choose>
 	                		<c:when test="${!empty sessionUser }">
 			                    <ul class="side_login" style="margin:left:50px">
-			                        <li >
-			                            <a  href="${pageContext.request.contextPath }/mypage/mypage.do">${sessionUser.jet_member_nick }</a>
-			                        </li>
 			                        <li>
+			                            <a style="padding-left: 0;" href="${pageContext.request.contextPath }/mypage/mypage.do">${sessionUser.jet_member_nick }</a>
 			                            <a href="${pageContext.request.contextPath }/member/logout_process.do">로그아웃</a>
 			                        </li>
 			                    </ul>
@@ -133,14 +132,9 @@
 					<c:choose>
 				
 						<c:when test="${sessionUser.jet_member_grade == 9 }">
-							<li>
-							 <a href="${pageContext.request.contextPath }/admin/admin_main_page.do">관리자 페이지</a> 
-							</li> 
-							
-							<li>
-			                 	<img alt="myrevise" src="${pageContext.request.contextPath }/resources/image/plan.PNG">
-			                     <a href="${pageContext.request.contextPath }/travelplan/travelplan_board_page.do">나의 여행 계획</a>
-			                 </li>
+							<li style="padding-left: 0.8rem;">
+							 <i class="fas fa-user-tie"></i><a style="padding-left: 1.9rem;" href="${pageContext.request.contextPath }/admin/admin_main_page.do">관리자 페이지</a> 
+							</li>
 						</c:when>
 						
 						<c:when test="${empty sessionUser }">

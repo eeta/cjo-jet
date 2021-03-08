@@ -90,10 +90,10 @@
   		  대시보드(통계)
   	  </a>	
   	 	<hr>
-  	  <a href="${pageContext.request.contextPath }/admin/test_tap.do" class="list-group-item list-group-item-action">TEST TAP</a>
-	  <a href="${pageContext.request.contextPath }/admin/test_read.do" class="list-group-item list-group-item-action">TEST 탭버튼</a>
+<%--   	  <a href="${pageContext.request.contextPath }/admin/test_tap.do" class="list-group-item list-group-item-action">TEST TAP</a> --%>
+<%-- 	  <a href="${pageContext.request.contextPath }/admin/test_read.do" class="list-group-item list-group-item-action">TEST 탭버튼</a> --%>
 	  
-	  <a href="${pageContext.request.contextPath }/admin/test_accodian.do" class="list-group-item list-group-item-action">TEST 아코디언</a>	
+<%-- 	  <a href="${pageContext.request.contextPath }/admin/test_accodian.do" class="list-group-item list-group-item-action">TEST 아코디언</a>	 --%>
 	
 	</div>		
 	

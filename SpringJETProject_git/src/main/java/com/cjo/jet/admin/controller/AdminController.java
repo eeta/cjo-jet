@@ -399,22 +399,45 @@ public class AdminController {
 		
 		return "admin/admin_declaration_knowhow_list_page";
 	}
+	@RequestMapping("admin_declaration_class_list_page.do")
+	public String adminDeclarationClassListPage(Model model) {
+		
+		ArrayList<HashMap<String, Object>> resultList = classBoardService.getClassSingoList();
+		
+		model.addAttribute("resultList",resultList);
+		
+		return "admin/admin_declaration_class_list_page";
+	}
 	
 //--------------회원관리------------------------------------------------------------------------	
 	@RequestMapping("admin_member_management_page.do")
-	public String adminMemberManagementPage(Model model,String search_word,String search_type) {
+	public String adminMemberManagementPage(Model model,String search_word,String search_type, 
+			@RequestParam(value = "page_num", defaultValue = "1") int page_num) {
 		System.out.println("adminMemberManagementPage 실행");
 		
-		ArrayList<HashMap<String, Object>> map =  memberService.getadminMemberManagement(search_word, search_type);
+		ArrayList<HashMap<String, Object>> map =  memberService.getadminMemberManagement(search_word, search_type,page_num);
 		
+		int pageCount = memberService.getPageCountForAdmin();
+		int currentPage = page_num;
+	 	int beginPage = ((currentPage-1)/5) * 5 + 1;
+	 	int endPage = ((currentPage-1)/5 + 1) * (5);
+	 	// 페이지 계산: int. 정수 나누기 정수. 나머지 버리니까 1/5 = 0 이 된다.
+	 	
+	 	if(endPage > pageCount) {
+	 		endPage = pageCount;
+	 	}
+	 	model.addAttribute("currentPage", currentPage);
+	 	model.addAttribute("beginPage", beginPage);
+	 	model.addAttribute("endPage", endPage);
+	 	model.addAttribute("pageCount", pageCount);
 		model.addAttribute("resultMemberList", map);
 		
 		return "admin/admin_member_management_page";
 	}
 	@RequestMapping("admin_member_stopedmember_page.do")
-	public String adminStopedMemberPage(Model model) {
+	public String adminStopedMemberPage(Model model,@RequestParam(value = "page_num", defaultValue = "1") int page_num ) {
 		
-		ArrayList<HashMap<String, Object>> map = memberService.getStopedMemberList();
+		ArrayList<HashMap<String, Object>> map = memberService.getStopedMemberList(page_num);
 		model.addAttribute("resultMemberList", map);
 		
 		return "admin/admin_member_stopedmember_page";
@@ -518,8 +541,9 @@ public class AdminController {
 	}
 	//등업
 	@RequestMapping("admin_member_upgrade_page.do")
-	public String adminMemberUpgradePage(Model model,String search_word,String search_type) {
-		ArrayList<HashMap<String, Object>> map =  memberService.getMemberUpgrade(search_word, search_type);
+	public String adminMemberUpgradePage(Model model,String search_word,String search_type
+			,@RequestParam(value = "page_num", defaultValue = "1") int page_num) {
+		ArrayList<HashMap<String, Object>> map =  memberService.getMemberUpgrade(search_word, search_type, page_num);
 		
 		model.addAttribute("resultMemberList", map);
 		return "admin/admin_member_upgrade_page";

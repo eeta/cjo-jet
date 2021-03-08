@@ -31,7 +31,8 @@ public class RESTfulMemberController {
 	@RequestMapping("exist_id.do")
 	public String existId(String id) {
 		System.out.println("[ajax server test]" + id);//테스트 코드
-		boolean existId = memberService.existId(id);
+		String jet_member_id = id.replaceAll(",", "");
+		boolean existId = memberService.existId(jet_member_id);
 		
 		if(existId == true) {//ajax로 부터 호출되는 명령의 응답은 순수하게 데이터만 리턴되어야 함.
 			return "true"; //나중에 null도 추가해서 테스트해 볼 것

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cjo.jet.noticeboard.service.NoticeBoardServiceImpl;
+import com.cjo.jet.vo.CsBoardAnswerVo;
+import com.cjo.jet.vo.CsBoardImageVo;
 import com.cjo.jet.vo.MemberVo;
 import com.cjo.jet.vo.NoticeBoardVo;
 import com.cjo.jet.vo.NoticeImageVo;

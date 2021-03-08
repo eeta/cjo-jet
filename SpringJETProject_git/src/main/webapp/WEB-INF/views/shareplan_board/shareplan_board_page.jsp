@@ -11,7 +11,7 @@
 	rel="stylesheet"
 	integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
 	crossorigin="anonymous">
-<title>Insert title here</title>
+<title>공유 게시판</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <jsp:include page="../font/NanumGothicCoding.jsp"/>
 
@@ -108,15 +108,15 @@
 									</div>	
 									<c:choose>
 										<c:when test="${!empty data.thumbnail }">
-											<div><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img style=" width:250px; height:250px;text-align:center;" src="${data.thumbnail[0].jet_board_shareplan_image_link }" alt="image"></a></div>
+											<div><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img style="width:250px; height:250px;text-align:center;" src="${data.thumbnail[0].jet_board_shareplan_image_link }" alt="image"></a></div>
 										</c:when>
 										<c:otherwise>
-											<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img src="${pageContext.request.contextPath }/resources/image/logo.jpg" alt="image"></a></div>
+											<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img class="img-fluid" style="width:250px; height:250px;text-align:center;"src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
 										</c:otherwise>
 									</c:choose>
 									
 									<ul style="margin-left: -30px;">
-										<li style="list-style-type: none;">${data.sharePlanBoardVo.jet_board_shareplan_title }</li>
+										<li class="text-truncate" style="list-style-type: none;max-width: 330px;">${data.sharePlanBoardVo.jet_board_shareplan_title }</li>
 										
 										<li style="list-style-type: none; margin-top: 10px;">작성자 : ${data.memberVo.jet_member_nick }</li>
 									</ul>
@@ -176,12 +176,12 @@
 											<div><a onclick="qwe(this)" href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}"><img style=" width:250px; height:250px;text-align:center;" src="${data.thumbnail[0].jet_board_shareplan_image_link }" alt="image"></a></div>
 										</c:when>
 										<c:otherwise>
-											<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}"><img src="${pageContext.request.contextPath }/resources/image/logo.jpg" alt="image"></a></div>
+											<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}"><img class="img-fluid" style="width:250px; height:250px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
 										</c:otherwise>
 									</c:choose>
 									
 									<ul style="margin-left: -30px;">
-										<li style="list-style-type: none;"><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;">${data.sharePlanBoardVo.jet_board_shareplan_title }</a></li>
+										<li class="text-truncate" style="list-style-type: none;max-width: 330px;"><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;">${data.sharePlanBoardVo.jet_board_shareplan_title }</a></li>
 										
 										<li style="list-style-type: none; margin-top: 10px;">작성자 : ${data.memberVo.jet_member_nick }</li>
 									</ul>
@@ -270,10 +270,8 @@
 		
 		
 	</script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-		crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+	
 <jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>

@@ -95,15 +95,15 @@
 	<!--  -->
 	<select id="selectMemberNotMe" resultType="com.cjo.jet.vo.MemberVo">
 		<![CDATA[
-			SELECT * FROM(
+			SELECT jm2.* FROM(
 			    SELECT jm1.*, ROWNUM as rnum FROM(
 			        SELECT * FROM jet_member 
 			            where jet_member_grade < 9 
-			            and jet_member_no not like 1 ORDER BY jet_member_no DESC
+			            and jet_member_no not like #{jet_member_no} ORDER BY jet_member_no DESC
 			        ) jm1
 			    )jm2
-			WHERE jm2.rnum >= (1-1)*4+1
-			AND jm2.rnum <= 1*4
+			WHERE jm2.rnum >= (#{page_num}-1)*4+1
+			AND jm2.rnum <= #{page_num}*4
 		]]>
 	</select>
 	<select id="selectByMemberNick" resultType="com.cjo.jet.vo.MemberVo">
@@ -140,12 +140,13 @@
 	</insert>
 	<select id="selectFriends" resultType="com.cjo.jet.vo.FriendsVo">
 		<![CDATA[
-			SELECT * FROM(
+			SELECT jf2.* FROM(
 				SELECT jf1.*,ROWNUM as fnum FROM (
 					SELECT * FROM jet_friends ORDER BY jet_friends_no DESC
 				) jf1
 			)jf2 
-			WHERE jf2.fnum >= (1-1)*10+1 AND jf2.fnum <= 1*10
+			WHERE jf2.fnum >= (#{page_num}-1)*10+1 
+			AND jf2.fnum <= #{page_num}*10
 		]]>
 	</select>
 	<delete id="deleteByNo">
@@ -189,10 +190,22 @@
 	<!-- 회원 관리 all 리스트-->
 	<select id="selectAll" resultType="com.cjo.jet.vo.MemberVo">
 		<![CDATA[
-			SELECT * FROM JET_member ORDER BY jet_member_no ASC
+			SELECT m2.* 
+		    FROM(
+		        SELECT m1.*,ROWNUM as mnum 
+		        FROM (
+		            SELECT * FROM JET_member ORDER BY jet_member_no ASC
+		            )m1
+		        )m2
+		    WHERE m2.mnum >= (#{page_num}-1)*15+1 
+		    AND m2.mnum <= #{page_num}*15
 		]]>
 	</select>
-	
+	<select id="pageCount" resultType="int">
+		<![CDATA[
+			SELECT CEIL(COUNT(*)/15) FROM jet_member
+		]]>
+	</select>
 	<!-- 회원 아이디 검색 -->
 	<select id="selectByMemberId" resultType="com.cjo.jet.vo.MemberVo">
 		<![CDATA[
@@ -260,7 +273,13 @@
 			SELECT * FROM jet_member_status WHERE SYSDATE < jet_member_status_updateday + jet_stopstate_period_no
 		]]>
 	</select>
-	
+	<select id="selectStopMember" resultType="com.cjo.jet.vo.MemberStatusVo">
+		<![CDATA[
+			SELECT * FROM jet_member_status 
+			WHERE jet_member_status_active LIKE 'N' 
+			AND jet_member_no = #{jet_member_no}
+		]]>
+	</select>
 	<!-- 마이페이지 추가 0213 문제시 오별 -->
 	<!-- 닉네임만...업데이트 -->
 	<update id="updateOnlyNick">
@@ -270,4 +289,18 @@
 			WHERE jet_member_no = #{jet_member_no}
 		]]>
 	</update>
+	<update id="memberUpgradeAply">
+		<![CDATA[
+			update jet_member
+			set jet_member_grade = 1 
+			where jet_member_no = #{jet_member_no} 
+		]]>
+	</update>
+	<update id="memberUpgradeAplyCheck">
+		<![CDATA[
+			update jet_member_upgrade
+			set jet_member_upgrade_check = 'Y' 
+			where jet_member_no = #{jet_member_no} 
+		]]>
+	</update>	
 </mapper>

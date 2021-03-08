@@ -6,10 +6,12 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Param;
 
 import com.cjo.jet.vo.ClassboardVo;
+import com.cjo.jet.vo.PartySingoVo;
 import com.cjo.jet.vo.PickBoardVo;
 import com.cjo.jet.vo.SharePlanBoardVo;
 import com.cjo.jet.vo.SharePlanImageVo;
 import com.cjo.jet.vo.SharePlanLikeVo;
+import com.cjo.jet.vo.SharePlanReportVo;
 import com.cjo.jet.vo.TravelPlanDetailVo;
 
 public interface SharePlanSQLMapper {
@@ -60,5 +62,16 @@ public interface SharePlanSQLMapper {
 	public ArrayList<ClassboardVo> selectRecommendClass(int jet_board_travelplan_no);
 	//추천 원데이 클래스 전부
 	public ArrayList<ClassboardVo> selectRecommendClassAll(int jet_board_travelplan_no);
+	
+	//신고
+	public void insertReport(SharePlanReportVo vo);
+	
+	//신고는 한사람당 한명만 하게 체크 
+	public SharePlanReportVo selectReportByNo(@Param("jet_board_shareplan_no") int jet_board_shareplan_no,@Param("jet_member_no") int jet_member_no);
+	
+	//노티스글의 모든 신고 출력 
+	public ArrayList<SharePlanReportVo> selectAllReportNoPage();
+	
+	public ArrayList<Object> selectReportList();
 	
 }

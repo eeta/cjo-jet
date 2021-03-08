@@ -15,10 +15,23 @@
 	}
 </style>
 <script type="text/javascript">
-	function stateUpdate(){
-		var memberState = document.getElementById("member_state");
-	}
+	function upgradeAply(jet_member_no){
+		 
 		
+		
+		var xmlhttp = new XMLHttpRequest();
+		
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				
+			}
+				
+		};
+		xmlhttp.open("post","${pageContext.request.contextPath}/admin/member_upgrade_aply_process.do");
+		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp.send("jet_member_no=" + jet_member_no);
+
+	}
 
 </script>
 </head>
@@ -56,7 +69,7 @@
 				<div class="col">
 					<ul class="nav nav-tabs">
 					  <li class="nav-item">
-					    <a class="nav-link active" aria-current="page" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do">
+					    <a class="nav-link" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do">
 					    	회원리스트
 					    </a>
 					  </li>
@@ -65,11 +78,12 @@
 					    	블랙리스트
 					    </a>
 					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath }/admin/admin_member_upgrade_page.do">
+  					  <li class="nav-item">
+					    <a class="nav-link active" aria-current="page" href="#">
 					    	등업신청
 					    </a>
 					  </li>
+					  
 					</ul>
 				</div>
 			</div> 	<%--탭 페이지  --%>			
@@ -107,16 +121,16 @@
 			                <thead>
 			                  <tr>
 			                    <th scope="col" class="col-1 text-center">번호</th>
-			                    <th scope="col" class="col">ID</td>
-			                    <th scope="col" class="col-1">이름</td>
-			                    <th scope="col" class="col-1">닉네임</td>
-			                    <th scope="col" class="col-1">성별</td>
-			                    <th scope="col" class="col-1">연락처</td>
-			                    <th scope="col" class="col-1" style="padding-left: 1.5em;">카톡ID</td>
-			                    <th scope="col" class="col-1 text-center">등급</td>
-			                    <th scope="col" class="col-1 text-center">매너도(당도)</td>
-			                    <th scope="col" class="col-1 text-center">가입날짜</td>
-			                    <th scope="col" class="col-1 text-center">상태</td>
+			                    <th scope="col" class="col">ID</th>
+			                    <th scope="col" class="col-1">이름</th>
+			                    <th scope="col" class="col-1">닉네임</th>
+			                    <th scope="col" class="col-1">성별</th>
+			                    <th scope="col" class="col-1">연락처</th>
+			                    <th scope="col" class="col-1" style="padding-left: 1.5em;">카톡ID</th>
+			                    <th scope="col" class="col-1 text-center">등급</th>
+			                    <th scope="col" class="col-1 text-center">매너도(당도)</th>
+			                    <th scope="col" class="col-1 text-center">가입날짜</th>
+			                    <th scope="col" class="col-1 text-center">신청</th>
 			                   </tr>
 			                </thead>
 			                
@@ -125,7 +139,7 @@
 									<c:if test="${data.memberVo.jet_member_grade < 9 }">
 									<tr>
 										<th class="text-center">${data.memberVo.jet_member_no }</th>
-										<td><a style="text-decoration: none;color: #000000;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">${data.memberVo.jet_member_id }</a></td>
+										<td>${data.memberVo.jet_member_id }</td>
 										<td style="padding-right: 0em;">${data.memberVo.jet_member_name }</td>
 										<td>${data.memberVo.jet_member_nick }</td>
 										<td style="padding-right: 0em;">${data.memberVo.jet_member_sex }</td>
@@ -135,11 +149,11 @@
 										<td class="text-center">${data.memberVo.jet_member_credit }</td>
 										<td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${data.memberVo.jet_member_joindate }"/></td>
 										<c:choose>
-											<c:when test="${data.memberStatusVo.jet_member_status_active == 'N'}">
-												<td id="member_state" class="text-center"><a style="color: #e60000; text-decoration: none;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">정지됨</a></td>
+											<c:when test="${data.memberUpgradeVo.jet_member_upgrade_check == 'N'}">
+												<td class="text-center"><button onclick="upgradeAply(${data.memberVo.jet_member_no})" style="border:1px; background-color:#333;padding:5px 10px;color:#fff;border-radius:10px;">승인</button></td>
 											</c:when>
 											<c:otherwise>
-												<td id="member_state" class="text-center"><a style="color: #009933; text-decoration: none;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">활동중</a></td>
+												<td class="text-center"><button type="button" class="btn btn-secondary btn-sm" disabled>승인완료</button></td>
 											</c:otherwise>
 										</c:choose>
 									</tr>
@@ -149,50 +163,13 @@
 							</table>	
 						</div>
 					</div><%--멤버리스트 테이블 row 끝--%>
-					<div class="row mt-2">
-							<div class="col">
-								
-									<ul class="pagination justify-content-center">
-										<li class="page-item<c:if test="${currentPage == 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do?page_num=1">&lt;&lt;</a></li>
-										<li class="page-item<c:if test="${beginPage <= 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do?page_num=${beginPage-1 }">&lt;</a></li>
-										<c:forEach begin="${beginPage }" end="${endPage }" var="page">
-											<li class="page-item <c:if test="${page == currentPage }"> active</c:if>"><a href="${pageContext.request.contextPath }/admin/admin_member_management_page.do?page_num=${page }" class="page-link">${page}</a></li>
-										</c:forEach>
-										<li class="page-item <c:if test="${endPage >= listCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do?page_num=${endPage+1 }">&gt;</a></li>
-										<li class="page-item<c:if test="${currentPage == listCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do?page_num=${listCount }">&gt;&gt;</a></li>
-									</ul>
-								
-							</div>
-						</div>
+					
 					<div class="row">
 						<div class="col">
 							<hr>
 						</div>
 					</div>
-<%--페이징 처리 --%><%--					
-					<div class="row"> 
-						<div class="col">
-						
-							  <ul class="pagination justify-content-center">
-							    
-							    <li class="page-item<c:if test="${currentPage == 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_csboard_page.do?page_num=1">&lt;&lt</a></li>
-								<li class="page-item<c:if test="${beginPage <= 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_csboard_page.do?page_num=${beginPage-1}">&lt;</a></li>
-								
-									<c:forEach begin="${beginPage }" end="${endPage }" var="index">
-									
-										<li class="page-item<c:if test="${index == currentPage }"> active</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_csboard_page.do?page_num=${index }">${index}</a></li>
-									
-									</c:forEach>				      
-								
-								<li class="page-item<c:if test="${endPage >= pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_csboard_page.do?page_num=${endPage+1 }">&gt;</a></li>
-								<li class="page-item<c:if test="${currentPage == pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/admin/admin_csboard_page.do?page_num=${pageCount}">&gt;&gt</a></li>
-							  
-							  </ul>
-						
-						</div>
-					</div>
- --%>			
- <%--페이징 처리 row끝 --%>		
+	
 					
 				</div> <%--멤버 리스트 테이블 col 끝--%>
 			</div> <%--멤버 리스트 테이블 row 끝--%>

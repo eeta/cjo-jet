@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>회원 관리</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"></head>
 <style>
 	#mainbox{
@@ -14,6 +14,9 @@
    		border-radius: .25rem;
 	}
 </style>
+<script type="text/javascript">
+
+</script>
 </head>
 <body style="background-color:#f6f6f6";>
 
@@ -27,7 +30,7 @@
 			
 			<div class="row mt-5">
 				<div class="col">
-					<h1 class="text-center">게시물 신고 리스트</h1>
+					<h1 class="text-center">MEMBER management</h1>
 				</div>
 			</div>
 
@@ -35,7 +38,7 @@
 				<div class="col"></div>
 				<div class="col"></div>
 				<div class="col-2 text-muted" style="text-align: right;">
-					home > singo
+					home > controllMember
 				</div>
 			</div>
 						
@@ -49,82 +52,94 @@
 				<div class="col">
 					<ul class="nav nav-tabs">
 					  <li class="nav-item">
-					    <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath }/admin/admin_declaration_notice_list_page.do">
-					    	Notice
+					    <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath }/admin/admin_member_management_page.do">
+					    	회원리스트
 					    </a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" href="#">
-					    	자유게시판
+					    <a class="nav-link active" href="${pageContext.request.contextPath }/admin/admin_member_stopedmember_page.do">
+					    	블랙리스트
 					    </a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" href="#">
-					    	팁과노하우
+					    <a class="nav-link" aria-current="page" href="${pageContext.request.contextPath }/admin/admin_member_upgrade_page.do">
+					    	등업신청
 					    </a>
 					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" href="#">
-					    	리뷰게시판
-					    </a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" href="#">
-					    	여행공유게시판
-					    </a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link active" href="${pageContext.request.contextPath }/admin/admin_declaration_party_list_page.do">
-					    	여행친구찾기
-					    </a>
-					  </li>
-					   <li class="nav-item">
-					    <a class="nav-link" href="${pageContext.request.contextPath}/admin/admin_declaration_class_list_page.do">
-					    	원데이클래스
-					    </a>
-					  </li>
-					  
 					</ul>
 				</div>
 			</div> 	<%--탭 페이지  --%>			
 			
 			<div class="row mt-2"> <%--문의글 테이블 --%>
 				<div class="col">
-	
+					
+					<div class="row">	 <%--검색 row--%>
+						<div class="col-8"></div>
+						<div class="col">
+						<form action="${pageContext.request.contextPath }/admin/admin_member_management_page.do" method="get">
+							<div class="row">
+								<div class="col-3">
+									<select  name="search_type" class="form-select">
+										<option value="id">ID</option>
+										<option value="name">이름</option>
+										<option value="nick">NICK</option>
+										<option>=======</option>
+									</select>
+								</div>
+								<div class="col">
+									<input name="search_word" type="text" class="form-control" placeholder="검색어를 입력해주세요">
+								</div>
+								<div class="col-2">
+									<input type="submit" value="검색" class="btn btn-dark">
+								</div>
+							</div>
+						</form>
+						</div>
+					</div><%--검색 row  끝--%>
+				
 					<div class="row mt-2">
 						<div class="col">
 							<table class="table table-hover table-responsive ">
 			                <thead>
 			                  <tr>
 			                    <th scope="col" class="col-1 text-center">번호</th>
-			                    <th scope="col" class="col-4">글제목</td>
-			                    <th scope="col" class="col-4">신고 사유</td>
-			                    <th scope="col" class="col-1">신고자</td>
-			                    <th scope="col" class="col-1 text-center">신고 날짜</td>
+			                    <th scope="col" class="col">ID</td>
+			                    <th scope="col" class="col-1">이름</td>
+			                    <th scope="col" class="col-1">닉네임</td>
+			                    <th scope="col" class="col-1">성별</td>
+			                    <th scope="col" class="col-1">연락처</td>
+			                    <th scope="col" class="col-1" style="padding-left: 1.5em;">카톡ID</td>
+			                    <th scope="col" class="col-1 text-center">등급</td>
+			                    <th scope="col" class="col-1 text-center">매너도(당도)</td>
+			                    <th scope="col" class="col-1 text-center">가입날짜</td>
 			                    <th scope="col" class="col-1 text-center">상태</td>
 			                   </tr>
 			                </thead>
 			                
 			                <tbody>
-								<c:forEach items="${resultList }" var="data">
+								<c:forEach items="${resultMemberList }" var="data">
+									<c:if test="${data.memberVo.jet_member_grade < 9 && data.memberStatusVo.jet_member_status_active == 'N'}">
 									<tr>
-										<th class="text-center">${data.partySingoVo.jet_board_party_singo_no  }</th>
-										<td><a href="${pageContext.request.contextPath }/party_board/read_party_board_page.do?jet_board_party_no=${data.partyBoardVo.jet_board_party_no}">
-											${data.partyBoardVo.jet_board_party_title }
-										</a></td>
-										<td>${data.partySingoVo.jet_board_party_singo_reason }</td>
-										<td>${data.singoMemberVo.jet_member_nick }</td>
-										<td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${data.partySingoVo.jet_board_party_singo_date }"/></td>
-										<td class="text-center">
-											<select>
-												<option>전체 공개</option>
-												<option>숨김</option>
-												<option>삭제</option>
-												<option>======</option>
-											</select>
-										</td>
+										<th class="text-center">${data.memberVo.jet_member_no }</th>
+										<td><a style="text-decoration: none;color: #000000;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">${data.memberVo.jet_member_id }</a></td>
+										<td style="padding-right: 0em;">${data.memberVo.jet_member_name }</td>
+										<td>${data.memberVo.jet_member_nick }</td>
+										<td style="padding-right: 0em;">${data.memberVo.jet_member_sex }</td>
+										<td style="padding-left: 0em;padding-right: 0em;">${data.memberVo.jet_member_phone }</td>
+										<td style="padding-left: 1em;">${data.memberVo.jet_member_kakao }</td>
+										<td class="text-center">${data.memberVo.jet_member_grade }</td>
+										<td class="text-center">${data.memberVo.jet_member_credit }</td>
+										<td class="text-center"><fmt:formatDate pattern="yyyy-MM-dd" value="${data.memberVo.jet_member_joindate }"/></td>
+										<c:choose>
+											<c:when test="${data.memberStatusVo.jet_member_status_active == 'N'}">
+												<td id="member_state" class="text-center"><a style="color: #e60000; text-decoration: none;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">정지됨</a></td>
+											</c:when>
+											<c:otherwise>
+												<td id="member_state" class="text-center"><a style="color: #009933; text-decoration: none;" href="${pageContext.request.contextPath }/admin/admin_member_detailstate_page.do?jet_member_no=${data.memberVo.jet_member_no}">활동중</a></td>
+											</c:otherwise>
+										</c:choose>
 									</tr>
-									
+									</c:if>	
 								</c:forEach>
 							</tbody>
 							</table>	

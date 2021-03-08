@@ -25,7 +25,7 @@
 	<!-- 보낸 쪽지함 -->
 	<select id="selectSentMessage" resultType="com.cjo.jet.vo.MessageVo">
 		<![CDATA[
-		    SELECT * 
+		    SELECT m2.* 
 		        FROM(
 		            SELECT m1.*,ROWNUM as mnum 
 		            FROM (
@@ -34,8 +34,8 @@
 						ORDER BY jet_message_no DESC
 		                )m1
 		            )m2
-		        WHERE m2.mnum >= (1-1)*10+1 
-		        AND m2.mnum <= 1*10
+		        WHERE m2.mnum >= (#{page_num}-1)*10+1 
+		        AND m2.mnum <= #{page_num}*10
 		]]>
 	</select>
 	<!-- 관리자용 보낸 쪽지함 -->
@@ -49,7 +49,7 @@
 	<!-- 받은 쪽지함 -->
 	<select id="selectMessage" resultType="com.cjo.jet.vo.MessageVo">
 		<![CDATA[
-		    SELECT * 
+		    SELECT m2.* 
 		        FROM(
 		            SELECT m1.*,ROWNUM as mnum 
 		            FROM (
@@ -58,8 +58,8 @@
 						ORDER BY jet_message_no DESC
 		                )m1
 		            )m2
-		        WHERE m2.mnum >= (1-1)*10+1 
-		        AND m2.mnum <= 1*10
+		        WHERE m2.mnum >= (#{page_num}-1)*10+1 
+		        AND m2.mnum <= #{page_num}*10
 		]]>
 	</select>
 	<select id="selectByTitleAndSender" resultType="com.cjo.jet.vo.MessageVo">

@@ -3,7 +3,10 @@ package com.cjo.jet.mypage.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cjo.jet.vo.BoardReviewVo;
+import com.cjo.jet.vo.ClassDetailVo;
 import com.cjo.jet.vo.FreeboardLikeVo;
 import com.cjo.jet.vo.FreeboardRepleVo;
 import com.cjo.jet.vo.FreeboardVo;
@@ -11,6 +14,7 @@ import com.cjo.jet.vo.KnowhowBoardLikeVo;
 import com.cjo.jet.vo.KnowhowBoardRepleVo;
 import com.cjo.jet.vo.KnowhowBoardVo;
 import com.cjo.jet.vo.MemberUpgradeVo;
+import com.cjo.jet.vo.MemberVo;
 import com.cjo.jet.vo.NoticeRepleVo;
 import com.cjo.jet.vo.PartyBoardAttendVo;
 import com.cjo.jet.vo.PartyBoardVo;
@@ -73,5 +77,13 @@ public interface MyPageSQLMapper {
 	public void memberUpgrade(MemberUpgradeVo vo);
 	//등급업 체크
 	public MemberUpgradeVo selectMemberNo(int jet_member_no);
+	//등급업 신청 리스트
+	public ArrayList<MemberUpgradeVo> memberUpgradeAply();
+	//등급원 인원수
+	public int memberUpgradeCt();
 	
+	//나의 클래스
+	public ArrayList<ClassDetailVo> selectMydetailClassList(int member_no);
+	//나를 제외한 파티 참가자들의 MemnerVo 오별
+	public ArrayList<MemberVo> selectPartyAttendMemberVo(@Param("jet_board_party_no") int jet_board_party_no,@Param("jet_member_no") int jet_member_no);
 }

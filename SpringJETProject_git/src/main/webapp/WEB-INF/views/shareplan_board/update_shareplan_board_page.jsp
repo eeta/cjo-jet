@@ -195,7 +195,7 @@
 
 		                     </div>
 		                     
-                    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=359480e8f9355ac0c5dff3184ff92646&libraries=services"></script>
+                    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9add28148ee115953c9a2954f4561428&libraries=services"></script>
 					<script >
                         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
                             mapOption = {

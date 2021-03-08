@@ -21,6 +21,8 @@ public class RESTfullAdminController {
 
 	@Autowired
 	private CsBoardServiceImpl csBoardService;
+	@Autowired
+	private MemberServiceImpl memberService;
 	
 //	@RequestMapping("admin_csboard_before_page.do")
 	public ArrayList<HashMap<String, Object>> adminCsboardBeforePage(String search_word,String search_type) {
@@ -89,7 +91,12 @@ public class RESTfullAdminController {
 		
 		return result;
 	}
-	
+	@RequestMapping("member_upgrade_aply_process.do")
+	public void memberUpgradeAply(int jet_member_no) {
+		System.out.println("테스트다"+jet_member_no);
+		memberService.memberUpgradeAply(jet_member_no);
+		memberService.memberUpgradeAplyCheck(jet_member_no);
+	}
 
 //----------test끝 --------------------------------------------------------------	
 }

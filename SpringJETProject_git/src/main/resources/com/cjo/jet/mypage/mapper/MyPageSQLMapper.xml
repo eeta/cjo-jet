@@ -146,49 +146,56 @@
 			ORDER BY jet_shareplan_reple_writedate DESC
 		]]>
 	</select>
-	<select id="myWriteBoardCT" resultType="int">
-		<![CDATA[
-			    select sum(count), '전체' as allpost from(
-				    select count(*) as count, '자유' as post
-				    from jet_board_free
-				    UNION
-				    select count(*) as count, '노하우' as post
-				    from jet_board_knowhow
-				    UNION
-				    select count(*) as count, '공유' as post
-				    from jet_board_shareplan
-				    UNION
-				    select count(*) as count, '리뷰' as post
-				    from jet_board_review
-				    where jet_member_no = #{jet_member_no})
-		
-		]]>
-	</select>
+	 <select id="myWriteBoardCT" resultType="int">
+      <![CDATA[
+             select sum(count), '전체' as allpost from(
+                select count(*) as count, '자유' as post
+                from jet_board_free
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '노하우' as post
+                from jet_board_knowhow
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '공유' as post
+                from jet_board_shareplan
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '리뷰' as post
+                from jet_board_review
+                where jet_member_no = #{jet_member_no})
+      
+      ]]>
+   </select>
 
-	<select id="myWriteRepleCT" resultType="int">
-		<![CDATA[
-			    select sum(count), '전체' as allpost from(
-				    select count(*) as count, '자유' as post
-				    from jet_board_free_reple
-				    UNION
-				    select count(*) as count, '노하우' as post
-				    from jet_board_knowhow_reple
-				    UNION
-				    select count(*) as count, '공유' as post
-				    from jet_board_shareplan_reple
-				    UNION
-				    select count(*) as count, '리뷰' as post
-				    from jet_board_review_reple
-				    where jet_member_no = #{jet_member_no})
-		
-		]]>
-	</select>
+   <select id="myWriteRepleCT" resultType="int">
+      <![CDATA[
+             select sum(count), '전체' as allpost from(
+                select count(*) as count, '자유' as post
+                from jet_board_free_reple
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '노하우' as post
+                from jet_board_knowhow_reple
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '공유' as post
+                from jet_board_shareplan_reple
+                where jet_member_no = #{jet_member_no}
+                UNION
+                select count(*) as count, '리뷰' as post
+                from jet_board_review_reple
+                where jet_member_no = #{jet_member_no})
+      
+      ]]>
+   </select>
 	<insert id="memberUpgrade">
 		<![CDATA[
 			INSERT INTO jet_member_upgrade VALUES(
 				jet_member_upgrade_seq.nextval, 
 				#{jet_member_no}, 
-				SYSDATE
+				SYSDATE,
+				'N'
 			)
 			
 		]]>
@@ -199,6 +206,50 @@
 			select * 
 			from jet_member_upgrade
 			where jet_member_no = #{jet_member_no}
+		]]>
+	</select>
+	<select id="memberUpgradeAply" resultType="com.cjo.jet.vo.MemberUpgradeVo">
+		<![CDATA[
+			select * 
+			from jet_member_upgrade
+		]]>
+	</select>
+	
+	<select id="memberUpgradeCt" resultType="int">
+		<![CDATA[
+			select count(*) 
+			from jet_member_upgrade
+		]]>
+	</select>	
+	<select id="memberUpgradeCheck" resultType="com.cjo.jet.vo.MemberUpgradeVo">
+		<![CDATA[
+			select * from jet_member_upgrade
+			WHERE jet_member_upgrade_check = 'Y'
+		]]>
+	</select>
+	<select id="selectMydetailClassList" resultType="com.cjo.jet.vo.ClassDetailVo">
+		<![CDATA[
+			SELECT * 
+			FROM jet_class_detail
+			WHERE jet_class_no 
+			IN (
+			    SELECT jet_class_no FROM jet_class
+			    WHERE jet_member_no = #{jet_member_no}
+			)
+		]]>	
+	</select>
+	<!-- 파티게시판 나를 제외한 참여자 memberVo 오별-->
+	<select id="selectPartyAttendMemberVo" resultType="com.cjo.jet.vo.MemberVo">
+		<![CDATA[
+			SELECT t2.* FROM (
+			    SELECT JET_member_no FROM JET_Board_party 
+			    WHERE jet_board_party_no = #{jet_board_party_no}
+			    UNION
+			    SELECT jet_member_no FROM JET_Party_attend
+			    WHERE jet_board_party_no = #{jet_board_party_no}
+			    AND jet_party_attend_state_no = 2) t1 , JET_Member t2
+			WHERE t2.jet_member_no = t1.jet_member_no
+			AND t1.jet_member_no <> #{jet_member_no}
 		]]>
 	</select>
 </mapper>

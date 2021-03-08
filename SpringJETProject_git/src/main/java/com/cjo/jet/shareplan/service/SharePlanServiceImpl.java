@@ -28,10 +28,13 @@ import com.cjo.jet.vo.ClassDetailVo;
 import com.cjo.jet.vo.ClassImageVo;
 import com.cjo.jet.vo.ClassboardVo;
 import com.cjo.jet.vo.MemberVo;
+import com.cjo.jet.vo.PartyBoardVo;
+import com.cjo.jet.vo.PartySingoVo;
 import com.cjo.jet.vo.SharePlanBoardVo;
 import com.cjo.jet.vo.SharePlanImageVo;
 import com.cjo.jet.vo.SharePlanLikeVo;
 import com.cjo.jet.vo.SharePlanRepleVo;
+import com.cjo.jet.vo.SharePlanReportVo;
 import com.cjo.jet.vo.TravelPlanDetailCategoryVo;
 import com.cjo.jet.vo.TravelPlanDetailVo;
 import com.cjo.jet.vo.TravelPlanVo;
@@ -386,6 +389,24 @@ public class SharePlanServiceImpl {
 	      
 	      return result;
 	   }
+	   //댓글 최신순
+	   public ArrayList<HashMap<String, Object>> getRepleListDESC(int shareplanNo){
+		   ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+		   ArrayList<SharePlanRepleVo> repleVoList = sharePlanRepleSQLMapper.selectByShareplanNoDESC(shareplanNo);
+		   
+		   for(SharePlanRepleVo sharePlanRepleVo : repleVoList) {
+			   MemberVo memberVo = memberSQLMapper.selectByNo(sharePlanRepleVo.getJet_member_no());
+			   
+			   HashMap<String, Object> map = new HashMap<String, Object>();
+			   map.put("memberVo",memberVo);
+			   map.put("sharePlanRepleVo",sharePlanRepleVo);
+			   
+			   result.add(map);
+		   }
+		   
+		   
+		   return result;
+	   }
 	   //추천
 	   public void shareplanLike(SharePlanLikeVo vo) {
 	      sharePlanLikeSQLMapper.insertLike(vo);
@@ -443,4 +464,51 @@ public class SharePlanServiceImpl {
 			}
 			return shareAllList;
 		}
+///////////////////////////////////신고
+		//신고 인서트
+		public void reportInsert(SharePlanReportVo vo) {
+			sharePlanSQLMapper.insertReport(vo);
+		}
+		
+		//신고자 체크
+		public SharePlanReportVo checksingo(int jet_board_shareplan_no,MemberVo reportMemberVo)  {
+			
+			SharePlanReportVo sharePlanReportVo = sharePlanSQLMapper.selectReportByNo(jet_board_shareplan_no,reportMemberVo.getJet_member_no());
+			
+			return sharePlanReportVo;
+		}
+		
+		public ArrayList<Object> newPartySingoList(){
+			return sharePlanSQLMapper.selectReportList();
+		}
+		
+		//여행친구찾기게시판 글의 모든 신고 출력 [관리자 페이지에서]
+		public ArrayList<HashMap<String, Object>> getPartySingoList() {
+			
+			ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+			
+			ArrayList<SharePlanReportVo> shareplanReportList = sharePlanSQLMapper.selectAllReportNoPage();
+			
+			for(SharePlanReportVo sharePlanReportVo : shareplanReportList) {
+				int singoMember_no = sharePlanReportVo.getJet_member_no();
+				MemberVo singoMemberVo = memberSQLMapper.selectByNo(singoMember_no);
+				
+				int jet_board_shareplan_no = sharePlanReportVo.getJet_board_shareplan_no();
+				SharePlanBoardVo sharePlanBoardVo= sharePlanSQLMapper.selectByNo(jet_board_shareplan_no);
+				
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				
+				map.put("sharePlanReportVo", sharePlanReportVo);
+				map.put("singoMemberVo", singoMemberVo);
+				map.put("sharePlanBoardVo", sharePlanBoardVo);
+				
+				
+				result.add(map);
+			}
+			
+			return result;
+		}		
+		
+		
+		
 }

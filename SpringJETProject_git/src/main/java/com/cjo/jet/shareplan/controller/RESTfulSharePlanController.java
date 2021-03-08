@@ -14,8 +14,10 @@ import com.cjo.jet.shareplan.service.SharePlanServiceImpl;
 import com.cjo.jet.travelplan.service.TravelPlanServiceImpl;
 import com.cjo.jet.vo.PickBoardVo;
 import com.cjo.jet.vo.MemberVo;
+import com.cjo.jet.vo.PartySingoVo;
 import com.cjo.jet.vo.SharePlanLikeVo;
 import com.cjo.jet.vo.SharePlanRepleVo;
+import com.cjo.jet.vo.SharePlanReportVo;
 
 @Controller
 @RequestMapping("/shareplan_board/*")
@@ -32,6 +34,14 @@ public class RESTfulSharePlanController {
 	public ArrayList<HashMap<String, Object>> getRepleList(int jet_board_shareplan_no){
 		ArrayList<HashMap<String, Object>> result = sharePlanService.getRepleList(jet_board_shareplan_no);
 		System.out.println(jet_board_shareplan_no);
+		return result;
+	}
+	//댓글 최신순 불러오기
+	@RequestMapping("get_reple_list_desc.do")
+	public ArrayList<HashMap<String, Object>> getRepleListDESC(int jet_board_shareplan_no){
+		
+		ArrayList<HashMap<String, Object>> result = sharePlanService.getRepleListDESC(jet_board_shareplan_no);
+		
 		return result;
 	}
 	
@@ -189,5 +199,43 @@ public class RESTfulSharePlanController {
 		
 		return getRecommendClassList;
 	}
+	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ	
+		@RequestMapping("report_shareplan_process.do")
+		public void reportInsertProcess (SharePlanReportVo param, HttpSession session) {
+			
+			int reportMemberNo = ((MemberVo)session.getAttribute("sessionUser")).getJet_member_no();
+			
+			//세션뽑아서 신고자의 no 출력
+			
+			param.setJet_member_no(reportMemberNo);
+			
+			sharePlanService.reportInsert(param);
+		}
+		
+		@RequestMapping("check_report_process.do")
+		public HashMap<String, Object> checkSingoProcess(int jet_board_shareplan_no, HttpSession session) {
+			//예외처리에 사용 하려 햇는데 디버그 나서 아직 못사용중 0208
+			MemberVo singoMemberVo = (MemberVo)session.getAttribute("sessionUser");
+			
+			//미리 예외처리
+			SharePlanReportVo sharePlanReportVo = null;
+			
+			boolean existSingoVo = false;
+			
+			if(singoMemberVo != null) {
+				sharePlanReportVo = sharePlanService.checksingo(jet_board_shareplan_no, singoMemberVo);
+				if(sharePlanReportVo!=null) {
+					existSingoVo = true;
+				}else {
+					existSingoVo = false;
+				}
+			}
+			
+			HashMap<String,Object> map = new HashMap<String,Object>(); 
+
+			map.put("existSingoVo", existSingoVo);
+			
+			return map;
+		}	
 	
 }

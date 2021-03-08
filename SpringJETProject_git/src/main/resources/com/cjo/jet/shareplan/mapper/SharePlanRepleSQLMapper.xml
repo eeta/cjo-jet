@@ -24,6 +24,15 @@
 			
 		]]>
 	</select>
+	<select id="selectByShareplanNoDESC" resultType="com.cjo.jet.vo.SharePlanRepleVo">
+		<![CDATA[
+			SELECT * 
+			FROM jet_board_shareplan_reple 
+			WHERE jet_board_shareplan_no = #{jet_board_shareplan_no}
+			ORDER BY jet_shareplan_reple_no DESC
+			
+		]]>
+	</select>
 	
 	<select id="repleCount" resultType="int">
 		<![CDATA[

@@ -74,4 +74,38 @@
 			SELECT COUNT(jet_board_a_cs_no)as COUNT FROM jet_board_a_cs
 		]]>	
 	</select>
+	<!-- 게시판 별 성비 -->
+	<select id="selectReviewGenderRatio" resultType="map">
+		<![CDATA[
+			SELECT * FROM(
+				SELECT DISTINCT jm.jet_member_no, jm.jet_member_sex 
+				FROM jet_member jm, jet_board_review jr 
+				WHERE jm.jet_member_no = jr.jet_member_no
+			) 
+			PIVOT 
+			(COUNT(jet_member_no) 
+			FOR jet_member_sex 
+			IN('Male'as Male,'FeMale'as FeMale))
+		]]>
+	</select>
+	<select id="selectPartyGenderRatio" resultType="map">
+		<![CDATA[
+			SELECT * FROM(SELECT DISTINCT jm.jet_member_no, jm.jet_member_sex FROM jet_member jm, jet_board_party jp WHERE jm.jet_member_no = jp.jet_member_no) PIVOT (COUNT(jet_member_no) FOR jet_member_sex IN('Male'as Male,'FeMale'as FeMale))
+		]]>
+	</select>
+	<select id="selectKnowhowGenderRatio" resultType="map">
+		<![CDATA[
+			SELECT * FROM(SELECT DISTINCT jm.jet_member_no, jm.jet_member_sex FROM jet_member jm, jet_board_knowhow jh WHERE jm.jet_member_no = jh.jet_member_no) PIVOT (COUNT(jet_member_no) FOR jet_member_sex IN('Male'as Male,'FeMale'as FeMale))
+		]]>
+	</select>
+	<select id="selectFreeBoardGenderRatio" resultType="map">
+		<![CDATA[
+			SELECT * FROM(SELECT DISTINCT jm.jet_member_no, jm.jet_member_sex FROM jet_member jm, jet_board_free jf WHERE jm.jet_member_no = jf.jet_member_no) PIVOT (COUNT(jet_member_no) FOR jet_member_sex IN('Male'as Male,'FeMale'as FeMale))
+		]]>
+	</select>
+	<select id="selectShareplanGenderRatio" resultType="map">
+		<![CDATA[
+			SELECT * FROM(SELECT DISTINCT jm.jet_member_no, jm.jet_member_sex FROM jet_member jm, jet_board_shareplan js WHERE jm.jet_member_no = js.jet_member_no) PIVOT (COUNT(jet_member_no) FOR jet_member_sex IN('Male'as Male,'FeMale'as FeMale))
+		]]>
+	</select>
 </mapper>

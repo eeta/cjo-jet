@@ -79,7 +79,7 @@
 					    </a>
 					  </li>
 					   <li class="nav-item">
-					    <a class="nav-link" href="#">
+					    <a class="nav-link" href="${pageContext.request.contextPath}/admin/admin_declaration_class_list_page.do">
 					    	원데이클래스
 					    </a>
 					  </li>

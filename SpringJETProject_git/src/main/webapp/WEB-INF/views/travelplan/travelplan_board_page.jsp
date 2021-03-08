@@ -9,7 +9,7 @@
 <title>나의 여행 계획</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"></head>
 </head>
-<jsp:include page="../travelplan/style/my_page_sidebar_style.jsp"/>
+<!--<jsp:include page="../travelplan/style/my_page_sidebar_style.jsp"/>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <jsp:include page="../font/NanumGothicCoding.jsp"/>
 
@@ -22,54 +22,7 @@
 <%--사이드바 시 작 --%>	
   	    <div style="margin-top:50px;position: absolute;">
         <div class="mypage_name"><h2>나의 여행 계획</h2></div>
-		<div class="accordion">
-			<input type="radio" name="accordion" id="answer00">
-			<label for="answer01" style="border-bottom:1px solid #FFE08C;border-radius: 15px 15px 0 0;" ><a href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a></label>
-		
-			<input type="radio" name="accordion" id="answer01">
-			<label for="answer00" style="border-bottom:1px solid #FFE08C;" ><a href="${pageContext.request.contextPath}/mypage/update_mypage.do">정보수정</a></label>
-		
-			<input type="radio" name="accordion" id="answer02">
-			<label for="answer01" style="border-bottom:1px solid #FFE08C;" ><a href="${pageContext.request.contextPath }/travelplan/travelplan_board_page.do">나의 여행 계획</a></label>
-			
-			
-			<input type="radio" name="accordion" id="answer03">
-			<label for="answer02" style="border-bottom:1px solid #FFE08C;" ><a href="${pageContext.request.contextPath }/mypage/pick_mypage.do" >즐겨찾기 목록</a></label>
-			
-			
-			<input type="radio" name="accordion" id="answer04">
-			<label for="answer04" style="border-bottom:1px solid #FFE08C;" >내가 쓴 글<em></em></label>
-			<div style="background-color:#FFB456">
-				<ul >
-					<li><a href="${pageContext.request.contextPath}/mypage/write_mypage.do" style="font-size: 14px;" >내가 쓴 글</a></li>
-					<li><a href="${pageContext.request.contextPath}/mypage/wrote_reple_mypage.do" style="font-size: 14px;">내가 쓴 댓글</a></li>
-				</ul>
-			</div>
-			
-			<input type="radio" name="accordion" id="answer05">
-			<label for="answer05" style="border-bottom:1px solid #FFE08C;" >원데이클래스<em></em></label>
-			<div style="background-color:#FFB456">
-				<ul>
-					<li><a href="#" style="font-size: 14px;">모집중</a></li>
-					<li><a href="#" style="font-size: 14px;">참가중</a></li>
-				</ul>
-			</div>
-			
-			<input type="radio" name="accordion" id="answer06">
-			<label for="answer06" style="border-bottom:1px solid #FFE08C;" >여행 친구 찾기<em></em></label>
-			<div style="background-color:#FFB456">
-				<ul>
-					<li><a href="${pageContext.request.contextPath}/mypage/recruitment_mypage.do">내가 개설한 파티</a></li>
-					<li><a href="${pageContext.request.contextPath}/mypage/attend_mypage.do">내가 참가중인 파티</a></li>
-				</ul>
-			</div>
-			<input type="radio" name="accordion" id="answer07">
-			<label for="answer07" style="border-bottom:1px solid #FFE08C;" ><a href="${pageContext.request.contextPath}/message/message_page.do">쪽지함</a></label>
-			<input type="radio" name="accordion" id="answer08">
-			<label for="answer08" style="border-radius: 0 0 15px 15px;" ><a href="${pageContext.request.contextPath}/member/my_friendList_page.do">나의 친구 목록</a></label>
-			
-			
-		</div>
+		<jsp:include page="../mypage/mypage_sidebar.jsp"/>
         </div>	
 <%--사이드바 끝 --%>  		
 	

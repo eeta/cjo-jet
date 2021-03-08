@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.cjo.jet.member.mapper.MemberImageSQLMapper;
 import com.cjo.jet.member.mapper.MemberSQLMapper;
+import com.cjo.jet.mypage.mapper.MyPageSQLMapper;
 import com.cjo.jet.util.FBMessageDigest;
 import com.cjo.jet.vo.FriendsVo;
 import com.cjo.jet.vo.InterestVo;
 import com.cjo.jet.vo.MemberImageVo;
 import com.cjo.jet.vo.MemberStatusVo;
+import com.cjo.jet.vo.MemberUpgradeVo;
 import com.cjo.jet.vo.MemberVo;
 
 @Service
@@ -21,7 +23,8 @@ public class MemberServiceImpl {
 	private MemberSQLMapper memberSQLMapper;
 	@Autowired
 	private MemberImageSQLMapper memberImageSQLMapper;
-
+	@Autowired
+	private MyPageSQLMapper myPageSQLMapper;
 	
 	public void joinMember(MemberVo vo, String [] interest_name) {
 		
@@ -121,7 +124,7 @@ public class MemberServiceImpl {
 		
 		ArrayList<MemberVo> memberList = null; 
 		if(search_word == null || search_type == null) {
-			memberList = memberSQLMapper.selectMemberNotMe(memberNo, page_num);
+			memberList = memberSQLMapper.selectMemberNotMe(page_num,memberNo);
 		}else {
 			if(search_type.equals("member_nick")) {
 				memberList = memberSQLMapper.selectByMemberNick(search_word);
@@ -129,7 +132,7 @@ public class MemberServiceImpl {
 			}else if(search_type.equals("member_kakao")){
 				memberList = memberSQLMapper.selectByKakao(search_word);
 			}else {
-				memberList = memberSQLMapper.selectMemberNotMe(memberNo,page_num);
+				memberList = memberSQLMapper.selectMemberNotMe(page_num,memberNo);
 			}
 		}
 		
@@ -211,14 +214,14 @@ public class MemberServiceImpl {
 	}
 		
 	//회원관리---------------------------------관리자
-	public ArrayList<HashMap<String, Object>> getadminMemberManagement(String search_word ,String search_type){
+	public ArrayList<HashMap<String, Object>> getadminMemberManagement(String search_word ,String search_type, int page_num){
 		
 		ArrayList<HashMap<String, Object>> memberAllList = new ArrayList<HashMap<String,Object>>();
 		
 		ArrayList<MemberVo> memberList = null;
 		
 		if(search_word == null || search_type == null) {
-			memberList = memberSQLMapper.selectAll();
+			memberList = memberSQLMapper.selectAll(page_num);
 		}else {
 			if(search_type.equals("id")) {	
 				memberList = memberSQLMapper.selectByMemberId(search_word);
@@ -228,7 +231,7 @@ public class MemberServiceImpl {
 			}else if (search_type.equals("nick")) {
 				memberList = memberSQLMapper.selectByNick(search_word);
 			}else {
-				memberList = memberSQLMapper.selectAll();
+				memberList = memberSQLMapper.selectAll(page_num);
 			}
 		}
 
@@ -244,6 +247,26 @@ public class MemberServiceImpl {
 		
 		return memberAllList;
 	}
+	public int getPageCountForAdmin() {
+		return memberSQLMapper.pageCount();
+	}
+	public ArrayList<HashMap<String, Object>> getStopedMemberList(int page_num){
+		
+		ArrayList<HashMap<String, Object>> stopedMemberList = new ArrayList<HashMap<String,Object>>();
+		ArrayList<MemberVo> memberList = memberSQLMapper.selectAll(page_num);
+		
+		for(MemberVo memberVo : memberList) {
+			
+			MemberStatusVo memberStatusVo =  memberSQLMapper.selectStopMember(memberVo.getJet_member_no());
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("memberVo", memberVo);
+			map.put("memberStatusVo",memberStatusVo);
+			
+			stopedMemberList.add(map);
+		}
+		
+		return stopedMemberList;
+	}
 	
 	public void updateMemberStatusToN(int jet_stopstate_period_no,int jet_stopstate_reason_no,int jet_member_no) {
 		System.out.println("[testservice MemberStatusVo]"+jet_stopstate_period_no + jet_stopstate_reason_no + jet_member_no);
@@ -256,5 +279,47 @@ public class MemberServiceImpl {
 		
 	}
 	
+	//등업신청받자
+	public ArrayList<HashMap<String, Object>> getMemberUpgrade(String search_word ,String search_type, int page_num){
+	
+		ArrayList<HashMap<String, Object>> memberAllList = new ArrayList<HashMap<String,Object>>();
+		
+		ArrayList<MemberVo> memberList = null;
+		if(search_word == null || search_type == null) {
+			memberList = memberSQLMapper.selectAll(page_num);
+		}else {
+			if(search_type.equals("id")) {	
+				memberList = memberSQLMapper.selectByMemberId(search_word);
+			}
+			else if(search_type.equals("name")) {
+				memberList = memberSQLMapper.selectByName(search_word);
+			}else if (search_type.equals("nick")) {
+				memberList = memberSQLMapper.selectByNick(search_word);
+			}else {
+				memberList = memberSQLMapper.selectAll(page_num);
+			}
+		}
+		
+		ArrayList<MemberUpgradeVo> memberUpgradeVo = myPageSQLMapper.memberUpgradeAply();
+		for(MemberUpgradeVo memberUpgrade : memberUpgradeVo) {
+			
+			MemberVo memberVo = memberSQLMapper.selectByNo(memberUpgrade.getJet_member_no());
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("memberVo", memberVo);
+			map.put("memberUpgradeVo",memberUpgrade);
+			memberAllList.add(map);
+			
+		}
 
+		return memberAllList;
+	}
+	
+	public void memberUpgradeAply(int jet_member_no) {
+		memberSQLMapper.memberUpgradeAply(jet_member_no);
+	}
+	public void memberUpgradeAplyCheck(int jet_member_no) {
+		memberSQLMapper.memberUpgradeAplyCheck(jet_member_no);
+	}
+	
 }

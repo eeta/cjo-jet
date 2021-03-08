@@ -14,81 +14,7 @@
    		border-radius: .25rem;
 	}
 </style>
-<script type="text/javascript">
 
-	var isConfirmReceiver = false;
-	
-	function checkReceiver(){
-		
-		isConfirmReceiver = false;
-		
-		var inputReceiver = document.getElementById("input_receiver");
-		var jet_member_nick = inputReceiver.value;
-		console.log("[test nick]"+jet_member_nick);
-		
-		var xmlhttp = new XMLHttpRequest();
-		
-		xmlhttp.onreadystatechange = function(){
-			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-				if(xmlhttp.responseText == 'agree'){
-					isConfirmReceiver = true;
-					var alertBox = document.createElement("div");
-					alertBox.innerText = "존재하는 사용자 입니다.";
-					alertBox.style.color = "green";
-					
-					var positionBox = document.getElementById("check_alert_box");
-					positionBox.innerHTML = "";
-					positionBox.appendChild(alertBox);
-				}else if(xmlhttp.responseText == 'myNick'){
-					isConfirmReceiver = false;
-					var alertBox = document.createElement("div");
-					alertBox.innerText = "자신에게 쪽지를 보낼 수 없습니다.";
-					alertBox.style.color = "red";
-					
-					var positionBox = document.getElementById("check_alert_box");
-					positionBox.innerHTML = "";
-					positionBox.appendChild(alertBox);
-				}else if(inputReceiver.value == ''){
-					isConfirmReceiver = false;
-					var alertBox = document.createElement("div");
-					alertBox.innerText = "받을 사람을 입력해주세요."
-					alertBox.style.color = "black";
-					
-					var positionBox = document.getElementById("check_alert_box");
-					positionBox.innerHTML = "";
-					positionBox.appendChild(alertBox);
-				}else{
-					isConfirmReceiver = false;
-					var alertBox = document.createElement("div");
-					alertBox.innerText = "존재하지 않는 사용자 입니다."
-					alertBox.style.color = "red";
-					
-					var positionBox = document.getElementById("check_alert_box");
-					positionBox.innerHTML = "";
-					positionBox.appendChild(alertBox);
-				}
-			}
-		};
-		
-		xmlhttp.open("post","${pageContext.request.contextPath}/message/exist_receiver.do");
-		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		xmlhttp.send("jet_member_nick="+jet_member_nick);
-		
-	}
-	
-	function formSubmit(){
-		
-	 	if(isConfirmReceiver == false){ 
-	 		alert("쪽지 받을 사람을 입력해주세요");
-	 		return;
-	 	}
-		
-		var frmWriteMessage = document.getElementById("frm_write_message");
-		frmWriteMessage.submit();
-	
-	}
-
-</script>
 </head>
 <body style="background-color:#f6f6f6";>
 
@@ -102,7 +28,7 @@
 			
 			<div class="row mt-5">
 				<div class="col">
-					<h1 class="text-center">CS for ADMIN</h1>
+					<h1 class="text-center">Message for ADMIN</h1>
 				</div>
 			</div>
 			
@@ -110,7 +36,7 @@
 				<div class="col"></div>
 				<div class="col"></div>
 				<div class="col-4 text-muted" style="text-align: right;">
-					home > message > send message
+					home > message > read message
 				</div>
 			</div>	
 						
@@ -138,8 +64,8 @@
 			</div> 	<%--탭 페이지  --%>
 			<div class="row mt-2"> <%--문의글 테이블 --%>
 				<div class="col"></div>
-				<div class="col-8">	
-					<div class="row">	 <%--검색 row--%>
+				<div class="col-6">	
+					<div class="row">
 						<div class="col-8"></div>
 						<div class="col">
 						</div>
@@ -166,7 +92,7 @@
 					</div>
 					<div class="row mt-1">
 						<div class="col d-grid gap-2 ps-0 pe-0">
-							<textarea name="jet_message_content" rows="10" cols="70" class="form-control ps-0 pe-0" disabled>  ${result.messageVo.jet_message_content }</textarea>
+							<textarea style="resize: none;" name="jet_message_content" rows="10" cols="70" class="form-control ps-0 pe-0" disabled>  ${result.messageVo.jet_message_content }</textarea>
 						</div>
 					</div>
 					<div class="row mt-2">

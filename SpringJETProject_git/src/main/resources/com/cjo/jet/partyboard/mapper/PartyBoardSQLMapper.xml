@@ -124,9 +124,13 @@
 			ORDER BY jet_board_party_singo_date DESC
 		]]>
 	</select>
-	
-	
-	
-	
-	
+	<select id="selectSingoList" resultType="com.cjo.jet.vo.PartySingoVo">
+		<![CDATA[
+			SELECT DISTINCT sin.jet_board_party_no FROM(
+				SELECT jet_board_party_no, ROW_NUMBER() OVER(ORDER BY jet_board_party_singo_date DESC)AS RANK 
+				FROM JET_board_party_singo
+			)sin 
+			WHERE sin.RANK <=4
+		]]>
+	</select>
 </mapper>

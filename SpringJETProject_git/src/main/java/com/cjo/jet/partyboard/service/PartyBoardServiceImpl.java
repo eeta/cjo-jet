@@ -16,6 +16,7 @@ import com.cjo.jet.member.mapper.MemberSQLMapper;
 import com.cjo.jet.partyboard.mapper.PartyBoardAttendSQLMapper;
 import com.cjo.jet.partyboard.mapper.PartyBoardChatSQLMapper;
 import com.cjo.jet.partyboard.mapper.PartyBoardImageSQLMapper;
+import com.cjo.jet.partyboard.mapper.PartyBoardRatingSQLMapper;
 import com.cjo.jet.partyboard.mapper.PartyBoardSQLMapper;
 import com.cjo.jet.vo.MemberVo;
 import com.cjo.jet.vo.PartyBoardAttendStateVo;
@@ -23,6 +24,7 @@ import com.cjo.jet.vo.PartyBoardAttendVo;
 import com.cjo.jet.vo.PartyBoardImageVo;
 import com.cjo.jet.vo.PartyBoardVo;
 import com.cjo.jet.vo.PartyChatVo;
+import com.cjo.jet.vo.PartyRatingVo;
 import com.cjo.jet.vo.PartySingoVo;
 
 @Service
@@ -42,6 +44,11 @@ public class PartyBoardServiceImpl {
 	
 	@Autowired
 	private PartyBoardChatSQLMapper partyBoardChatSQLMapper;
+	
+	@Autowired
+	private PartyBoardRatingSQLMapper partyBoardRatingSQLMapper;
+	//오별 0225
+	
 	
 	//글쓰기
 	public void writePartyBoard(PartyBoardVo vo, ArrayList<PartyBoardImageVo> imageVoList) {
@@ -162,16 +169,20 @@ public class PartyBoardServiceImpl {
 			//카테고리 연동 매퍼 부터 해야함
 			MemberVo memberVo = memberSQLMapper.selectByNo(partyBoardAttendVo.getJet_member_no());
 			
+			Object rating = partyBoardRatingSQLMapper.getMemberCredit(partyBoardAttendVo.getJet_member_no());
+			//오별 0225
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("partyBoardAttendVo", partyBoardAttendVo);
 			map.put("memberVo", memberVo);
+			map.put("rating", rating);
 			
 			result.add(map);
 		}
 		return result;
 	}
-	
+
 	//참여 갯수 출력
 	public int getPartyAttendCount(int content_no) {
 		return partyBoardAttendSQLMapper.attendCount(content_no);
@@ -295,7 +306,7 @@ public class PartyBoardServiceImpl {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("partyChatVo", partyChatVo);
-			map.put("chatMemberVo", chatMemberVo);
+			map.put("chatMembernick", chatMemberVo.getJet_member_nick());
 			
 //			map.put("nick", chatMemberVo.getJet_member_nick());
 //			map.put("chatContent", partyChatVo.getJet_party_chat_content());
@@ -307,7 +318,7 @@ public class PartyBoardServiceImpl {
 		return result;
 	}
 	
-	//채팅 리스트 출력
+	//채팅 리스트 출력 내가 참여중인	 0225 오별 변경 
 	public ArrayList<HashMap<String, Object>> getPartyChatList(int memberNo){
 		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
 		
@@ -319,56 +330,67 @@ public class PartyBoardServiceImpl {
 			//승인된 회원의 정보
 			PartyBoardVo partyBoardVo = partyBoardSQLMapper.selectByNo(partyBoardAttendVo.getJet_board_party_no());
 			//승인된 파티글 정보
-			
+			MemberVo writerMemberVo = memberSQLMapper.selectByNo(partyBoardVo.getJet_member_no());
+			//글쓴이 닉네임
+			ArrayList<PartyBoardImageVo> thumbnail = partyBoardImageSQLMapper.thumbnail(partyBoardAttendVo.getJet_board_party_no());
+			//승인된 글의 썸네일
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("partyAttendVo", partyBoardAttendVo);
 			map.put("chatMemberVo", chatMemberVo);
 			map.put("partyBoardVo", partyBoardVo);
 			
+			map.put("thumbnail", thumbnail);
+			map.put("writerMemberVo", writerMemberVo.getJet_member_nick());
+			
+			
 			result.add(map);
 		}
 		return result;
 	}
 
-	//내가 개설한 채팅방...파티장일때
-	public ArrayList<HashMap<String, Object>> getMyOpenedChatList(int member_no){
+	//내가 개설한 채팅방...파티장일때	오별 0225
+	public ArrayList<HashMap<String, Object>> getMyOpenedChatList(int jet_member_no){
 		ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
 		
-		ArrayList<PartyBoardVo> myOpenChatList = partyBoardChatSQLMapper.selectMyOpenedchatList(member_no);
+		ArrayList<PartyBoardVo> myOpenChatList = partyBoardChatSQLMapper.selectMyOpenedchatList(jet_member_no);
 		
 		for(PartyBoardVo partyBoardVo : myOpenChatList) {
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			
+			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+			//파티장 nick
+			
+			ArrayList<PartyBoardImageVo> thumbnail = partyBoardImageSQLMapper.thumbnail(partyBoardVo.getJet_board_party_no());
+			//썸네일 처리
+			
+			map.put("thumbnail", thumbnail);
 			map.put("partyBoardVo", partyBoardVo);
+			map.put("memberVo", memberVo);
 			result.add(map);
 		}
 		return result;
 	}	
-	
+
 	
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-    //조회수 증가 쿠가로 받아서 새로고침시 올라가지않게
+    //조회수 증가 쿠가로 받아서 새로고침시 올라가지않게 오별 변경0225
     public void increaseReadCount(int jet_board_party_no, HttpServletRequest request, HttpServletResponse response) {
        
        Cookie [] cookies = request.getCookies();
        
        Cookie viewCookie = null;
        
-         if (cookies != null && cookies.length > 0) 
-         {
-             for (int i = 0; i < cookies.length; i++)
-             {
+         if (cookies != null && cookies.length > 0){
+             for (int i = 0; i < cookies.length; i++){
                  // Cookie의 name이 cookie + reviewNo와 일치하는 쿠키를 viewCookie에 넣어줌 
-                 if (cookies[i].getName().equals("cookie"+jet_board_party_no))
-                 { 
+                 if (cookies[i].getName().equals("cookie"+jet_board_party_no)){ 
                      System.out.println("처음 쿠키가 생성한 뒤 들어옴.");
                      viewCookie = cookies[i];
                  }
              }
          }
-         
           // 만일 viewCookie가 null일 경우 쿠키를 생성해서 조회수 증가 로직을 처리함.
           if (viewCookie == null) {    
               System.out.println("cookie 없음");
@@ -381,26 +403,45 @@ public class PartyBoardServiceImpl {
 
               // 쿠키를 추가 시키고 조회수 증가시킴
               partyBoardSQLMapper.increaseReadcount(jet_board_party_no);
-
           }
           // viewCookie가 null이 아닐경우 쿠키가 있으므로 조회수 증가 로직을 처리하지 않음.
           else {
               System.out.println("cookie 있음");
-              
               // 쿠키 값 받아옴.
               String value = viewCookie.getValue();
-              
               System.out.println("cookie 값 : " + value);
-      
           }
-      
-    }
+      }
+		
+//--------------------------
+	//친구 평가 점수 인서트	오별 0225
+	public void insertRating(PartyRatingVo vo) {
+		partyBoardRatingSQLMapper.insertRating(vo);
+	}
 	
+	//친구 평가 Vo 평가 햇는지 안했는지 체크
+	public PartyRatingVo CheckRatingVo(int jet_board_party_no,int jet_member_no) {
+		
+		PartyRatingVo partyRatingVo = partyBoardRatingSQLMapper.selectByNo(jet_board_party_no, jet_member_no);
+		
+		return partyRatingVo;
+	}
+		
+	//친구 결과값...
+/*	public void getFriendCredit(int jet_member_no) {
+		int rating =partyBoardRatingSQLMapper.getMemberCredit(jet_member_no);
+		
+		MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);
+		memberVo.setJet_member_credit(rating);
+		memberSQLMapper.updateCradit(memberVo);
+		
+		
+	}
+	*/
 	
-	
-	
-	
-	
+	public ArrayList<Object> newPartySingoList(){
+		return partyBoardSQLMapper.selectSingoList();
+	}
 	
 	
 	

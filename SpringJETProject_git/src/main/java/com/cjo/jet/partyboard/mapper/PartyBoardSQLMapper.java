@@ -45,6 +45,6 @@ public interface PartyBoardSQLMapper {
 	//노티스글의 모든 신고 출력 
 	public ArrayList<PartySingoVo> selectAllSingoNoPage();
 	
-	
+	public ArrayList<Object> selectSingoList();
 	
 }

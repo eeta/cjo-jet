@@ -76,13 +76,14 @@ public class MessageController {
 		//페이지 갯수 처리
 		int pageCount = messageService.getPageCount();
 		int currentPage = page_num;
-		int beginPage = (currentPage-1/5)*5 + 1;
-		int endPage = (currentPage-1/5 + 1)*(5);
+	 	int beginPage = ((currentPage-1)/5) * 5 + 1;
+	 	int endPage = ((currentPage-1)/5 + 1) * (5);
 		
 		if(endPage > pageCount) {
 			endPage = pageCount;
 		}
 		model.addAttribute("messageList",messageList);
+		
 		model.addAttribute("pageCount",pageCount);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("beginPage",beginPage);

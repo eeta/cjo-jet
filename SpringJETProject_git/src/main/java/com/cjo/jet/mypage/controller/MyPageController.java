@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cjo.jet.member.service.MemberServiceImpl;
 import com.cjo.jet.mypage.service.MyPageServiceImpl;
+import com.cjo.jet.partyboard.service.PartyBoardServiceImpl;
 import com.cjo.jet.vo.MemberImageVo;
 import com.cjo.jet.vo.MemberVo;
 @Controller
@@ -27,6 +28,8 @@ public class MyPageController {
 	private MyPageServiceImpl myPageService;
 	@Autowired
 	private MemberServiceImpl memberService;
+	@Autowired
+	private PartyBoardServiceImpl partyBoardService;
 	
 	@RequestMapping("update_mypage.do")
 	public String updateMypage(Model model, HttpSession session) {
@@ -215,5 +218,46 @@ public class MyPageController {
 		return "mypage/attend_mypage";
 	}
 	
+	@RequestMapping("classlist_mypage.do")
+	public String classlistMypage(Model model, HttpSession session) {
+		
+		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();		
+		
+		ArrayList<HashMap<String, Object>> resultList = myPageService.myDetailClassList(jet_member_no);
+		
+		model.addAttribute("resultList", resultList);
+		
+		return "mypage/classlist_mypage";
+	}
 	
+	@RequestMapping("participating_class_mypage.do")
+	public String reservelistMypage(Model model, HttpSession session) {
+		
+		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+		int jet_member_no = sessionUser.getJet_member_no();		
+		
+		ArrayList<HashMap<String, Object>> resultList = myPageService.myReservationList(jet_member_no);
+		
+		model.addAttribute("resultList", resultList);
+		
+		return "mypage/participating_class_mypage";
+	}	
+	@RequestMapping("after_rating_page.do")
+	public String afterRatingPage(Model model,HttpSession session) {
+		//0219 오별 변경
+		MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+		int jet_member_no =sessionUser.getJet_member_no();
+		
+		ArrayList<HashMap<String, Object>> result = partyBoardService.getMyOpenedChatList(jet_member_no);
+		//내가 개설한
+		
+		ArrayList<HashMap<String, Object>> attendResult = partyBoardService.getPartyChatList(jet_member_no);
+		//내가 참여한
+		
+		model.addAttribute("result", result);
+		model.addAttribute("attendResult", attendResult);
+		
+		return "mypage/after_rating_page";
+	}
 }

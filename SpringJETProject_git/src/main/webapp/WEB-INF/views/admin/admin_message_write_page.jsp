@@ -134,7 +134,7 @@
 			
 			<div class="row mt-5">
 				<div class="col">
-					<h1 class="text-center">CS for ADMIN</h1>
+					<h1 class="text-center">Message for ADMIN</h1>
 				</div>
 			</div>
 			
@@ -196,7 +196,7 @@
 								<div class="row mt-2">
 									<div class="col-2 d-grid gap-2 input-group-text">제목</div>
 									<div class="col d-grid gap-2 form-control">
-										<input id="titleBox" name="jet_message_title" type="text">
+										<input id="titleBox" name="jet_message_title" type="text" value="안내 말씀 드립니다.">
 									</div>
 								</div>
 								<div class="row mt-2">
@@ -204,7 +204,14 @@
 								</div>
 								<div class="row mt-1">
 									<div class="col d-grid gap-2 ps-0 pe-0">
-										<textarea id="taBox" name="jet_message_content" rows="10" cols="60" class="form-control ps-0 pe-0" aria-label="내용"></textarea>	
+										<textarea style="resize: none;" id="taBox" name="jet_message_content" rows="10" cols="60" class="form-control ps-0 pe-0" aria-label="내용">
+	
+
+
+
+										=================================================================
+	해당 쪽지에 대한 문의사항은 adminJET@gmail.com으로 보내주시기 바랍니다.
+										</textarea>	
 									</div>
 								</div>
 								<div class="row mt-2">

@@ -56,8 +56,8 @@ public interface MemberSQLMapper {
 	public MemberVo selectGradeByNo(int no);
 	
 	//회원관리
-	public ArrayList<MemberVo> selectAll();
-	
+	public ArrayList<MemberVo> selectAll(int page_num);
+	public int pageCount();
 	//memberID로 검색
 	public ArrayList<MemberVo> selectByMemberId(String search_word);
 	
@@ -81,11 +81,16 @@ public interface MemberSQLMapper {
 	public MemberStatusVo selectStatByNo(int no);
 	//회원 활동 상태 선택
 	public String selectActiveStatByNo(int no);
-	
+	public MemberStatusVo selectStopMember(int jet_member_no);
 	//사용자 정지
 	public void updateMemberStatusToN(@Param("jet_stopstate_period_no") int jet_stopstate_period_no,@Param("jet_stopstate_reason_no") int jet_stopstate_reason_no,@Param("jet_member_no") int jet_member_no);
 	//사용자 활동
 	public void updateMemberStatusToY(int jet_member_no);
 	
 	public MemberStatusVo selectStopState();
+	
+	//멤버 등급업
+	public void memberUpgradeAply(int jet_member_no);
+	//등급업 체크
+	public void memberUpgradeAplyCheck(int jet_member_no);
 }

@@ -10,6 +10,8 @@ public interface SharePlanRepleSQLMapper {
 	public void insert(SharePlanRepleVo vo);
 	//등록순
 	public ArrayList<SharePlanRepleVo> selectByShareplanNo(int shareplan_no);
+	//최신순
+	public ArrayList<SharePlanRepleVo> selectByShareplanNoDESC(int shareplan_no);
 	
 	//댓글 수
 	public int repleCount(int shareplan_no);

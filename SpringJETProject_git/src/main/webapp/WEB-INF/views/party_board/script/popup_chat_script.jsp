@@ -60,7 +60,7 @@
 				
 				var lineAttend = document.createElement("div");
 				lineAttend.setAttribute("style","font-size:10px;");
-				lineAttend.innerText = "ㅡㅡㅡㅡㅡㅡㅡㅡㅡAttend Chat Listㅡㅡㅡㅡㅡㅡㅡㅡㅡ";
+				lineAttend.innerText = "▼ Attend Chat List";
 				
 				attendChatListBox.append(lineAttend);
 				
@@ -104,11 +104,7 @@
 					chatListBox.append(attendChatListBox);
 					
 				}	//포문
-				var lineOpened = document.createElement("div");
-				lineOpened.setAttribute("style","font-size:10px;");
-				lineOpened.innerText = "ㅡㅡㅡㅡㅡㅡㅡㅡㅡOpened Chat Listㅡㅡㅡㅡㅡㅡㅡㅡ";
-					
-				openChatListBox.append(lineOpened);
+				
 				
 			}
 		};
@@ -116,7 +112,12 @@
 		xmlhttp.open("post","${pageContext.request.contextPath }/party_board/get_chat_list_process.do" );
 		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xmlhttp.send("jet_member_no=" + jet_member_no);
-		
+	
+		var lineOpened = document.createElement("div");
+		lineOpened.setAttribute("style","font-size:10px;");
+		lineOpened.innerText = "▼ Opened Chat List";
+			
+		openChatListBox.append(lineOpened);
 		
 		//내가 오픈한 채팅 목록
 		var xmlhttp2 = new XMLHttpRequest();
@@ -228,7 +229,8 @@
 	                   var nickBox = document.createElement("div");
 	                   nickBox.setAttribute("class","row");
 	                   nickBox.setAttribute("style","font-weight: bolder; font-size: 14px;");
-	                   nickBox.innerText=chatData.chatMemberVo.jet_member_nick;
+	                   nickBox.innerText=chatData.chatMembernick;
+	                   //데이터 최적화와 암호화를 위해 닉네임만 가져옴 
 	    
 	                   var chatAndDaterowBox = document.createElement("div");
 	                   chatAndDaterowBox.setAttribute("class","row");

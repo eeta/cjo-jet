@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cjo.jet.mypage.service.MyPageServiceImpl;
+import com.cjo.jet.partyboard.service.PartyBoardServiceImpl;
 import com.cjo.jet.vo.MemberUpgradeVo;
 import com.cjo.jet.vo.MemberVo;
+import com.cjo.jet.vo.PartyRatingVo;
 import com.cjo.jet.vo.PickBoardVo;
 
 @Controller
@@ -22,6 +24,10 @@ public class RESTfulMyPageController {
 	
 	@Autowired
 	private MyPageServiceImpl myPageService;
+	
+	@Autowired
+	private PartyBoardServiceImpl partyBoardService;
+	//0225 오별
 	
 	@RequestMapping("get_review_board.do")
 	public ArrayList<HashMap<String, Object>> getReviewBoard(HttpSession session) {
@@ -271,5 +277,49 @@ public class RESTfulMyPageController {
 		return upgradeMap;
 		
 	}
+	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		//참여 확정 인원 마이페이지 출력 오별 0225 
+		@RequestMapping("get_approve_membervo_process.do")
+		public ArrayList<HashMap<String,Object>> getApproveMemberProcess (int jet_board_party_no,HttpSession session){
+			MemberVo sessionUser = (MemberVo)session.getAttribute("sessionUser");
+			
+			System.out.println("레스트풀 마이페이지 sessionUser 존재여부  : " + sessionUser.getJet_member_no());
+			System.out.println("레스트풀 마이페이지 jet_board_party_no 존재여부  : " + jet_board_party_no);
+			ArrayList<HashMap<String,Object>> approveMember = myPageService.getPartyRatingList(jet_board_party_no,sessionUser.getJet_member_no());
+					
+			return approveMember;
+		}
+	//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		//친구 평가 점수 인서트 오별 0225
+		@RequestMapping("insert_rating_process.do")
+		public void ratingInsertProcess (int jet_member_no,int jet_board_party_no,String jet_party_rating_value,PartyRatingVo param ) {
 
+			param.setJet_member_no(jet_member_no);
+			param.setJet_board_party_no(jet_board_party_no);
+			param.setJet_party_rating_value(jet_party_rating_value);
+			
+			partyBoardService.insertRating(param);
+		}	
+		//평가 체크
+		@RequestMapping("check_rating_process.do")
+		public HashMap<String, Object> ratingCheckProcess(int jet_board_party_no,int jet_member_no){
+			HashMap<String,Object> map = new HashMap<String,Object>(); 
+			System.out.println("가야대 가앧!!");
+			PartyRatingVo partyRatingVo = null;
+			
+			boolean existRatingVo = false;
+			
+			partyRatingVo = partyBoardService.CheckRatingVo(jet_board_party_no, jet_member_no);
+			
+			if(partyRatingVo != null) {
+				existRatingVo = true;
+			}else {
+				existRatingVo = false;
+			}	
+		
+			map.put("existLikeVo",existRatingVo );
+			
+			return map;
+		}
+		
 }

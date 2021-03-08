@@ -75,10 +75,10 @@
             <%-- <jsp:include page="../commons/kakao_map_api.jsp"/>--%>
             <div class="row mt-4">
                 <div class="col">
-                    <div>
+                    <div class="text-center">
                        ${result.boardReviewVo.jet_board_review_content }
                        <c:forEach items="${result.imageVoList }" var="reviewImageVo">
-                       		<img src="${reviewImageVo.jet_board_review_image_link }">
+                       		<img class="img-fluid" src="${reviewImageVo.jet_board_review_image_link }">
                        </c:forEach>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
         
         
         </article>
-<jsp:include page="../party_board/popup_chat.jsp"/>
+        <jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>		
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>		

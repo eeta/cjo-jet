@@ -67,7 +67,43 @@
                     	조회수 : ${result.sharePlanBoardVo.jet_board_shareplan_readcount }
                 </div>
                 <div class="col"  style="font-size: 13px; text-align: right;">
-                    <img alt="report" src="${pageContext.request.contextPath}/resources/image/report.jpg" style="margin-top:-5px"><a href="#" class="text-danger" style="text-decoration: none; font-size:12px">[신고하기]</a>
+                
+							<div class="row my-3">
+								<div class="col"></div>
+								<div class="col" style="text-align: right;font-size: 13px;">
+								    <img alt="report" src="${pageContext.request.contextPath}/resources/image/report.jpg" style="margin-top:-5px">
+								    <a id="singoButton"></a>	<%--신고 버튼  --%>
+								</div>
+								
+								<%--모달창 시작--%>
+							<div class="modal fade" id="singoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body">
+							        <form>
+							          <div class="mb-3">
+							            <label for="sessionUser-name" class="col-form-label">신고자</label>
+							            <div class="form-control" id="sessionUser-name">${sessionUser.jet_member_nick}</div>
+							          </div>
+							          <div class="mb-3">
+							            <label for="jet_board_notice_singo_reason" class="col-form-label">신고 사유</label>
+							            <textarea class="form-control" id="jet_board_share_report_reason"></textarea>
+							          </div>
+							        </form>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							        <button onclick="singoSubmitBtn();" type="button" id="toast_singo" class="btn btn-danger" data-bs-dismiss="modal">Send Declaration</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							<%--모달 창 끝  --%>
+							</div>	<%--신고 row끝 --%>
                     
                 </div>
             </div>
@@ -141,7 +177,7 @@
                     <div>
                        ${result.sharePlanBoardVo.jet_board_shareplan_content }
                        <c:forEach items="${result.imageVoList }" var="sharePlanImageVo">
-                       		<img src="${sharePlanImageVo.jet_board_shareplan_image_link }">
+                       		<img class="img-fluid" src="${sharePlanImageVo.jet_board_shareplan_image_link }">
                        </c:forEach>
                     </div>
                 </div>
@@ -189,8 +225,8 @@
                 </div>
                 <div class="col-2" style="margin-left:-30px;">
                     <div class="repleTab">
-                        <button class="tabmenu active" onclick="repleTab(event,'tab1')"  style="background-color: #fff; border: none; outline: none; font-size: 13px;">등록순</button> |
-                        <button class="tabmenu" onclick="repleTab(event,'tab2')"  style="background-color: #fff; border: none; outline: none; font-size: 13px;">최신순</button>
+                        <button id="repleASC" onclick="refreshReple()"  style="background-color: #fff; border: none; outline: none; font-size: 13px;">등록순</button> |
+                        <button id="repleDESC" onclick="refreshRepleDESC()"  style="background-color: #fff; border: none; outline: none; font-size: 13px;">최신순</button>
                     </div>
                 </div>
                 
@@ -198,9 +234,11 @@
             </div>
             <hr style="background-color:#8C8C8C;">
             <%-- 여기가 댓글 불러오는곳 --%>
-            <div id="tab1" class="tabReple" style="display: block;">
-            	<div class="container" id="reple_list_box"></div>
-			</div>
+            
+            <div class="container" id="reple_list_box"></div>
+			<div class="container" id="reple_list_box_desc"></div>
+			
+			
 			<c:if test="${!empty sessionUser }">
             <div class="row mb-4">
                 <div class="col">

@@ -137,7 +137,7 @@
 					    </a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link" href="#">
+					    <a class="nav-link" href="${pageContext.request.contextPath }/admin/admin_member_stopedmember_page.do">
 					    	블랙리스트
 					    </a>
 					  </li>

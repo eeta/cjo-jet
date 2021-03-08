@@ -27,6 +27,11 @@
 	
 </style>
 <script type="text/javascript">
+	function enterkey(){
+		if(window.event.keyCode == 13){
+			loginProcess();
+		}
+	}
 	function loginProcess(){
 		var inputId = document.getElementById("input_id");
 		var inputPw = document.getElementById("input_pw");
@@ -106,7 +111,7 @@
 										</div>
 									</div>
 									<div class="row mt-2">
-										<div class="col d-grid gap-2">
+										<div class="col d-grid gap-2" onkeyup="enterkey()">
 											<input id="input_pw" name="jet_member_pw" type="password" placeholder="Password" class="text-muted border-top-0 border-start-0 border-end-0 border-bottom">
 										</div>
 									</div>
@@ -137,8 +142,8 @@
 				</div>
 				<div class="row mt-4" style="box-shadow: 1px 1px 1px 2px #BDBDBD;">
 					<div class="col p-1">
-						<p class="aa">테스트 <strong>관리자</strong> 아아디/비밀번호 : admin01 / admin11</p>
-						<p class="aa">테스트 <strong>사용자</strong> 아이디/비밀번호 : user01 / user11</p>
+						<p class="aa">테스트 <strong>관리자</strong> 아아디/비밀번호 : admin01@aaa.com / admin01</p>
+						<p class="aa">테스트 <strong>사용자</strong> 아이디/비밀번호 : user01@aaa.com / user01</p>
 					</div>
 				</div>
 			</div>

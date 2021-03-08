@@ -40,6 +40,7 @@
 		//전화번호
 		
 		var inputPwConfirm = document.getElementById("input_pw_confirm");
+		
 		if(inputPw.value != inputPwConfirm.value){
 			alert("비밀번호를 확인해주세요");
 			inputPw.value = "";
@@ -51,12 +52,16 @@
 		if(isConfirmId == false){
 			console.log("[test console]");
 			alert("이메일을 확인해주세요.");
+			inputId.value = "";
+			inputId.focus();
 			return;
 		}
-		
+		var inputNick = document.getElementById("input_nick");
 		if(isConfirmNick == true){
 			console.log("[test console nick]");
 			alert("닉네임을 확인해주세요.");
+			inputNick.value = "";
+			inputNick.focus();
 			return;
 		}
 		
@@ -67,6 +72,8 @@
 			alertBox.setAttribute("class","text-end");
 	 		alertBox.setAttribute("style","color : red;");
 	 		alertBox.innerText = "이름을 입력해주세요!";
+	 		inputName.value = "";
+	 		inputName.focus();
 	 		nameAlertBox.append(alertBox);
 	 		
 	 		setTimeout(function(){
@@ -77,12 +84,14 @@
 		}		
 		var inputPhone = document.getElementById("input_phone");
 		var regExp =  /^[0-9]*$/;
-		if(inputPhone.value == "" || inputPhone.value.trim() == "" || !regExp){
+		if(inputPhone.value == "" || inputPhone.value.trim() == "" || !regExp.test(inputPhone.value)){
 			var phoneAlertBox = document.getElementById("confirmPhone_alert_box");
 			var alertBox = document.createElement("div");
 			alertBox.setAttribute("class","text-end");
 	 		alertBox.setAttribute("style","color : red;");
 	 		alertBox.innerText = "전화번호를 입력해주세요!";
+	 		inputPhone.value = "";
+	 		inputPhone.focus();
 	 		phoneAlertBox.append(alertBox);
 	 		
 	 		setTimeout(function(){
@@ -143,8 +152,12 @@
 	function confirmId(){
 		//바닐라 js
 		var inputId = document.getElementById("input_id");
-		var id = inputId.value;
-		
+		var inputMailserver = document.getElementById("input_mailserver");
+		var inputAt = document.getElementById("input_at");
+		var id = inputId.value+inputAt.value+inputMailserver.value;
+		var id1 = inputId.value
+		var id2 = inputMailserver.value;
+		var id3 = inputId.value+inputMailserver.value;
 		var xmlhttp = new XMLHttpRequest();
 		
 		isConfirmId = false;
@@ -164,7 +177,7 @@
 					positionBox.innerHTML = "";//초기화
 					positionBox.appendChild(alertBox);
 					
-				}else if(id == ""){//아이디 중복 X
+				}else if(id == ""|| id3 == "" || id.trim() == "@" || id1 == "" || id2 == ""){//아이디 중복 X
 					//가입 가능
 					isConfirmId = false;
 					var alertBox = document.createElement("div");
@@ -207,7 +220,19 @@
 		
 		xmlhttp.onreadystatechange = function(){
 			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
-				if(nick == ''){
+				if(!regExp.test(nick)){
+					isConfirmNick = true;
+					var alertBox = document.createElement("div");
+					alertBox.innerText = "닉네임은 한글, 영문, 숫자만 입력 가능합니다.";
+					alertBox.style.color = "red";
+					
+					var positionBox = document.getElementById("confirmNick_alert_box");
+					positionBox.innerHTML = "";//초기화
+					positionBox.appendChild(alertBox);
+					return;
+				}
+				
+				if(nick == ""){
 					isConfirmNick = true;
 					var alertBox = document.createElement("div");
 					alertBox.innerText = "닉네임을 입력해주세요";
@@ -230,7 +255,7 @@
 				}else{
 					isConfirmNick = true;
 					var alertBox = document.createElement("div");
-					alertBox.innerText = "닉네임은 한글,영문,숫자만 입력 가능합니다.";
+					alertBox.innerText = "중복된 닉네임 입니다.";
 					alertBox.style.color = "red";
 					
 					var positionBox = document.getElementById("confirmNick_alert_box");
@@ -264,8 +289,11 @@
 								<div class="col"><h1>회원가입</h1></div>
 							</div>
 							<div class="row mt-5">
-								<div class="col">
-									<input onblur="confirmId()" id="input_id" name="jet_member_id" type="text" class="form-control" placeholder="E-mail">
+								<div class="input-group">
+								  <input onblur="confirmId()"type="text" id="input_id" name="jet_member_id" class="form-control" placeholder="이메일" aria-label="E-Mail">
+								  <span class="input-group-text">@</span>
+								  <input type="hidden" id="input_at" name="jet_member_id" value="@">
+								  <input onblur="confirmId()" id="input_mailserver"  name="jet_member_id" type="text" class="form-control" placeholder="ex) gmail.com" aria-label="ex) gmail.com">
 								</div>
 							</div>
 							<div class="row mt-1">
@@ -273,18 +301,18 @@
 							</div>
 							<div class="row mt-3">
 								<div class="col"><!-- 비밀번호-->
-									<input id="input_pw" name="jet_member_pw" type="password" class="form-control" placeholder="Password">
+									<input id="input_pw" name="jet_member_pw" type="password" class="form-control" placeholder="비밀번호는 8 ~ 10자 영문, 숫자 조합으로 입력해주세요.">
 								</div>
 							</div>
 							<div class="row mt-2">
 								<div class="col"><!-- 비밀번호 확인-->
-									<input id="input_pw_confirm" type="password" class="form-control" placeholder="Password Confirm">
+									<input id="input_pw_confirm" type="password" class="form-control" placeholder="비밀번호 확인">
 								</div>
 							</div>
 							
 							<div class="row mt-3">
 								<div class="col"><!-- 이름 -->
-									<input id="input_name" name="jet_member_name" type="text" class="form-control" placeholder="Name">
+									<input id="input_name" name="jet_member_name" type="text" class="form-control" placeholder="이름">
 								</div>
 							</div>
 							<div class="row mt-1">
@@ -292,7 +320,7 @@
 							</div>
 							<div class="row mt-2">
 								<div class="col"><!-- 닉네임 -->
-									<input onblur="confirmNick()" id="input_nick" name="jet_member_nick" type="text" class="form-control" placeholder="Nickname">
+									<input onblur="confirmNick()" id="input_nick" name="jet_member_nick" type="text" class="form-control" placeholder="닉네임">
 								</div>
 							</div>
 							<div class="row mt-1">
@@ -314,7 +342,7 @@
 							</div>
 							<div class="row mt-3">
 								<div class="col"><!-- 전화번호 -->
-									<input id="input_phone" name="jet_member_phone" type="text" class="form-control" placeholder="PhoneNumber">
+									<input id="input_phone" name="jet_member_phone" type="text" class="form-control" placeholder="010xxxxxxxx">
 								</div>
 							</div>
 							<div class="row mt-1">
@@ -322,7 +350,7 @@
 							</div>
 							<div class="row mt-2">
 								<div class="col"><!-- 카카오 아이디 -->
-									<input id="input_kakao" name="jet_member_kakao" type="text" class="form-control" placeholder="Kakao ID">
+									<input id="input_kakao" name="jet_member_kakao" type="text" class="form-control" placeholder="카카오 ID">
 								</div>
 							</div>
 							<div class="row mt-1">

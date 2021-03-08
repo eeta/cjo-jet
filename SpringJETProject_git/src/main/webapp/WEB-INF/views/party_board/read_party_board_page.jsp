@@ -84,9 +84,28 @@ var linePath = [];
 					rowBox1.setAttribute("class","row");
 					
 					var nickBox = document.createElement("div");
-					nickBox.setAttribute("class","col mt-2");
+					nickBox.setAttribute("class","col-2 mt-2");
 					nickBox.setAttribute("style","font-weight: bolder; font-size: 14px;");
 					nickBox.innerText=attendData.memberVo.jet_member_nick;
+					
+					var ratingBox = document.createElement("div");
+					ratingBox.setAttribute("class","col-2 mt-2");
+					ratingBox.setAttribute("style","font-weight: bolder; font-size: 14px;");
+					ratingBox.setAttribute("id","rating_box");
+					
+					if(attendData.rating == "5"){
+						ratingBox.innerText="❤❤❤❤❤"
+					}else if(attendData.rating == "4"){
+						ratingBox.innerText="❤❤❤❤"
+					}else if(attendData.rating == "3"){
+						ratingBox.innerText="❤❤❤"
+					}else if(attendData.rating == "2"){
+						ratingBox.innerText="❤❤"
+					}else if(attendData.rating == "1"){
+						ratingBox.innerText="❤"
+					}else {
+						ratingBox.innerText=" "
+					}
 					
 					var dateBox = document.createElement("div");
 					dateBox.setAttribute("class","col text-muted");
@@ -207,6 +226,7 @@ var linePath = [];
 					bigBox.append(rowBox3);
 					
 					rowBox1.append(nickBox);
+					rowBox1.append(ratingBox);
 					rowBox1.append(dateBox);
 					
 					rowBox2.append(contentBox);
@@ -370,7 +390,37 @@ var linePath = [];
 		xmlhttp.send("jet_board_party_no="+partyNo );
 		
 	}
-	
+/*	
+	function getRating() {
+		//aaa
+		var rating_box = document.getElementById("rating_box");
+		
+		var childCount = rating_box.childNodes.length ;
+		for(var i =0 ; i < childCount ; i++){
+			rating_box.childNodes[0].remove();
+		}
+		
+		var xmlhttp = new XMLHttpRequest();
+		
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				var obj = JSON.parse(xmlhttp.responseText);
+				
+				for(Data of obj){
+					
+					var rating = document.createElement("span");
+					rating.innerText="["+결과값.+"]";
+					
+					approveMemberBox.append(spanBox);
+				}
+			}	
+		};
+		xmlhttp.open("post","${pageContext.request.contextPath}/party_board/get_rating_value.do");
+		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp.send("jet_member_no="+jet_member_no );
+		
+	}
+*/
 //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ	
 //여행계획 출력
 function refreshPlan() {
@@ -832,7 +882,7 @@ function refreshPlan() {
 				                         </div> 
 				                     </div>
 				                     
-				                    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=359480e8f9355ac0c5dff3184ff92646&libraries=services"></script>
+				                    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=9add28148ee115953c9a2954f4561428&libraries=services"></script>
 									<script >
 				                        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 				                            mapOption = {

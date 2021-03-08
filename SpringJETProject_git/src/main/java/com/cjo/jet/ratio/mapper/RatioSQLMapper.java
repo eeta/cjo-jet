@@ -23,4 +23,11 @@ public interface RatioSQLMapper {
 	public HashMap<String, Object> selectMCsCount();
 	public HashMap<String, Object> selectACsCount();
 	
+	//게시판별 성비
+	public HashMap<String, Object> selectReviewGenderRatio();
+	public HashMap<String, Object> selectPartyGenderRatio();
+	public HashMap<String, Object> selectKnowhowGenderRatio();
+	public HashMap<String, Object> selectFreeBoardGenderRatio();
+	public HashMap<String, Object> selectShareplanGenderRatio();
+	
 }

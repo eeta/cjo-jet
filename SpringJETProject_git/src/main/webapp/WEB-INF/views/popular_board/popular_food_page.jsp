@@ -153,7 +153,7 @@
 	    	<div class="col"  style="background-color:#f6f6f6";></div>
 	    </div>
 	</div>
-<jsp:include page="../party_board/popup_chat.jsp"/>
+	<jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>
  

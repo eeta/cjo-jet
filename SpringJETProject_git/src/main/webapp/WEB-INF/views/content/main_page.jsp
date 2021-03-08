@@ -179,10 +179,10 @@
 													<a href="${pageContext.request.contextPath }/party_board/read_party_board_page.do?jet_board_party_no=${data.partyBoardVo.jet_board_party_no}">
 														<c:choose>
 															<c:when test="${!empty data.thumbnail }">
-																<div style="text-align:center;"><img style="height: 250px;overflow: hidden;" class="card-img-top" src="${data.thumbnail[0].jet_board_party_image_link }" alt="image"></div>
+																<div style="text-align:center;"><img style="height: 250px;overflow: hidden;border-top-left-radius: 20px;border-top-right-radius: 20px;" class="card-img-top" src="${data.thumbnail[0].jet_board_party_image_link }" alt="image"></div>
 															</c:when>
 															<c:otherwise>
-																<div><img style="overflow: hidden;height: 250px;" src="${pageContext.request.contextPath }/resources/image/rock.jpg" class="card-img-top"></div>
+																<div><img style="overflow: hidden;height: 250px;border-top-left-radius: 20px;border-top-right-radius: 20px;" src="${pageContext.request.contextPath }/resources/image/rock.jpg" class="card-img-top"></div>
 															</c:otherwise>
 														</c:choose>
 													</a>	
@@ -190,14 +190,22 @@
 												
 												<div class="card-body">
 													<div class="card-title">
-														${data.partyBoardVo.jet_board_party_title } <span class="badge rounded-pill bg-danger" style="font-size: 12px;">new</span>
-														<p id="reg_count" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>
+														
+														<div class="row">
+															<div class="col-10 card-title text-truncate">	
+																<span class="badge rounded-pill bg-danger" style="font-size: 11px;">new</span> ${data.partyBoardVo.jet_board_party_title } 
+															</div>
+															<div class="col-2">	<%--노 마감 --%>
+																<p id="reg_count" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>	
+															</div>
+														</div>
+													
 													</div>
 													 
 													<div class="row">
 														<div class="col-4"><p class="card-text">[모집]</p></div>
 														<div class="col font-monospace">
-															<i class="far fa-calendar-alt"></i> <fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_startgather }"/> ~ <fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_endgather }"/>
+															<i class="far fa-calendar-alt"></i> <fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_startgather }"/> ~ <br><fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_endgather }"/>
 														</div>
 													</div>
 													<div class="row">
@@ -212,7 +220,7 @@
 													</div>
 												</div>
 												
-												<div class="card-footer font-monospace"> <!--  카드 바디 푸터 -->
+												<div class="card-footer font-monospace" style="border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;"> <!--  카드 바디 푸터 -->
 													<i class="far fa-grin-alt"></i>조회 ${data.partyBoardVo.jet_board_party_readcount }회
 													<i class="far fa-hand-paper"></i>참여신청 ${data.attendCount }개
 													<i class="reg_date"><fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_writedate }"/></i>
@@ -243,7 +251,7 @@
 					<div class="row mt-5">
 						<div class="col"><h3>추천 원데이 클래스</h3></div>
 						<div class="col-1">
-							<a href="${pageContext.request.contextPath}/party_board/party_board_page.do"><img class="img-fluid" src="${pageContext.request.contextPath}/resources/image/plus_btn.PNG" style="height: 2rem"></a>
+							<a href="${pageContext.request.contextPath}/classboard/main_classboard_page.do"><img class="img-fluid" src="${pageContext.request.contextPath}/resources/image/plus_btn.PNG" style="height: 2rem"></a>
 						</div>
 					</div>
 					<hr style="color: #ff751a; height: 0.25%">
@@ -258,20 +266,24 @@
 											<div class="card-head-img">
 												<c:choose>
 													<c:when test="${!empty data.imageVoList }">
-														<div><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img style=" width:325px; height:250px;text-align:center;" src="${data.imageVoList[0].jet_class_image_link }" alt="image"></a></div>
+														<div><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img class="img-fluid" style=" width:325px; height:250px;text-align:center;" src="${data.imageVoList[0].jet_class_image_link }" alt="image"></a></div>
 													</c:when>
 													<c:otherwise>
-														<div ><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img style=" width:325px; height:250px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
+														<div class="text-center" ><a href="${pageContext.request.contextPath }/classboard/detail_class_page.do?jet_class_detail_no=${data.classDetailVo.jet_class_detail_no}"><img class="img-fluid text-center" style=" width:250px; height:250px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
 													</c:otherwise>
 												</c:choose>			
 											</div>
 											
 											<div class="card-body">
-												<div class="card-title">
-													${data.classboardVo.jet_class_name }
-													<p id="reg_count" class="font-monospace"> ${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</p>
+												<div class="row">
+													<div class="col-9 card-title text-truncate">	
+														${data.classboardVo.jet_class_name }
+													</div>
+													<div class="col-3">	
+														<p id="reg_count" class="font-monospace"> ${data.countReserve} / ${data.classboardVo.jet_class_max_headcount}</p>	
+													</div>
 												</div>
-												 
+											
 												<div class="row">
 													<div class="col-4"><p class="card-text">[수강일]</p></div>
 													<div class="col font-monospace">
@@ -435,15 +447,15 @@
 										</div>
 										<c:choose>
 											<c:when test="${!empty data.thumbnail }">
-												<div><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img style=" width:130; height:150px;text-align:center;" src="${data.thumbnail[0].jet_board_shareplan_image_link }" alt="image"></a></div>
+												<div><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img class="img-fluid" style="width:130; height:150px;text-align:center;" src="${data.thumbnail[0].jet_board_shareplan_image_link }" alt="image"></a></div>
 											</c:when>
 											<c:otherwise>
-												<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img style=" width:130; height:150px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.jpg" alt="image"></a></div>
+												<div ><a href="${pageContext.request.contextPath }/shareplan_board/read_shareplan_board_page.do?jet_board_shareplan_no=${data.sharePlanBoardVo.jet_board_shareplan_no}" style="text-decoration:none; color:#000;"><img class="iomg-fluid" style="width:130; height:150px;text-align:center;" src="${pageContext.request.contextPath }/resources/image/logo.png" alt="image"></a></div>
 											</c:otherwise>
 										</c:choose>
 										
 										<ul style="margin-left: -30px;">
-											<li style="list-style-type: none;">${data.sharePlanBoardVo.jet_board_shareplan_title }</li>
+											<li class="text-truncate" style="list-style-type: none;max-width: 210px;">${data.sharePlanBoardVo.jet_board_shareplan_title }</li>
 											
 											<li style="list-style-type: none; margin-top: 10px;">작성자 : ${data.memberVo.jet_member_nick }</li>
 										</ul>

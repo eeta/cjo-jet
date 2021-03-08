@@ -47,4 +47,11 @@ public class RESTfulRatioController {
 		System.out.println("[cs map test]"+cs);
 		return cs;
 	}
+	@RequestMapping("board_gender_ratio")
+	public ArrayList<HashMap<String, Object>> BoardGenderRatio(){
+		
+		ArrayList<HashMap<String, Object>> boardGenderRatio = ratioService.getBoardGenderRatio();
+		System.out.println("[test boardGenderRatio]" + boardGenderRatio);
+		return boardGenderRatio;
+	}
 }

@@ -136,10 +136,10 @@
 						<a href="${pageContext.request.contextPath }/party_board/read_party_board_page.do?jet_board_party_no=${data.partyBoardVo.jet_board_party_no}">
 							<c:choose>
 								<c:when test="${!empty data.thumbnail }">
-									<div style="text-align:center;"><img style="width: 414px;height: 250px;" class="card-img-top" src="${data.thumbnail[0].jet_board_party_image_link }" alt="image"></div>
+									<div style="text-align:center;"><img style="width: 414px;height: 250px;border-top-left-radius: 20px;border-top-right-radius: 20px;" class="card-img-top" src="${data.thumbnail[0].jet_board_party_image_link }" alt="image"></div>
 								</c:when>
 								<c:otherwise>
-									<div><img style="width: 414px;height: 250px;" src="${pageContext.request.contextPath }/resources/image/rock.jpg" class="card-img-top"></div>
+									<div><img style="width: 414px;height: 250px;border-top-left-radius: 20px;border-top-right-radius: 20px;" src="${pageContext.request.contextPath }/resources/image/rock.jpg" class="card-img-top"></div>
 								</c:otherwise>
 							</c:choose>
 						</a>	
@@ -148,16 +148,24 @@
 					<div class="card-body">
 						
 						<c:choose>
-							<c:when test="${data.partyBoardVo.jet_board_party_endgather < todayData }">
-								<div class="card-title text-muted" >
-									${data.partyBoardVo.jet_board_party_title }
-									<p id="reg_count1" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>
+							<c:when test="${data.partyBoardVo.jet_board_party_endgather < todayData }">	<%--마감 처리 --%>
+								<div class="row">
+									<div class="col-10 card-title text-muted text-truncate">	
+										${data.partyBoardVo.jet_board_party_title }
+									</div>
+									<div class="col-2">	
+										<p id="reg_count1" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>	
+									</div>
 								</div>
 							</c:when>
-							<c:otherwise>
-								<div class="card-title">
-									${data.partyBoardVo.jet_board_party_title }
-									<p id="reg_count" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>
+							<c:otherwise><%--노 마감 --%>
+								<div class="row">
+									<div class="col-10 card-title text-truncate">	
+										${data.partyBoardVo.jet_board_party_title }
+									</div>
+									<div class="col-2">	<%--노 마감 --%>
+										<p id="reg_count" class="font-monospace"> [${data.partyBoardVo.jet_board_party_fixcount }/${data.partyBoardVo.jet_board_party_headcount }]</p>	
+									</div>
 								</div>
 							</c:otherwise>
 						</c:choose>
@@ -194,7 +202,7 @@
 						</div>
 					</div>
 					
-					<div class="card-footer font-monospace"> <!--  카드 바디 푸터 -->
+					<div class="card-footer font-monospace" style="border-bottom-left-radius: 20px;border-bottom-right-radius: 20px;"> <!--  카드 바디 푸터 -->
 						<i class="far fa-grin-alt"></i>조회 ${data.partyBoardVo.jet_board_party_readcount }회
 						<i class="far fa-hand-paper"></i>참여신청 ${data.attendCount }개
 						<i class="reg_date"><fmt:formatDate pattern="yyyy-MM-dd" value="${data.partyBoardVo.jet_board_party_writedate }"/></i>

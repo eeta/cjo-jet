@@ -95,4 +95,27 @@ public class RatioServiceImpl {
 		listMap.add(unanswaredCs);
 		return listMap;
 	}
+	//각 게시판 글쓴 사람 성별 카운트
+	public ArrayList<HashMap<String, Object>> getBoardGenderRatio(){
+		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
+		
+		HashMap<String, Object> reviewGenderRatio = ratioSQLMapper.selectReviewGenderRatio();
+		reviewGenderRatio.put("BOARD","리뷰게시판");
+		HashMap<String, Object> partyGenderRatio = ratioSQLMapper.selectPartyGenderRatio();
+		partyGenderRatio.put("BOARD","여행친구찾기");
+		HashMap<String, Object> knowhowGenderRatio = ratioSQLMapper.selectKnowhowGenderRatio();
+		knowhowGenderRatio.put("BOARD","팁과 노하우");
+		HashMap<String, Object> freeGenderRatio = ratioSQLMapper.selectFreeBoardGenderRatio();
+		freeGenderRatio.put("BOARD","자유게시판");
+		HashMap<String, Object> shareplanGenderRatio = ratioSQLMapper.selectShareplanGenderRatio();
+		shareplanGenderRatio.put("BOARD","공유게시판");
+		
+		resultList.add(reviewGenderRatio);
+		resultList.add(partyGenderRatio);
+		resultList.add(knowhowGenderRatio);
+		resultList.add(freeGenderRatio);
+		resultList.add(shareplanGenderRatio);
+		
+		return resultList;
+	}
 }

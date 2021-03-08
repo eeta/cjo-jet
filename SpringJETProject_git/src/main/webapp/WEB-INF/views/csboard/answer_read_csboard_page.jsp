@@ -130,7 +130,7 @@
 	<a href="${pageContext.request.contextPath }/csboard/answer_csboard_delete_process.do?jet_board_a_cs_no=${result.csBoardAnswerVo.jet_board_a_cs_no}">삭제</a>
 </c:if>
  --%>	
-<jsp:include page="../party_board/popup_chat.jsp"/>
+	<jsp:include page="../party_board/popup_chat.jsp"/>
 <jsp:include page="../commons/global_nav.jsp"/>
 <jsp:include page="../commons/global_footer.jsp"/>
 	

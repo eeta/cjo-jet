@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>관리자 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"></head>
 <style>
 	#mainbox{
@@ -27,7 +27,7 @@
 			
 			<div class="row mt-5">
 				<div class="col">
-					<h1 class="text-center">CS for ADMIN</h1>
+					<h1 class="text-center">Message for ADMIN</h1>
 				</div>
 			</div>
 			
@@ -35,7 +35,7 @@
 				<div class="col"></div>
 				<div class="col"></div>
 				<div class="col-2 text-muted" style="text-align: right;">
-					home > csBoard > all cs
+					home > message for admin
 				</div>
 			</div>	
 						

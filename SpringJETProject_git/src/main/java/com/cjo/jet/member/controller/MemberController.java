@@ -40,6 +40,9 @@ public class MemberController{
 	
 	@RequestMapping("join_member_process.do")
 	public String joinMemberProcess(MemberVo param, String [] jet_interest_name) {
+		String id = param.getJet_member_id();
+		String jet_member_id = id.replaceAll(",", "");
+		param.setJet_member_id(jet_member_id);
 		
 		memberService.joinMember(param, jet_interest_name);
 

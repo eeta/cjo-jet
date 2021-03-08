@@ -1,19 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <style>
 	
 	.ad_box{
 		width: 15rem;
-		height: 40rem;
+		height: 25rem;
 		background-color: white;
 /* 		border: 3px solid orange; */
 		display: block;
 		position: fixed;
 		right: 90px;
 		top: 400px;
+		z-index: 1; <%-- 0220 추가--%>
 	}
 	
 	#title_box{
 		font-size: 20px;
-		font-weight: bold;
+		font-weight: bold;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 		text-align: right;
 		padding-right: 30px;
 	}

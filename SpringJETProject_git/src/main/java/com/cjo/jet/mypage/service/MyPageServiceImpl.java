@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.cjo.jet.boardReview.mapper.BoardReviewSQLMapper;
 import com.cjo.jet.boardReview.mapper.ReviewRepleSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassDetailSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassReserveSQLMapper;
+import com.cjo.jet.classboard.mapper.ClassboardSQLMapper;
 import com.cjo.jet.freeboard.mapper.FreeboardSQLMapper;
 import com.cjo.jet.knowhow.mapper.KnowhowBoardSQLMapper;
 import com.cjo.jet.member.mapper.MemberImageSQLMapper;
@@ -18,6 +21,9 @@ import com.cjo.jet.noticeboard.mapper.NoticeBoardSQLMapper;
 import com.cjo.jet.partyboard.mapper.PartyBoardSQLMapper;
 import com.cjo.jet.shareplan.mapper.SharePlanSQLMapper;
 import com.cjo.jet.vo.BoardReviewVo;
+import com.cjo.jet.vo.ClassDetailVo;
+import com.cjo.jet.vo.ClassReservationVo;
+import com.cjo.jet.vo.ClassboardVo;
 import com.cjo.jet.vo.FreeboardLikeVo;
 import com.cjo.jet.vo.FreeboardRepleVo;
 import com.cjo.jet.vo.FreeboardVo;
@@ -71,6 +77,13 @@ public class MyPageServiceImpl {
 	
 	@Autowired
 	private MyPagePickSQLMapper myPagePickSQLMapper;
+	@Autowired
+	private ClassDetailSQLMapper classDetailSQLMapper;
+	
+	@Autowired
+	private ClassboardSQLMapper classboardSQLMapper;
+	@Autowired
+	private ClassReserveSQLMapper classReserveSQLMapper;
 	
 	//마이페이지 메인에서 프로필 사진 출력 오별
 	public HashMap<String, Object> getMyProfile(int jet_member_no){
@@ -482,4 +495,75 @@ public class MyPageServiceImpl {
 		 return memberUpgradeVo;
 	 }
 	 
+	// 글 목록 보기. 원데이클래스 목록 보기
+		public ArrayList<HashMap<String, Object>> myDetailClassList(int jet_member_no) {
+			ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String, Object>>();
+
+			ArrayList<ClassDetailVo> detailList = myPageSQLMapper.selectMydetailClassList(jet_member_no);
+
+			for (ClassDetailVo classDetailVo : detailList) {
+				int class_no = classDetailVo.getJet_class_no();
+				
+				ClassboardVo classboardVo = classboardSQLMapper.selectByNo(class_no); // ClassVo에 detailVo에 있는 class_no 세팅
+				
+				// 예약 현황
+				int countReserve = classReserveSQLMapper.countReserve(classDetailVo.getJet_class_detail_no());
+
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("classboardVo", classboardVo);
+				map.put("classDetailVo", classDetailVo);
+				map.put("countReserve", countReserve);
+
+				resultList.add(map);
+				
+			}
+			System.out.println("[sdasfzxvzx]"+resultList);
+			return resultList;
+		}
+		
+		// 나의 예약 리스트
+		public ArrayList<HashMap<String, Object>> myReservationList(int jet_member_no) {
+
+			ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String, Object>>();
+			ArrayList<ClassReservationVo> reserveVoList = classReserveSQLMapper.selectMyReservations(jet_member_no);
+
+			for (ClassReservationVo reserveVo : reserveVoList) {
+
+				int jet_class_detail_no = reserveVo.getJet_class_detail_no();
+				ClassDetailVo classDetailVo = classDetailSQLMapper.selectByNo(jet_class_detail_no);
+
+				int jet_class_no = classDetailVo.getJet_class_no();
+				ClassboardVo classboardVo = classboardSQLMapper.selectByNo(jet_class_no);
+
+				HashMap<String, Object> map = new HashMap<String, Object>();
+
+				map.put("reserveVo", reserveVo);
+				map.put("classDetailVo", classDetailVo);
+				map.put("classboardVo", classboardVo);
+				
+				resultList.add(map);
+				
+			}
+			return resultList;
+		}	
+		
+		//ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+		 //파티 참가중인 멤버들 나 빼고 오별0225
+		 public ArrayList<HashMap<String, Object>> getPartyRatingList(int jet_board_party_no,int jet_member_no){
+			 
+			 ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String,Object>>();
+			 
+			 ArrayList<MemberVo> memberList = myPageSQLMapper.selectPartyAttendMemberVo(jet_board_party_no, jet_member_no);
+			 
+			 for(MemberVo memberVo : memberList) {
+				
+				 HashMap<String, Object> map = new HashMap<String, Object>();
+					
+				map.put("memberVo", memberVo);
+				
+				result.add(map);
+			 }
+			 
+			 return result;
+		 }
 }

@@ -23,7 +23,8 @@
 		]]>	
 	</insert>
 	
-	<!-- 원데이클래스 세부정보 목록 보기 -->
+	<!-- 
+	원데이클래스 세부정보 목록 보기
 	<select id="selectAll" resultType="com.cjo.jet.vo.ClassDetailVo">
 		<![CDATA[	
 			SELECT *
@@ -31,6 +32,25 @@
 			WHERE jet_class_detail_date > SYSDATE-1
 			ORDER BY jet_class_detail_date ASC
 		]]>		
+	</select>
+	-->
+	
+	<!-- 원데이클래스 세부정보 목록 보기, 페이지 글 9개씩 가져오기 -->
+	<select id="selectAll" resultType="com.cjo.jet.vo.ClassDetailVo">
+		<![CDATA[
+			SELECT c2.* 
+			FROM(
+			    SELECT c1.*, ROWNUM as rnum 
+			    FROM(
+			    	SELECT * 
+			    	FROM jet_class_detail 
+			    	WHERE jet_class_detail_date > SYSDATE - 1 
+			    	ORDER BY jet_class_detail_date ASC
+			    	)c1
+			    )c2
+			WHERE c2.rnum >= (#{page_num}-1) * 9 + 1 
+			AND c2.rnum <= #{page_num} * 9
+		]]>
 	</select>
 	
 	<!-- detail no로 detailVo 뽑아오기 -->
@@ -100,6 +120,19 @@
 		<![CDATA[
 			SELECT * FROM jet_board_class_singo 
 			ORDER BY jet_board_class_singo_date DESC
+		]]>
+	</select>
+	
+	<!-- 클래스 수강날짜 순으로 리스트 no 페이징	  -->
+	<select id="selectAllNoPaging" resultType="com.cjo.jet.vo.ClassDetailVo">
+		<![CDATA[	
+			SELECT * FROM jet_class_detail ORDER BY jet_class_detail_date ASC
+		]]>		
+	</select>
+	
+	<select id="getPageCount" resultType="int">
+		<![CDATA[	
+			SELECT CEIL(COUNT(*)/9) FROM jet_class_detail
 		]]>
 	</select>
 

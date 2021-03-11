@@ -7,7 +7,7 @@ public class ClassDetailVo {
 	private int jet_class_detail_no;
 	private int jet_class_no;
 	private Date jet_class_detail_date;
-	
+    
 	public ClassDetailVo() {
 		super();
 	}

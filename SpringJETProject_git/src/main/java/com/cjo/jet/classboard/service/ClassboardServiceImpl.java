@@ -68,10 +68,10 @@ public class ClassboardServiceImpl {
 	}
 	
 	// 원데이클래스 목록 보기
-	public ArrayList<HashMap<String, Object>> getClassList() {
+	public ArrayList<HashMap<String, Object>> getClassList(int page_num) {
 		ArrayList<HashMap<String, Object>> resultList = new ArrayList<HashMap<String,Object>>();
 		
-		ArrayList<ClassDetailVo> detailList = classDetailSQLMapper.selectAll();
+		ArrayList<ClassDetailVo> detailList = classDetailSQLMapper.selectAll(page_num);
 		
 		for(ClassDetailVo classDetailVo : detailList) {
 			int class_no = classDetailVo.getJet_class_no();
@@ -404,4 +404,9 @@ public class ClassboardServiceImpl {
 		
 		return result;
 	}	
+	
+	// 페이징
+	public int getPageCount() {
+		return classDetailSQLMapper.getPageCount();
+	}
 }

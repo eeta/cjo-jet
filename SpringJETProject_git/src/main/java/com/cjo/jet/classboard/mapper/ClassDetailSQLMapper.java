@@ -16,8 +16,8 @@ public interface ClassDetailSQLMapper {
 	// 원데이클래스 세부정보 삽입 
 	public void insertDetail(ClassDetailVo vo);
 	
-	// 원데이클래스 세부정보 목록 보기
-	public ArrayList<ClassDetailVo> selectAll();
+	// 원데이클래스 세부정보 목록 보기 (모든 글 리스트 from DetailTable)
+	public ArrayList<ClassDetailVo> selectAll(int page_num);
 	
 	// detail no로 detailVo 뽑아오기
 	public ClassDetailVo selectByNo(int jet_class_detail_no);
@@ -38,4 +38,9 @@ public interface ClassDetailSQLMapper {
 	
 	// 노티스 글에 모든 신고 출력 
 	public ArrayList<ClassSingoVo> selectAllSingoNoPage();
+	
+	// 페이징
+	public ArrayList<ClassDetailVo> selectAllNoPaging();
+	
+	public int getPageCount();
 }

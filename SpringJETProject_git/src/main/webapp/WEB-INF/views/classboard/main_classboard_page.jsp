@@ -120,6 +120,21 @@
             <div class="row mt-2">
             	 <hr> <!-- 선 -->
         	</div>
+        	<div class="row mt-2">
+				<div class="col">
+				<!-- 페이징. <nav aria-label="Page navigation"> -->
+				  <ul class="pagination justify-content-center">
+				    <li class="page-item<c:if test="${currentPage == 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/classboard/main_classboard_page.do?page_num=1" class="page-link">&lt;&lt;</a></li>
+					<li class="page-item<c:if test="${beginPage <= 1 }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/classboard/main_classboard_page.do?page_num=${beginPage-1}" class="page-link">&lt;</a></li>
+						<c:forEach begin="${beginPage }" end="${endPage }" var="index">
+							<li class="page-item <c:if test="${index == currentPage }"> active</c:if>"><a href="${pageContext.request.contextPath }/classboard/main_classboard_page.do?page_num=${index }" class="page-link">${index}</a></li>
+						</c:forEach>				      
+					<li class="page-item<c:if test="${endPage >= pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/classboard/main_classboard_page.do.do?page_num=${endPage+1 }" class="page-link">&gt;</a></li>
+					<li class="page-item<c:if test="${currentPage == pageCount }"> disabled</c:if>"><a class="page-link" href="${pageContext.request.contextPath }/classboard/main_classboard_page.do?page_num=${pageCount}" class="page-link">&gt;&gt;</a></li>
+				  </ul>
+					<!-- </nav> -->
+				</div>    
+			</div>        
             
     	</main>
       

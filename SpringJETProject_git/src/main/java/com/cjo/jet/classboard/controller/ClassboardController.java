@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cjo.jet.classboard.service.ClassboardServiceImpl;
@@ -32,12 +33,32 @@ public class ClassboardController {
 	
 	// 원데이클래스 게시판 메인으로
 	@RequestMapping("main_classboard_page.do")
-	public String mainClassboardPage(Model model) {
+	public String mainClassboardPage(Model model, HttpSession session, @RequestParam(value="page_num", defaultValue = "1")int page_num) {
+		
+		MemberVo memberVo = (MemberVo)session.getAttribute("sessionUser");
 		
 		// 글 목록 출력
-		ArrayList<HashMap<String, Object>> resultList = classboardService.getClassList();
+		ArrayList<HashMap<String, Object>> resultList = classboardService.getClassList(page_num);
 		
+		//Pagination
+		int pageCount = classboardService.getPageCount();
+		
+		int currentPage = page_num;
+		int beginPage = ((currentPage-1)/5)*5 + 1;
+		int endPage = ((currentPage-1)/5 + 1)*(5);
+	 	//페이지 계산하기 "정수" 나누기임 1/5 = 0
+		
+		if(endPage > pageCount) {
+			endPage = pageCount;
+		}
+		
+		model.addAttribute("memberVo", memberVo);
 		model.addAttribute("resultList", resultList);
+		
+		model.addAttribute("currentPage" , currentPage);
+		model.addAttribute("beginPage" , beginPage);
+		model.addAttribute("endPage" , endPage);
+		model.addAttribute("pageCount" , pageCount);
 		
 		return "classboard/main_classboard_page";
 	}

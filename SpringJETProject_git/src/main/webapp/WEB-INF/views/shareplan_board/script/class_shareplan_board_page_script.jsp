@@ -61,7 +61,7 @@
 						image.setAttribute("alt","image");
 					}else{
 						image.setAttribute("style","width:100%; height:250px;text-align:center;");
-						image.setAttribute("src","${pageContext.request.contextPath }/resources/image/logo.jpg");
+						image.setAttribute("src","${pageContext.request.contextPath }/resources/image/logo.png");
 						image.setAttribute("alt","image");
 					}
 					

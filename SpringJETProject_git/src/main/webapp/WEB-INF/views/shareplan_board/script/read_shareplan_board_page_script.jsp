@@ -56,6 +56,14 @@ var linePath = [];
 	
 	function refreshReple(){
 		
+		var repleASC = document.getElementById("repleASC");
+		repleASC.style.color="green";
+		repleASC.style.fontWeight="bold";
+		
+		var repleDESC = document.getElementById("repleDESC");
+		repleDESC.style.color="black";
+		
+		
 		var jet_board_shareplan_no = ${result.sharePlanBoardVo.jet_board_shareplan_no}; 
 		
 		var xmlhttp = new XMLHttpRequest();
@@ -67,10 +75,16 @@ var linePath = [];
 
 				
 				var repleListBox = document.getElementById("reple_list_box");
+				var repleListBoxDESC = document.getElementById("reple_list_box_desc");
 				
 				var childCount = repleListBox.childNodes.length;
 				for(var i = 0 ; i < childCount ; i++){
 					repleListBox.childNodes[0].remove();
+				}
+				
+				var childCount = repleListBoxDESC.childNodes.length;
+				for(var i = 0 ; i < childCount ; i++){
+					repleListBoxDESC.childNodes[0].remove();
 				}
 				
 				var index = 0;
@@ -161,7 +175,127 @@ var linePath = [];
 		xmlhttp.send();
 
 	}
+	function refreshRepleDESC(){
+		
+		var repleASC = document.getElementById("repleASC");
+		repleASC.style.color="black";
+		
+		
+		var repleDESC = document.getElementById("repleDESC");
+		repleDESC.style.color="green";
+		repleDESC.style.fontWeight="bold";
+		
+		var jet_board_shareplan_no = ${result.sharePlanBoardVo.jet_board_shareplan_no}; 
+		
+		var xmlhttp = new XMLHttpRequest();
 
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				
+				var obj = JSON.parse(xmlhttp.responseText);
+
+				var repleListBox = document.getElementById("reple_list_box");
+				var repleListBoxDESC = document.getElementById("reple_list_box_desc");
+				
+				var childCount = repleListBox.childNodes.length;
+				for(var i = 0 ; i < childCount ; i++){
+					repleListBox.childNodes[0].remove();
+				}
+				
+				var childCount = repleListBoxDESC.childNodes.length;
+				for(var i = 0 ; i < childCount ; i++){
+					repleListBoxDESC.childNodes[0].remove();
+				}
+				
+				
+				var index = 0;
+				
+				for(repleData of obj){
+					
+					var rowBox = document.createElement("div");
+					rowBox.setAttribute("class","row mt-2 ml-2");
+					
+					var ulBox = document.createElement("ul");
+					ulBox.setAttribute("class","review_reple");
+					
+					var nickBox = document.createElement("li");
+					nickBox.setAttribute("style","font-weight: bolder; font-size: 14px;");
+					nickBox.innerText = repleData.memberVo.jet_member_nick;
+
+	                
+					var contentBox = document.createElement("li");
+					contentBox.setAttribute("style","font-size: 14px;");
+					contentBox.innerText = repleData.sharePlanRepleVo.jet_shareplan_reple_content;
+					
+					var dateBox = document.createElement("li");
+					dateBox.setAttribute("class","text-muted");
+					dateBox.setAttribute("style","font-size: 12px;");
+					var d = new Date(repleData.sharePlanRepleVo.jet_shareplan_reple_writedate);
+					var strDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
+					dateBox.innerText = strDate;
+					
+					if(jet_member_no==repleData.sharePlanRepleVo.jet_member_no){
+					
+					var deleteBox = document.createElement("button");
+					deleteBox.setAttribute("onclick","deleteReple("+repleData.sharePlanRepleVo.jet_shareplan_reple_no+")");
+					deleteBox.setAttribute("style","outline:0; border:0;background-color:#fff;font-size:12px;");
+					deleteBox.innerText = "삭제";					
+					}else if(jet_member_no != repleData.sharePlanRepleVo.jet_member_no){
+						var deleteBox = document.createElement("li");
+						deleteBox.innerText = "";	
+
+					}
+					
+					
+					var commentBox = document.createElement("button");
+					commentBox.setAttribute("onclick","commentReple(" + index + ")");
+					commentBox.setAttribute("style","outline:0; border:0;background-color:#fff;font-size:12px;float:right;");
+					commentBox.innerText="답글";
+					
+					var commentWrtieBox = document.createElement("div");
+					commentWrtieBox.setAttribute("class","write_comment_box");
+					
+					var viewCommentBox = document.createElement("div");
+					viewCommentBox.setAttribute("class","comment_list_box");
+					
+
+					
+					var hr = document.createElement("hr");
+					hr.setAttribute("style","background-color:#8C8C8C;");
+					
+					
+					//rowBox.append(reportBox);
+					rowBox.append(ulBox);
+					rowBox.append(deleteBox);
+					rowBox.append(commentWrtieBox);
+					
+					ulBox.append(nickBox);
+					ulBox.append(contentBox);
+					ulBox.append(dateBox);
+					ulBox.append(deleteBox);
+					ulBox.append(commentBox);
+					
+					//rowBox.append(hr2);
+					rowBox.append(commentWrtieBox);
+					rowBox.append(viewCommentBox);
+					rowBox.append(hr);
+					
+					
+					repleListBoxDESC.append(rowBox);
+					
+					
+					index++;	
+					
+					
+				}
+						
+			}
+				
+		};
+		xmlhttp.open("get","${pageContext.request.contextPath}/shareplan_board/get_reple_list_desc.do?jet_board_shareplan_no="+jet_board_shareplan_no);
+		xmlhttp.send();
+
+	}
 	
 	//댓글삭제
 	function deleteReple(reple_no){
@@ -349,16 +483,16 @@ var linePath = [];
 				if(obj.pickChk == true){
 					var btnPick = document.getElementById("btnPick");
 					btnPick.setAttribute("type","image");
-					btnPick.setAttribute("src","${pageContext.request.contextPath}/resources/image/pick.PNG");
-					btnPick.setAttribute("style","outline:none;");
+					btnPick.setAttribute("src","${pageContext.request.contextPath}/resources/image/pick_on.png");
+					btnPick.setAttribute("style","outline:none;width:40px;height:50px");
 					btnPick.setAttribute("onclick","deletePickButton()");
 
 					
 				}else{
 					var btnPick = document.getElementById("btnPick");
 					btnPick.setAttribute("type","image");
-					btnPick.setAttribute("src","${pageContext.request.contextPath}/resources/image/pickoff.PNG");
-					btnPick.setAttribute("style","outline:none;");
+					btnPick.setAttribute("src","${pageContext.request.contextPath}/resources/image/pick_off.png");
+					btnPick.setAttribute("style","outline:none;width:40px;height:50px");
 					btnPick.setAttribute("onclick","pickButton()");
 
 				}
@@ -598,7 +732,7 @@ var linePath = [];
 						image.setAttribute("alt","image");
 					}else{
 						image.setAttribute("style","width:100%; height:250px;text-align:center;");
-						image.setAttribute("src","${pageContext.request.contextPath }/resources/image/logo.jpg");
+						image.setAttribute("src","${pageContext.request.contextPath }/resources/image/logo.png");
 						image.setAttribute("alt","image");
 					}
 					
@@ -691,13 +825,85 @@ var linePath = [];
 		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		xmlhttp.send("jet_board_shareplan_no=" + jet_board_shareplan_no);
 	}
+	//신고인서트
+	function singoSubmitBtn() {
+		
+		var jet_board_shareplan_no = ${result.sharePlanBoardVo.jet_board_shareplan_no };
+		var jet_board_share_report_reason = document.getElementById("jet_board_share_report_reason").value;
+/*
+		if(${SessionMemberVo==""}==false){
+			alert("로그인 후 이용 가능합니다.");
+			return;
+		}
+*/		
+		if(jet_board_share_report_reason==""){
+			alert("신고사유를 입력해주세요.");
+			return;
+		}
+		
+		var xmlhttp = new XMLHttpRequest();
+		
+			xmlhttp.onreadystatechange = function(){
+				if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+					refresh();
+						
+				}	
+			};
+			xmlhttp.open("post","${pageContext.request.contextPath}/shareplan_board/report_shareplan_process.do");
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send("jet_board_shareplan_no="+jet_board_shareplan_no+"&jet_board_share_report_reason="+jet_board_share_report_reason);
+			
+			document.getElementById("jet_board_share_report_reason").value = "";
+	}
+	
+	//신고 예외처리
+	function singoStateBtn() {
+		var jet_board_shareplan_no =${result.sharePlanBoardVo.jet_board_shareplan_no };
+		
+		var xmlhttp = new XMLHttpRequest();
+		
+		xmlhttp.onreadystatechange = function(){
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200){
+				
+				var obj = JSON.parse(xmlhttp.responseText);
+				
+				if(obj.existSingoVo == false ){
+					var singoButton = document.getElementById("singoButton");
+					singoButton.setAttribute("style","text-decoration: none; font-size:12px;color: red;");
+					singoButton.setAttribute("data-bs-toggle","modal");
+					singoButton.setAttribute("data-bs-target","#singoModal");
+					singoButton.setAttribute("onclick","singoBtn()");
+					singoButton.innerText= "[신고하기]";
+				}else{
+					var singoButton = document.getElementById("singoButton");
+					singoButton.setAttribute("style","text-decoration: none; font-size:12px;");
+					singoButton.innerText= "[신고완료]";
+				}
+			}
+		};
+		xmlhttp.open("post","${pageContext.request.contextPath }/shareplan_board/check_report_process.do");
+		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp.send("jet_board_shareplan_no=" + jet_board_shareplan_no);
+	}
+	
+	//예외처리 미로그인 시 로그인 페이지로 여기서 오류는 취소를 누를시 신고 모달창이 뜸
+	function singoBtn() {
+	
+		if(jet_member_no == null){
+			var confirmResult = confirm("로그인하셔야 사용 가능한 기능입니다. 로그인 페이지로 이동하시겠습까?");
+			if(confirmResult == true){
+				location.href= "${pageContext.request.contextPath }/member/login_page.do";	
+			}
+			return;
+		}
+	}		
 	
 
 
 	
 	function refresh(){
 		refreshReple();
-		
+		singoStateBtn();
 	}
 	
 	

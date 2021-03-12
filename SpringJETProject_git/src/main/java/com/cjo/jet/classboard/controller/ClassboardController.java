@@ -214,7 +214,6 @@ public class ClassboardController {
 	
 		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
-	*/
 	
 	// 클래스 예약 취소하기
 	@RequestMapping("delete_class_process.do")
@@ -228,6 +227,8 @@ public class ClassboardController {
 		
 		return "redirect:./detail_class_page.do?jet_class_detail_no="+jet_class_detail_no+"";
 	}
+	
+	*/
 	
 	// 세로 네비 바 -> 나의 예약 페이지로
 	@RequestMapping("my_reservation_page.do")

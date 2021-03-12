@@ -11,7 +11,7 @@ public interface ClassCategorySQLMapper {
 	public int createKey();
 	
 	// 원데이클래스의 카테고리 보기
-	public ClassCategoryVo selectByNo(int jet_class_no);
+	public ClassCategoryVo selectByNo(int category_no);
 	
 	public ArrayList<ClassDetailVo> selectAll();
 

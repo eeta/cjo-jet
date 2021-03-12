@@ -52,7 +52,7 @@ public class ClassboardServiceImpl {
 		classboardSQLMapper.insertClass(vo);
 		
 		// 이미지 업로드
-		for(ClassImageVo imageVo : classImageVo) {
+		for (ClassImageVo imageVo : classImageVo) {
 			imageVo.setJet_class_no(classPK);
 			classimageSQLMapper.insertImage(imageVo);
 		}
@@ -76,7 +76,7 @@ public class ClassboardServiceImpl {
 		for(ClassDetailVo classDetailVo : detailList) {
 			int class_no = classDetailVo.getJet_class_no();
 			ClassboardVo classboardVo = classboardSQLMapper.selectByNo(class_no);    // detailVo에 있던 class_no를 ClassVo에 세팅
-			
+						
 			int jet_member_no = classboardVo.getJet_member_no();
 			MemberVo memberVo = memberSQLMapper.selectByNo(jet_member_no);    // 멤버 넘버 추출
 			
@@ -87,12 +87,20 @@ public class ClassboardServiceImpl {
 			// 예약 현황
 			int countReserve = classReserveSQLMapper.countReserve(classDetailVo.getJet_class_detail_no());
 			
+			// 별점
+			float starRating = classReviewSQLMapper.selectStarRatingByClassNo(class_no);
+			
+			// 이미지
+			ArrayList<ClassImageVo> classImageVo = classimageSQLMapper.selectByNo(classboardVo.getJet_class_no());
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("classboardVo", classboardVo);
 			map.put("classDetailVo", classDetailVo);
 			map.put("memberVo", memberVo);
 			map.put("classCategoryVo", classCategoryVo);
 			map.put("countReserve", countReserve);
+			map.put("starRating", starRating);
+			map.put("imageVoList", classImageVo);
 			
 			System.out.println("map" + map);
 			resultList.add(map);			
@@ -105,6 +113,11 @@ public class ClassboardServiceImpl {
 		
 		// 게시글 하나 읽기
 		ClassboardVo classboardVo = classboardSQLMapper.selectClassJoinDetail(jet_class_detail_no);
+		
+		String str = classboardVo.getJet_class_content();
+		str = StringEscapeUtils.escapeHtml4(str);
+		str = str.replaceAll("\n", "<br>");    // Enter를 br로 바꾸기
+		classboardVo.setJet_class_content(str);
 		
 		// 멤버 이름
 		int jet_member_no = classboardVo.getJet_member_no();
@@ -119,6 +132,9 @@ public class ClassboardServiceImpl {
 		// 디테일 넘버 구하기
 		ClassDetailVo detailVo = classDetailSQLMapper.selectByNo(jet_class_detail_no);
 		
+		// 별점
+		float starRating = classReviewSQLMapper.selectStarRatingByClassNo(classboardVo.getJet_class_no());
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("classboardVo", classboardVo);
@@ -126,6 +142,7 @@ public class ClassboardServiceImpl {
 		map.put("imageVoList", imageVoList);
 		map.put("categoryVo", categoryVo);
 		map.put("detailVo", detailVo);
+		map.put("starRating", starRating);
 
 		return map;
 	}

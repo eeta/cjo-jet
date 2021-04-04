@@ -18,12 +18,10 @@
 http://52.78.184.164/
 
 관리자<br>
-Username: admin01@aaa.com<br>
-Password: admin01<br>
+Username: admin01@aaa.com / Password: admin01<br>
 
 사용자<br>
-Username: user01@aaa.com<br>
-Password: user01<br>
+Username: user01@aaa.com / Password: user01<br>
 
 
 ## Screenshots

@@ -22,6 +22,3 @@ Username: admin01@aaa.com / Password: admin01<br>
 
 사용자<br>
 Username: user01@aaa.com / Password: user01<br>
-
-
-## Screenshots

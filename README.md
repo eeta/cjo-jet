@@ -15,7 +15,7 @@
 
 
 ## Live Demo
-[http://52.78.184.164/](http://52.78.184.164/){:target="_blank"}
+http://52.78.184.164/
 
 관리자<br>
 Username: admin01@aaa.com<br>

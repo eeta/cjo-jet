@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.cjo</groupId>
 	<artifactId>jet</artifactId>
-	<name>SpringJETProject_git</name>
+	<name>cjo-jet</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
